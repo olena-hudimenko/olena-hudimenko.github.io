@@ -1,0 +1,460 @@
+```html
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Історичний вибір — 10 клас</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #eef2ff, #f8fafc);
+  color: #172033;
+}
+
+.container {
+  max-width: 760px;
+  margin: 30px auto;
+  padding: 20px;
+}
+
+.card {
+  background: white;
+  border-radius: 22px;
+  padding: 28px;
+  box-shadow: 0 10px 35px rgba(0,0,0,.08);
+}
+
+.badge {
+  display: inline-block;
+  padding: 7px 12px;
+  border-radius: 20px;
+  background: #e0e7ff;
+  color: #3730a3;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+h1 {
+  margin: 14px 0 8px;
+  font-size: 30px;
+}
+
+.subtitle {
+  color: #64748b;
+  margin-bottom: 24px;
+}
+
+.progress {
+  height: 8px;
+  background: #e2e8f0;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 25px;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 25%;
+  background: #4f46e5;
+  transition: width .3s;
+}
+
+.question {
+  font-size: 20px;
+  line-height: 1.5;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.option {
+  display: block;
+  width: 100%;
+  padding: 15px 18px;
+  margin: 10px 0;
+  border: 2px solid #e2e8f0;
+  border-radius: 14px;
+  background: #fff;
+  text-align: left;
+  font-size: 16px;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.option:hover {
+  border-color: #818cf8;
+  background: #f8faff;
+}
+
+.option.correct {
+  background: #dcfce7;
+  border-color: #22c55e;
+}
+
+.option.wrong {
+  background: #fee2e2;
+  border-color: #ef4444;
+}
+
+.option:disabled {
+  cursor: default;
+}
+
+.feedback {
+  margin-top: 18px;
+  padding: 16px;
+  border-radius: 14px;
+  background: #f1f5f9;
+  line-height: 1.5;
+}
+
+button.next,
+button.restart {
+  border: none;
+  border-radius: 12px;
+  padding: 13px 20px;
+  margin-top: 18px;
+  background: #4f46e5;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button.next:hover,
+button.restart:hover {
+  background: #4338ca;
+}
+
+.result {
+  text-align: center;
+}
+
+.score {
+  font-size: 52px;
+  font-weight: bold;
+  color: #4f46e5;
+  margin: 20px 0;
+}
+
+.motivation {
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+.hidden {
+  display: none;
+}
+
+.footer {
+  text-align: center;
+  color: #94a3b8;
+  font-size: 13px;
+  margin-top: 18px;
+}
+
+@media (max-width: 600px) {
+  .container {
+    margin: 10px auto;
+    padding: 10px;
+  }
+
+  .card {
+    padding: 20px;
+  }
+
+  h1 {
+    font-size: 25px;
+  }
+
+  .question {
+    font-size: 18px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="card">
+
+    <span class="badge">Історія України • 10 клас</span>
+
+    <h1>🏛️ Історичний вибір</h1>
+
+    <div class="subtitle">
+      Мотиваційна вправа перед вивченням теми 1917 року
+    </div>
+
+    <div class="progress">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <div id="game">
+
+      <div id="question" class="question"></div>
+
+      <div id="options"></div>
+
+      <div id="feedback" class="feedback hidden"></div>
+
+      <button id="nextButton" class="next hidden">
+        Наступна ситуація →
+      </button>
+
+    </div>
+
+    <div id="result" class="result hidden">
+      <h2>🎉 Вправу завершено!</h2>
+
+      <div class="score" id="score"></div>
+
+      <div class="motivation" id="motivation"></div>
+
+      <button class="restart" onclick="restartGame()">
+        🔄 Пройти ще раз
+      </button>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    Мотиваційна цифрова вправа • Історія України
+  </div>
+</div>
+
+<script>
+
+const questions = [
+
+  {
+    question:
+      "Київ, 1917 рік. Українські політичні сили обговорюють майбутній устрій держави. Яка ідея найточніше відповідає змісту ІІІ Універсалу УЦР?",
+
+    options: [
+      "Негайне встановлення більшовицької влади в Україні",
+      "Проголошення Української Народної Республіки та демократичні перетворення",
+      "Відновлення Російської імперії",
+      "Повна відмова від українського самоврядування"
+    ],
+
+    correct: 1,
+
+    explanation:
+      "ІІІ Універсал проголосив Українську Народну Республіку та визначив низку демократичних і соціальних перетворень."
+  },
+
+  {
+    question:
+      "Після приходу більшовиків до влади в Петрограді УЦР опинилася перед новою політичною ситуацією. Яку позицію вона займала?",
+
+    options: [
+      "Безумовно підпорядкувалася більшовицькому уряду",
+      "Відстоювала власний український політичний шлях і не погоджувалася з більшовицькою моделлю влади",
+      "Негайно розпустилася",
+      "Повністю припинила політичну діяльність"
+    ],
+
+    correct: 1,
+
+    explanation:
+      "УЦР відстоювала власний шлях розвитку України та не визнавала більшовицьку модель влади єдино можливою для України."
+  },
+
+  {
+    question:
+      "На З’їзді поневолених народів Росії обговорювали майбутнє народів колишньої імперії. Яка проблема була однією з ключових?",
+
+    options: [
+      "Лише питання культури й мистецтва",
+      "Право народів на самовизначення та майбутній державний устрій",
+      "Організація спортивних змагань",
+      "Тільки питання міжнародної торгівлі"
+    ],
+
+    correct: 1,
+
+    explanation:
+      "Однією з центральних проблем була доля народів колишньої Російської імперії та їхнє право на самовизначення."
+  },
+
+  {
+    question:
+      "Крим, 1917 рік. Активізується кримськотатарський національний рух. Яке завдання було для нього принципово важливим?",
+
+    options: [
+      "Захист національної ідентичності та політичне самоврядування",
+      "Ліквідація кримськотатарських громадських організацій",
+      "Відмова від культурного розвитку",
+      "Відновлення імперського порядку"
+    ],
+
+    correct: 0,
+
+    explanation:
+      "Кримськотатарський національний рух прагнув політичного представництва, самоврядування та захисту національно-культурних прав."
+  }
+
+];
+
+let currentQuestion = 0;
+let score = 0;
+
+const questionElement = document.getElementById("question");
+const optionsElement = document.getElementById("options");
+const feedbackElement = document.getElementById("feedback");
+const nextButton = document.getElementById("nextButton");
+const progressBar = document.getElementById("progressBar");
+
+function loadQuestion() {
+
+  const q = questions[currentQuestion];
+
+  questionElement.textContent = q.question;
+
+  optionsElement.innerHTML = "";
+
+  feedbackElement.classList.add("hidden");
+
+  nextButton.classList.add("hidden");
+
+  progressBar.style.width =
+    ((currentQuestion + 1) / questions.length * 100) + "%";
+
+  q.options.forEach((option, index) => {
+
+    const button = document.createElement("button");
+
+    button.className = "option";
+
+    button.textContent = option;
+
+    button.onclick = () => selectAnswer(index, button);
+
+    optionsElement.appendChild(button);
+
+  });
+
+}
+
+function selectAnswer(index, selectedButton) {
+
+  const q = questions[currentQuestion];
+
+  const buttons = document.querySelectorAll(".option");
+
+  buttons.forEach(button => {
+    button.disabled = true;
+  });
+
+  if (index === q.correct) {
+
+    selectedButton.classList.add("correct");
+
+    score++;
+
+    feedbackElement.innerHTML =
+      "✅ <strong>Правильно!</strong><br>" +
+      q.explanation;
+
+  } else {
+
+    selectedButton.classList.add("wrong");
+
+    buttons[q.correct].classList.add("correct");
+
+    feedbackElement.innerHTML =
+      "🔎 <strong>Не зовсім.</strong><br>" +
+      q.explanation;
+
+  }
+
+  feedbackElement.classList.remove("hidden");
+
+  nextButton.textContent =
+    currentQuestion === questions.length - 1
+      ? "Показати результат →"
+      : "Наступна ситуація →";
+
+  nextButton.classList.remove("hidden");
+
+}
+
+nextButton.onclick = function() {
+
+  if (currentQuestion < questions.length - 1) {
+
+    currentQuestion++;
+
+    loadQuestion();
+
+  } else {
+
+    showResult();
+
+  }
+
+};
+
+function showResult() {
+
+  document.getElementById("game").classList.add("hidden");
+
+  document.getElementById("result").classList.remove("hidden");
+
+  document.getElementById("score").textContent =
+    score + " / " + questions.length;
+
+  let message;
+
+  if (score === 4) {
+
+    message =
+      "🔥 Чудовий старт! Ти вже орієнтуєшся в ключових проблемах українського державотворення 1917 року.";
+
+  } else if (score >= 2) {
+
+    message =
+      "👏 Хороший старт! Тепер на уроці з’ясуємо, чому учасники подій робили саме такі політичні вибори.";
+
+  } else {
+
+    message =
+      "🚀 Це лише розігрів! Попереду — події, які допоможуть розібратися в політичній боротьбі 1917 року.";
+
+  }
+
+  document.getElementById("motivation").textContent = message;
+
+  progressBar.style.width = "100%";
+
+}
+
+function restartGame() {
+
+  currentQuestion = 0;
+
+  score = 0;
+
+  document.getElementById("result").classList.add("hidden");
+
+  document.getElementById("game").classList.remove("hidden");
+
+  loadQuestion();
+
+}
+
+loadQuestion();
+
+</script>
+
+</body>
+</html>
+```
