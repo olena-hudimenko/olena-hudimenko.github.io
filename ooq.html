@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Що робили в різних частинах України 200 років тому</title>
+<style>
+:root{--sea:#1d4e7a;--land:#eef3c2;--peach:#fbe3d3;--ok:#2e8b57;--okbg:#d9f2e3;--ink:#1c2630;--line:#c9d3a0}
+*{box-sizing:border-box}
+body{margin:0;font:20px/1.5 "Trebuchet MS",Verdana,sans-serif;color:var(--ink);background:var(--land)}
+header{background:var(--sea);color:#fff;padding:20px 16px;position:sticky;top:0;z-index:5;display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+h1{font-size:1.2rem;margin:0;max-width:30ch}
+#stars{font-size:1.5rem;letter-spacing:2px;background:#fff;color:var(--ink);border-radius:999px;padding:4px 16px;min-width:9ch;text-align:center}
+main{max-width:860px;margin:0 auto;padding:16px}
+.steps{background:#fff;border-radius:12px;padding:12px 20px 12px 40px;margin:0 0 20px}
+.steps li{margin:4px 0}
+#map{display:block;max-width:100%;border-radius:12px;margin:0 0 20px;border:3px solid var(--sea)}
+.region{background:#fff;border-radius:16px;border:3px solid var(--line);padding:16px;margin-bottom:24px}
+.region h2{margin:0 0 4px;font-size:1.3rem;color:var(--sea)}
+.region .hint{margin:0 0 12px;font-size:.9rem}
+.cell{background:var(--peach);border-radius:12px;padding:12px;margin-top:12px}
+.q{display:flex;gap:8px;align-items:center;font-weight:bold;margin-bottom:8px}
+.say{border:0;background:#fff;border-radius:50%;width:44px;height:44px;font-size:1.2rem;cursor:pointer;flex:none}
+.opts{display:flex;flex-wrap:wrap;gap:10px}
+.opt{font:inherit;min-height:56px;padding:8px 16px;border-radius:12px;border:3px solid var(--sea);background:#fff;color:var(--ink);cursor:pointer}
+.opt:hover:not(:disabled){background:#eaf3fb}
+.opt:focus-visible,.say:focus-visible,#reset:focus-visible{outline:4px solid #f0a500;outline-offset:2px}
+.opt.good{background:var(--okbg);border-color:var(--ok)}
+.opt.bad{animation:shake .3s}
+.opt:disabled{cursor:default;opacity:.55}
+.opt.good:disabled{opacity:1}
+.msg{min-height:1.5em;margin:8px 0 0;font-weight:bold}
+.skip{background:#eee;border-radius:12px;padding:12px;margin-top:12px;text-decoration:line-through;color:#777}
+#done{display:none;background:var(--okbg);border:3px solid var(--ok);border-radius:16px;padding:20px;text-align:center;font-size:1.3rem}
+#reset{font:inherit;margin:16px 0;padding:8px 16px;border-radius:12px;border:2px solid var(--sea);background:#fff;cursor:pointer}
+@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+@media (prefers-reduced-motion:reduce){.opt.bad{animation:none}}
+</style>
+</head>
+<body>
+<header>
+  <h1>Що робили в різних частинах України 200 років тому</h1>
+  <div id="stars" aria-live="polite"></div>
+</header>
+<main>
+  <ol class="steps">
+    <li>Подивись на карту.</li>
+    <li>Знайди свій регіон.</li>
+    <li>Натисни правильну відповідь.</li>
+    <li>Зелений колір — правильно! Якщо ні — спробуй ще раз.</li>
+  </ol>
+  <img id="map" src="map.png" alt="Карта: регіональна спеціалізація виробництва в Україні в першій половині XIX століття" onerror="this.style.display='none'">
+  <div id="regions"></div>
+  <div id="done" role="status">🎉 Молодець! Ти виконав все завдання!</div>
+  <button id="reset" type="button">Почати спочатку</button>
+</main>
+<script>
+/* Вчитель: змінюйте тексти тут. Перший варіант у списку — правильний (на екрані порядок перемішується). */
+const DATA=[
+ {name:"Київщина та Поділля",hint:"Міста: Київ, Бердичів",cells:[
+  {q:"Що вирощували?",o:["🌾 Жито, картопля, буряк","🍉 Баштани","🍇 Виноград"]},
+  {q:"Що виробляли?",o:["🍬 Цукор","⛏ Вугілля","🚢 Кораблі"]},
+  {q:"Що було важливо для торгівлі?",o:["🎪 Ярмарок (Бердичів)","⚓ Морський порт"]}]},
+ {name:"Південь",hint:"Міста: Одеса, Херсон",cells:[
+  {q:"Що вирощували?",o:["🌾 Пшеницю на експорт","🌲 Ліс","🥔 Картоплю"]},
+  {q:"Де були перші заводи?",o:["🏭 В Одесі","⛏ У шахтах","🍬 У цукроварнях"]},
+  {q:"Звідки вивозили хліб за море?",o:["⚓ З портів","🏔 З гір"]}]},
+ {name:"Донбас",hint:"Міста: Бахмут, Луганськ, Маріуполь",cells:[
+  {skip:"Що вирощували? (цю клітинку пропускаємо)"},
+  {q:"Що добували?",o:["⛏ Вугілля","🍬 Цукор","🧵 Сукно"]},
+  {q:"Куди везли вугілля і хліб морем?",o:["⚓ До портів Азовського моря","🏔 У гори"]}]}
+];
+const KEY="ooq-history-v1";
+let saved={};try{saved=JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(saved))}catch(e){}};
+const shuffle=a=>a.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).map(x=>x[1]);
+const root=document.getElementById("regions");
+let total=0;
+DATA.forEach((r,ri)=>{
+  const sec=document.createElement("section");sec.className="region";
+  sec.innerHTML=`<h2>${r.name}</h2><p class="hint">${r.hint}</p>`;
+  r.cells.forEach((c,ci)=>{
+    if(c.skip){const d=document.createElement("div");d.className="skip";d.textContent=c.skip;sec.append(d);return}
+    total++;
+    const id=ri+"-"+ci,cell=document.createElement("div");cell.className="cell";
+    cell.innerHTML=`<div class="q"><button class="say" type="button" aria-label="Прочитати питання вголос">🔊</button><span>${c.q}</span></div><div class="opts"></div><p class="msg" aria-live="polite"></p>`;
+    const opts=cell.querySelector(".opts"),msg=cell.querySelector(".msg");
+    cell.querySelector(".say").onclick=()=>{try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(c.q+" "+c.o.join(". ").replace(/[^\p{L}\p{N}\s.,()]/gu,""));u.lang="uk-UA";speechSynthesis.speak(u)}catch(e){}};
+    shuffle(c.o.map((t,i)=>({t,right:i===0}))).forEach(op=>{
+      const b=document.createElement("button");b.type="button";b.className="opt";b.textContent=op.t;
+      b.onclick=()=>{
+        if(op.right){solve(id,opts,b,msg)}
+        else{b.classList.add("bad");msg.textContent="Спробуй ще раз 🙂";setTimeout(()=>b.classList.remove("bad"),400)}
+      };
+      b.dataset.right=op.right;opts.append(b);
+    });
+    if(saved[id])solve(id,opts,[...opts.children].find(b=>b.dataset.right==="true"),msg,true);
+    sec.append(cell);
+  });
+  root.append(sec);
+});
+function solve(id,opts,btn,msg,quiet){
+  btn.classList.add("good");msg.textContent="✅ Правильно!";
+  [...opts.children].forEach(b=>b.disabled=true);
+  if(!quiet){saved[id]=1;save()}
+  update();
+}
+function update(){
+  const n=Object.keys(saved).length;
+  document.getElementById("stars").textContent="⭐".repeat(n)+"☆".repeat(total-n);
+  document.getElementById("done").style.display=n>=total?"block":"none";
+}
+document.getElementById("reset").onclick=()=>{saved={};save();location.reload()};
+update();
+</script>
+</body>
+</html>
