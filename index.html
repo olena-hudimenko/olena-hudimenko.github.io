@@ -1,117 +1,460 @@
+```html
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Що робили в різних частинах України 200 років тому</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Історичний вибір — 10 клас</title>
+
 <style>
-:root{--sea:#1d4e7a;--land:#eef3c2;--peach:#fbe3d3;--ok:#2e8b57;--okbg:#d9f2e3;--ink:#1c2630;--line:#c9d3a0}
-*{box-sizing:border-box}
-body{margin:0;font:20px/1.5 "Trebuchet MS",Verdana,sans-serif;color:var(--ink);background:var(--land)}
-header{background:var(--sea);color:#fff;padding:20px 16px;position:sticky;top:0;z-index:5;display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap}
-h1{font-size:1.2rem;margin:0;max-width:30ch}
-#stars{font-size:1.5rem;letter-spacing:2px;background:#fff;color:var(--ink);border-radius:999px;padding:4px 16px;min-width:9ch;text-align:center}
-main{max-width:860px;margin:0 auto;padding:16px}
-.steps{background:#fff;border-radius:12px;padding:12px 20px 12px 40px;margin:0 0 20px}
-.steps li{margin:4px 0}
-#map{display:block;max-width:100%;border-radius:12px;margin:0 0 20px;border:3px solid var(--sea)}
-.region{background:#fff;border-radius:16px;border:3px solid var(--line);padding:16px;margin-bottom:24px}
-.region h2{margin:0 0 4px;font-size:1.3rem;color:var(--sea)}
-.region .hint{margin:0 0 12px;font-size:.9rem}
-.cell{background:var(--peach);border-radius:12px;padding:12px;margin-top:12px}
-.q{display:flex;gap:8px;align-items:center;font-weight:bold;margin-bottom:8px}
-.say{border:0;background:#fff;border-radius:50%;width:44px;height:44px;font-size:1.2rem;cursor:pointer;flex:none}
-.opts{display:flex;flex-wrap:wrap;gap:10px}
-.opt{font:inherit;min-height:56px;padding:8px 16px;border-radius:12px;border:3px solid var(--sea);background:#fff;color:var(--ink);cursor:pointer}
-.opt:hover:not(:disabled){background:#eaf3fb}
-.opt:focus-visible,.say:focus-visible,#reset:focus-visible{outline:4px solid #f0a500;outline-offset:2px}
-.opt.good{background:var(--okbg);border-color:var(--ok)}
-.opt.bad{animation:shake .3s}
-.opt:disabled{cursor:default;opacity:.55}
-.opt.good:disabled{opacity:1}
-.msg{min-height:1.5em;margin:8px 0 0;font-weight:bold}
-.skip{background:#eee;border-radius:12px;padding:12px;margin-top:12px;text-decoration:line-through;color:#777}
-#done{display:none;background:var(--okbg);border:3px solid var(--ok);border-radius:16px;padding:20px;text-align:center;font-size:1.3rem}
-#reset{font:inherit;margin:16px 0;padding:8px 16px;border-radius:12px;border:2px solid var(--sea);background:#fff;cursor:pointer}
-@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
-@media (prefers-reduced-motion:reduce){.opt.bad{animation:none}}
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #eef2ff, #f8fafc);
+  color: #172033;
+}
+
+.container {
+  max-width: 760px;
+  margin: 30px auto;
+  padding: 20px;
+}
+
+.card {
+  background: white;
+  border-radius: 22px;
+  padding: 28px;
+  box-shadow: 0 10px 35px rgba(0,0,0,.08);
+}
+
+.badge {
+  display: inline-block;
+  padding: 7px 12px;
+  border-radius: 20px;
+  background: #e0e7ff;
+  color: #3730a3;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+h1 {
+  margin: 14px 0 8px;
+  font-size: 30px;
+}
+
+.subtitle {
+  color: #64748b;
+  margin-bottom: 24px;
+}
+
+.progress {
+  height: 8px;
+  background: #e2e8f0;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 25px;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 25%;
+  background: #4f46e5;
+  transition: width .3s;
+}
+
+.question {
+  font-size: 20px;
+  line-height: 1.5;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.option {
+  display: block;
+  width: 100%;
+  padding: 15px 18px;
+  margin: 10px 0;
+  border: 2px solid #e2e8f0;
+  border-radius: 14px;
+  background: #fff;
+  text-align: left;
+  font-size: 16px;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.option:hover {
+  border-color: #818cf8;
+  background: #f8faff;
+}
+
+.option.correct {
+  background: #dcfce7;
+  border-color: #22c55e;
+}
+
+.option.wrong {
+  background: #fee2e2;
+  border-color: #ef4444;
+}
+
+.option:disabled {
+  cursor: default;
+}
+
+.feedback {
+  margin-top: 18px;
+  padding: 16px;
+  border-radius: 14px;
+  background: #f1f5f9;
+  line-height: 1.5;
+}
+
+button.next,
+button.restart {
+  border: none;
+  border-radius: 12px;
+  padding: 13px 20px;
+  margin-top: 18px;
+  background: #4f46e5;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button.next:hover,
+button.restart:hover {
+  background: #4338ca;
+}
+
+.result {
+  text-align: center;
+}
+
+.score {
+  font-size: 52px;
+  font-weight: bold;
+  color: #4f46e5;
+  margin: 20px 0;
+}
+
+.motivation {
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+.hidden {
+  display: none;
+}
+
+.footer {
+  text-align: center;
+  color: #94a3b8;
+  font-size: 13px;
+  margin-top: 18px;
+}
+
+@media (max-width: 600px) {
+  .container {
+    margin: 10px auto;
+    padding: 10px;
+  }
+
+  .card {
+    padding: 20px;
+  }
+
+  h1 {
+    font-size: 25px;
+  }
+
+  .question {
+    font-size: 18px;
+  }
+}
 </style>
 </head>
+
 <body>
-<header>
-  <h1>Що робили в різних частинах України 200 років тому</h1>
-  <div id="stars" aria-live="polite"></div>
-</header>
-<main>
-  <ol class="steps">
-    <li>Подивись на карту.</li>
-    <li>Знайди свій регіон.</li>
-    <li>Натисни правильну відповідь.</li>
-    <li>Зелений колір — правильно! Якщо ні — спробуй ще раз.</li>
-  </ol>
-  <img id="map" src="map.png" alt="Карта: регіональна спеціалізація виробництва в Україні в першій половині XIX століття" onerror="this.style.display='none'">
-  <div id="regions"></div>
-  <div id="done" role="status">🎉 Молодець! Ти виконав(ла) все завдання!</div>
-  <button id="reset" type="button">Почати спочатку</button>
-</main>
+
+<div class="container">
+  <div class="card">
+
+    <span class="badge">Історія України • 10 клас</span>
+
+    <h1>🏛️ Історичний вибір</h1>
+
+    <div class="subtitle">
+      Мотиваційна вправа перед вивченням теми 1917 року
+    </div>
+
+    <div class="progress">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <div id="game">
+
+      <div id="question" class="question"></div>
+
+      <div id="options"></div>
+
+      <div id="feedback" class="feedback hidden"></div>
+
+      <button id="nextButton" class="next hidden">
+        Наступна ситуація →
+      </button>
+
+    </div>
+
+    <div id="result" class="result hidden">
+      <h2>🎉 Вправу завершено!</h2>
+
+      <div class="score" id="score"></div>
+
+      <div class="motivation" id="motivation"></div>
+
+      <button class="restart" onclick="restartGame()">
+        🔄 Пройти ще раз
+      </button>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    Мотиваційна цифрова вправа • Історія України
+  </div>
+</div>
+
 <script>
-/* Вчитель: змінюйте тексти тут. Перший варіант у списку — правильний (на екрані порядок перемішується). */
-const DATA=[
- {name:"Київщина та Поділля",hint:"Міста: Київ, Бердичів",cells:[
-  {q:"Що вирощували?",o:["🌾 Жито, картопля, буряк","🍉 Баштани","🍇 Виноград"]},
-  {q:"Що виробляли?",o:["🍬 Цукор","⛏ Вугілля","🚢 Кораблі"]},
-  {q:"Що було важливо для торгівлі?",o:["🎪 Ярмарок (Бердичів)","⚓ Морський порт"]}]},
- {name:"Південь",hint:"Міста: Одеса, Херсон",cells:[
-  {q:"Що вирощували?",o:["🌾 Пшеницю на експорт","🌲 Ліс","🥔 Картоплю"]},
-  {q:"Де були перші заводи?",o:["🏭 В Одесі","⛏ У шахтах","🍬 У цукроварнях"]},
-  {q:"Звідки вивозили хліб за море?",o:["⚓ З портів","🏔 З гір"]}]},
- {name:"Донбас",hint:"Міста: Бахмут, Луганськ, Маріуполь",cells:[
-  {skip:"Що вирощували? (цю клітинку пропускаємо)"},
-  {q:"Що добували?",o:["⛏ Вугілля","🍬 Цукор","🧵 Сукно"]},
-  {q:"Куди везли вугілля і хліб морем?",o:["⚓ До портів Азовського моря","🏔 У гори"]}]}
+
+const questions = [
+
+  {
+    question:
+      "Київ, 1917 рік. Українські політичні сили обговорюють майбутній устрій держави. Яка ідея найточніше відповідає змісту ІІІ Універсалу УЦР?",
+
+    options: [
+      "Негайне встановлення більшовицької влади в Україні",
+      "Проголошення Української Народної Республіки та демократичні перетворення",
+      "Відновлення Російської імперії",
+      "Повна відмова від українського самоврядування"
+    ],
+
+    correct: 1,
+
+    explanation:
+      "ІІІ Універсал проголосив Українську Народну Республіку та визначив низку демократичних і соціальних перетворень."
+  },
+
+  {
+    question:
+      "Після приходу більшовиків до влади в Петрограді УЦР опинилася перед новою політичною ситуацією. Яку позицію вона займала?",
+
+    options: [
+      "Безумовно підпорядкувалася більшовицькому уряду",
+      "Відстоювала власний український політичний шлях і не погоджувалася з більшовицькою моделлю влади",
+      "Негайно розпустилася",
+      "Повністю припинила політичну діяльність"
+    ],
+
+    correct: 1,
+
+    explanation:
+      "УЦР відстоювала власний шлях розвитку України та не визнавала більшовицьку модель влади єдино можливою для України."
+  },
+
+  {
+    question:
+      "На З’їзді поневолених народів Росії обговорювали майбутнє народів колишньої імперії. Яка проблема була однією з ключових?",
+
+    options: [
+      "Лише питання культури й мистецтва",
+      "Право народів на самовизначення та майбутній державний устрій",
+      "Організація спортивних змагань",
+      "Тільки питання міжнародної торгівлі"
+    ],
+
+    correct: 1,
+
+    explanation:
+      "Однією з центральних проблем була доля народів колишньої Російської імперії та їхнє право на самовизначення."
+  },
+
+  {
+    question:
+      "Крим, 1917 рік. Активізується кримськотатарський національний рух. Яке завдання було для нього принципово важливим?",
+
+    options: [
+      "Захист національної ідентичності та політичне самоврядування",
+      "Ліквідація кримськотатарських громадських організацій",
+      "Відмова від культурного розвитку",
+      "Відновлення імперського порядку"
+    ],
+
+    correct: 0,
+
+    explanation:
+      "Кримськотатарський національний рух прагнув політичного представництва, самоврядування та захисту національно-культурних прав."
+  }
+
 ];
-const KEY="ooq-history-v1";
-let saved={};try{saved=JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){}
-const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(saved))}catch(e){}};
-const shuffle=a=>a.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).map(x=>x[1]);
-const root=document.getElementById("regions");
-let total=0;
-DATA.forEach((r,ri)=>{
-  const sec=document.createElement("section");sec.className="region";
-  sec.innerHTML=`<h2>${r.name}</h2><p class="hint">${r.hint}</p>`;
-  r.cells.forEach((c,ci)=>{
-    if(c.skip){const d=document.createElement("div");d.className="skip";d.textContent=c.skip;sec.append(d);return}
-    total++;
-    const id=ri+"-"+ci,cell=document.createElement("div");cell.className="cell";
-    cell.innerHTML=`<div class="q"><button class="say" type="button" aria-label="Прочитати питання вголос">🔊</button><span>${c.q}</span></div><div class="opts"></div><p class="msg" aria-live="polite"></p>`;
-    const opts=cell.querySelector(".opts"),msg=cell.querySelector(".msg");
-    cell.querySelector(".say").onclick=()=>{try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(c.q+" "+c.o.join(". ").replace(/[^\p{L}\p{N}\s.,()]/gu,""));u.lang="uk-UA";speechSynthesis.speak(u)}catch(e){}};
-    shuffle(c.o.map((t,i)=>({t,right:i===0}))).forEach(op=>{
-      const b=document.createElement("button");b.type="button";b.className="opt";b.textContent=op.t;
-      b.onclick=()=>{
-        if(op.right){solve(id,opts,b,msg)}
-        else{b.classList.add("bad");msg.textContent="Спробуй ще раз 🙂";setTimeout(()=>b.classList.remove("bad"),400)}
-      };
-      b.dataset.right=op.right;opts.append(b);
-    });
-    if(saved[id])solve(id,opts,[...opts.children].find(b=>b.dataset.right==="true"),msg,true);
-    sec.append(cell);
+
+let currentQuestion = 0;
+let score = 0;
+
+const questionElement = document.getElementById("question");
+const optionsElement = document.getElementById("options");
+const feedbackElement = document.getElementById("feedback");
+const nextButton = document.getElementById("nextButton");
+const progressBar = document.getElementById("progressBar");
+
+function loadQuestion() {
+
+  const q = questions[currentQuestion];
+
+  questionElement.textContent = q.question;
+
+  optionsElement.innerHTML = "";
+
+  feedbackElement.classList.add("hidden");
+
+  nextButton.classList.add("hidden");
+
+  progressBar.style.width =
+    ((currentQuestion + 1) / questions.length * 100) + "%";
+
+  q.options.forEach((option, index) => {
+
+    const button = document.createElement("button");
+
+    button.className = "option";
+
+    button.textContent = option;
+
+    button.onclick = () => selectAnswer(index, button);
+
+    optionsElement.appendChild(button);
+
   });
-  root.append(sec);
-});
-function solve(id,opts,btn,msg,quiet){
-  btn.classList.add("good");msg.textContent="✅ Правильно!";
-  [...opts.children].forEach(b=>b.disabled=true);
-  if(!quiet){saved[id]=1;save()}
-  update();
+
 }
-function update(){
-  const n=Object.keys(saved).length;
-  document.getElementById("stars").textContent="⭐".repeat(n)+"☆".repeat(total-n);
-  document.getElementById("done").style.display=n>=total?"block":"none";
+
+function selectAnswer(index, selectedButton) {
+
+  const q = questions[currentQuestion];
+
+  const buttons = document.querySelectorAll(".option");
+
+  buttons.forEach(button => {
+    button.disabled = true;
+  });
+
+  if (index === q.correct) {
+
+    selectedButton.classList.add("correct");
+
+    score++;
+
+    feedbackElement.innerHTML =
+      "✅ <strong>Правильно!</strong><br>" +
+      q.explanation;
+
+  } else {
+
+    selectedButton.classList.add("wrong");
+
+    buttons[q.correct].classList.add("correct");
+
+    feedbackElement.innerHTML =
+      "🔎 <strong>Не зовсім.</strong><br>" +
+      q.explanation;
+
+  }
+
+  feedbackElement.classList.remove("hidden");
+
+  nextButton.textContent =
+    currentQuestion === questions.length - 1
+      ? "Показати результат →"
+      : "Наступна ситуація →";
+
+  nextButton.classList.remove("hidden");
+
 }
-document.getElementById("reset").onclick=()=>{saved={};save();location.reload()};
-update();
+
+nextButton.onclick = function() {
+
+  if (currentQuestion < questions.length - 1) {
+
+    currentQuestion++;
+
+    loadQuestion();
+
+  } else {
+
+    showResult();
+
+  }
+
+};
+
+function showResult() {
+
+  document.getElementById("game").classList.add("hidden");
+
+  document.getElementById("result").classList.remove("hidden");
+
+  document.getElementById("score").textContent =
+    score + " / " + questions.length;
+
+  let message;
+
+  if (score === 4) {
+
+    message =
+      "🔥 Чудовий старт! Ти вже орієнтуєшся в ключових проблемах українського державотворення 1917 року.";
+
+  } else if (score >= 2) {
+
+    message =
+      "👏 Хороший старт! Тепер на уроці з’ясуємо, чому учасники подій робили саме такі політичні вибори.";
+
+  } else {
+
+    message =
+      "🚀 Це лише розігрів! Попереду — події, які допоможуть розібратися в політичній боротьбі 1917 року.";
+
+  }
+
+  document.getElementById("motivation").textContent = message;
+
+  progressBar.style.width = "100%";
+
+}
+
+function restartGame() {
+
+  currentQuestion = 0;
+
+  score = 0;
+
+  document.getElementById("result").classList.add("hidden");
+
+  document.getElementById("game").classList.remove("hidden");
+
+  loadQuestion();
+
+}
+
+loadQuestion();
+
 </script>
+
 </body>
 </html>
+```
