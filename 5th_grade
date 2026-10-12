@@ -1,0 +1,193 @@
+
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Кола мого світу</title>
+<style>
+* { box-sizing: border-box; }
+body {
+  margin: 0; padding: 18px;
+  font-family: Arial, sans-serif;
+  background: #f4f8ff; color: #17324d;
+  text-align: center;
+}
+main { max-width: 850px; margin: auto; }
+h1 { color: #145a91; font-size: clamp(27px, 5vw, 40px); }
+p { font-size: 19px; line-height: 1.5; }
+.cards, .zones {
+  display: flex; flex-wrap: wrap;
+  justify-content: center; gap: 12px;
+}
+.card {
+  flex: 1 1 180px; max-width: 250px;
+  background: white; border: 3px solid #b8cce0;
+  border-radius: 18px; padding: 14px 8px;
+  cursor: pointer; font-size: 19px;
+  font-weight: bold; min-height: 115px;
+}
+.card .pic { display: block; font-size: 42px; margin-bottom: 8px; }
+.card.selected { outline: 4px solid #2868c7; }
+.zone {
+  border: 4px solid #24425b;
+  border-radius: 22px; padding: 15px;
+  width: 100%; min-height: 120px;
+  cursor: pointer; font-size: 19px;
+}
+.zone strong { display: block; font-size: 22px; margin-bottom: 6px; }
+.green { background: #d9f4d8; border-color: #3eaa57; }
+.yellow { background: #fff2ad; border-color: #d8aa00; }
+.blue { background: #d4efff; border-color: #279bd6; }
+.placed { margin-top: 10px; font-size: 17px; }
+button {
+  border: 0; border-radius: 14px; padding: 15px 20px;
+  font-size: 18px; font-weight: bold; cursor: pointer;
+  margin: 8px; background: #1768a8; color: white;
+}
+button.reset { background: #536579; }
+#feedback {
+  font-size: 21px; font-weight: bold;
+  padding: 14px; border-radius: 14px;
+  margin-top: 12px; min-height: 52px;
+}
+.hint { background: #fff; border-radius: 14px; padding: 12px; }
+</style>
+</head>
+<body>
+<main>
+<h1>🌍 Кола мого світу</h1>
+<p>Обери картинку. Потім натисни на коло, до якого вона належить.</p>
+
+<div class="cards" id="cards">
+  <button class="card" data-id="home" aria-pressed="false">
+    <span class="pic">🏠</span>Дім, школа,<br>рідна вулиця
+  </button>
+  <button class="card" data-id="ua" aria-pressed="false">
+    <span class="pic">🇺🇦</span>Україна
+  </button>
+  <button class="card" data-id="earth" aria-pressed="false">
+    <span class="pic">🌍</span>Планета Земля
+  </button>
+</div>
+
+<p class="hint" id="instruction" aria-live="polite">
+  Крок 1. Обери одну картинку.
+</p>
+
+<div class="zones">
+  <button class="zone green" data-zone="small">
+    <strong>🟢 Мала батьківщина</strong>
+    Мій дім, моє місто або село
+    <div class="placed" id="small">Тут поки порожньо</div>
+  </button>
+  <button class="zone yellow" data-zone="middle">
+    <strong>🟡 Велика Батьківщина</strong>
+    Моя країна — Україна
+    <div class="placed" id="middle">Тут поки порожньо</div>
+  </button>
+  <button class="zone blue" data-zone="large">
+    <strong>🔵 Світ / людство</strong>
+    Планета Земля, всі люди
+    <div class="placed" id="large">Тут поки порожньо</div>
+  </button>
+</div>
+
+<div>
+  <button id="check">✅ Перевірити</button>
+  <button class="reset" id="reset">🔄 Почати знову</button>
+</div>
+<div id="feedback" aria-live="polite"></div>
+</main>
+
+<script>
+const answers = {
+  home: "small",
+  ua: "middle",
+  earth: "large"
+};
+const names = {
+  home: "🏠 Дім",
+  ua: "🇺🇦 Україна",
+  earth: "🌍 Планета Земля"
+};
+let selected = null;
+let placed = {};
+
+const cards = document.querySelectorAll(".card");
+const zones = document.querySelectorAll(".zone");
+const feedback = document.getElementById("feedback");
+const instruction = document.getElementById("instruction");
+
+cards.forEach(card => {
+  card.addEventListener("click", () => {
+    selected = card.dataset.id;
+    cards.forEach(c => {
+      c.classList.toggle("selected", c === card);
+      c.setAttribute("aria-pressed", c === card ? "true" : "false");
+    });
+    instruction.textContent =
+      "Крок 2. Обери коло для картинки: " + names[selected];
+    feedback.textContent = "";
+  });
+});
+
+zones.forEach(zone => {
+  zone.addEventListener("click", () => {
+    if (!selected) {
+      instruction.textContent = "Спочатку обери картинку ☝️";
+      return;
+    }
+    placed[selected] = zone.dataset.zone;
+    selected = null;
+    cards.forEach(c => {
+      c.classList.remove("selected");
+      c.setAttribute("aria-pressed", "false");
+    });
+    instruction.textContent =
+      "Молодець! Тепер обери наступну картинку.";
+    feedback.textContent = "";
+    render();
+  });
+});
+
+function render() {
+  ["small", "middle", "large"].forEach(zone => {
+    const items = Object.keys(placed)
+      .filter(id => placed[id] === zone)
+      .map(id => names[id]);
+    document.getElementById(zone).textContent =
+      items.length ? items.join(" · ") : "Тут поки порожньо";
+  });
+}
+
+document.getElementById("check").addEventListener("click", () => {
+  const count = Object.keys(answers).filter(
+    id => placed[id] === answers[id]
+  ).length;
+
+  if (Object.keys(placed).length < 3) {
+    feedback.textContent =
+      "💛 Розмісти всі три картинки, а потім перевір!";
+  } else if (count === 3) {
+    feedback.textContent = "🌟 Чудово! Усі три відповіді правильні!";
+  } else {
+    feedback.textContent =
+      `👍 Правильно: ${count} із 3. Спробуй ще раз!`;
+  }
+});
+
+document.getElementById("reset").addEventListener("click", () => {
+  selected = null;
+  placed = {};
+  cards.forEach(c => {
+    c.classList.remove("selected");
+    c.setAttribute("aria-pressed", "false");
+  });
+  render();
+  feedback.textContent = "";
+  instruction.textContent = "Крок 1. Обери одну картинку.";
+});
+</script>
+</body>
+</html>
