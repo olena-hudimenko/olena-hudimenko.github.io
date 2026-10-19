@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Адаптований аркуш: Конституція України</title>
+<style>
+:root{--bg:#f1f5fb;--card:#fff;--ink:#16202f;--muted:#4a5568;--line:#b9c6dc;--blue:#1d4e89;--soft:#e4edf9;--gold:#e3ad00;--ok:#16693c;--okbg:#dff2e6;--bad:#a3261e;--badbg:#fbe4e1;--fs:22px;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1522;--card:#17202f;--ink:#eef2f9;--muted:#a9b4c8;--line:#3a4a66;--blue:#8dbbf2;--soft:#1c2c45;--gold:#f0c23a;--ok:#7fdca8;--okbg:#12301f;--bad:#ffa8a1;--badbg:#3a1916;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0e1522;--card:#17202f;--ink:#eef2f9;--muted:#a9b4c8;--line:#3a4a66;--blue:#8dbbf2;--soft:#1c2c45;--gold:#f0c23a;--ok:#7fdca8;--okbg:#12301f;--bad:#ffa8a1;--badbg:#3a1916;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:var(--fs)/1.8 Verdana,"Trebuchet MS",system-ui,sans-serif;letter-spacing:.02em;word-spacing:.1em;text-align:left}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--card);z-index:10}
+.wrap{max-width:720px;margin:0 auto;padding:0 16px 40px}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:11;background:var(--card);border-bottom:2px solid var(--line);padding:10px 16px;margin:0 -16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.bar .st{flex:1 1 200px;font-size:16px;font-weight:700}
+.track{height:10px;background:var(--soft);border-radius:5px;overflow:hidden;margin-top:4px}
+#fill{height:100%;width:0;background:var(--blue)}
+.tools button{font-size:16px;min-height:40px;padding:4px 12px}
+button{font:inherit;letter-spacing:inherit;color:var(--ink);background:var(--card);border:2px solid var(--line);border-radius:12px;padding:12px 16px;cursor:pointer}
+button:hover:not(:disabled){background:var(--soft)}
+button:disabled{cursor:default;opacity:.55}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:4px solid var(--blue);outline-offset:2px}
+.card{background:var(--card);border:2px solid var(--line);border-left:8px solid var(--gold);border-radius:14px;padding:22px;margin:18px 0;min-height:48vh}
+h2{font-size:1.25em;line-height:1.4;margin:6px 0 12px;color:var(--blue)}
+h2.q{color:var(--ink)}
+.big{font-size:3em;line-height:1.2}
+.grp{margin:0;font-size:.75em;color:var(--muted);font-weight:700}
+.hint{background:var(--soft);border-radius:10px;padding:10px 14px;font-size:.85em}
+.say{float:right;font-size:16px;margin:0 0 8px 8px}
+.opts{display:grid;gap:10px;margin-top:14px}
+.opts button{width:100%;min-height:60px;text-align:left}
+.opts button.ok{background:var(--okbg);border-color:var(--ok);opacity:1}
+.opts button.bad{background:var(--badbg);border-color:var(--bad)}
+.fb{margin:14px 0 0;font-weight:700}
+.gd{color:var(--ok)}.nd{color:var(--bad)}
+.lst{background:var(--soft);border-radius:10px;padding:8px 14px;margin:10px 0}
+label{display:block;margin:12px 0 4px}
+input[type=text],textarea{width:100%;box-sizing:border-box;font:inherit;letter-spacing:inherit;color:var(--ink);background:var(--card);border:2px solid var(--line);border-radius:10px;padding:10px 12px}
+.nav{display:flex;gap:12px}
+.nav button{flex:1;min-height:60px;font-weight:700}
+button.primary{background:var(--blue);color:var(--card);border-color:var(--blue)}
+button.primary:hover:not(:disabled){background:var(--blue);filter:brightness(1.1)}
+#out{min-height:200px;font-size:16px;margin-top:10px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="bar" aria-live="polite"><div class="st"><span id="stat"></span><div class="track"><div id="fill"></div></div></div>
+<div class="tools"><button type="button" id="fm" aria-label="Менший шрифт">A−</button> <button type="button" id="fp" aria-label="Більший шрифт">A+</button></div></div>
+<main class="card" id="card"></main>
+<div class="nav"><button type="button" id="pv">← Назад</button><button type="button" id="nx" class="primary">Далі →</button></div>
+</div>
+<script>
+const $=s=>document.querySelector(s);
+const info=(icon,t,p)=>({k:"info",icon,t,p});
+const mc=(g,q,o,a,e,h)=>({k:"mc",g,q,o,a,e,h});
+const RW=["🙋 Право","🛠️ Обов’язок"],TF=["👍 Правда","👎 Неправда"],V=["🏛️ Верховна Рада","🏢 Уряд","⚖️ Суд"];
+const HV="Рада пише закони. Уряд виконує закони. Суд вирішує спори.",HR="Право — це те, що мені можна й належить. Обов’язок — це те, що я маю робити.";
+const STEPS=[{k:"start"},
+info("📖","Конституція",["Конституція — це головний закон України.","Це як головні правила гри для всієї країни.","Її ухвалили 28 червня 1996 року."]),
+info("🧍","Людина — найважливіша",["В Україні людина — найважливіше, що є.","Її життя, здоров’я і гідність треба захищати.","Права людини не можна забрати просто так."]),
+info("⚖️","Закон один для всіх",["Закони мають виконувати всі: діти, дорослі, вчителі і навіть начальники.","Приклад: правило «не бігати в коридорі» є для всіх у школі.","Це називається верховенство права.","Країна, де закон діє для всіх, — правова держава."]),
+info("🏛️","Влада в Україні",["Влада належить народу, тобто людям України.","Щоб ніхто не мав усієї влади, її поділено на три частини:","🏛️ Верховна Рада пише закони.","🏢 Уряд виконує закони.","⚖️ Суд вирішує спори за законом."]),
+info("🙋","Права й обов’язки",["Право — це те, що мені можна й належить. Наприклад, право на життя.","Обов’язок — це те, що я маю робити. Наприклад, захищати країну.","Кожна людина має і права, і обов’язки."]),
+mc("Конституція","Що таке Конституція?",["Головний закон України","Розклад уроків","Шкільний підручник"],0,"Конституція — головний закон країни."),
+mc("Конституція","Коли ухвалили Конституцію України?",["28 червня 1996 року","1 вересня 2000 року","24 серпня 1991 року"],0,"28 червня — День Конституції."),
+mc("Закон один для всіх","У школі є правило: не бігати в коридорі. Хто має його виконувати?",["Усі: і учні, і вчителі","Тільки учні","Тільки першокласники"],0,"Правило — для всіх. Це і є верховенство права."),
+mc("Закон один для всіх","Кому належить влада в Україні?",["Народу України","Одному начальнику","Тільки багатим людям"],0,"Влада належить народу, тобто людям України."),
+mc("Три частини влади","Хто ухвалює (пише) закони?",V,0,"Закони ухвалює Верховна Рада.",HV),
+mc("Три частини влади","Хто виконує закони і керує щоденною роботою країни?",V,1,"Закони виконує Уряд.",HV),
+mc("Три частини влади","Хто вирішує спір за законом?",V,2,"Спір вирішує суд.",HV),
+mc("Права й обов’язки","🙋 Право на життя. Це право чи обов’язок?",RW,0,"Це право. Кожна людина має право на життя.",HR),
+mc("Права й обов’язки","🗣️ Свобода слова: кожен може вільно говорити, що думає. Це право чи обов’язок?",RW,0,"Це право.",HR),
+mc("Права й обов’язки","🏠 До чужого дому не можна заходити без дозволу. Це право чи обов’язок?",RW,0,"Це право на недоторканність житла.",HR),
+mc("Права й обов’язки","🇺🇦 Захищати Україну. Це право чи обов’язок?",RW,1,"Це обов’язок. Громадяни захищають Вітчизну.",HR),
+mc("Права й обов’язки","💰 Платити податки. Це право чи обов’язок?",RW,1,"Це обов’язок.",HR),
+mc("Права й обов’язки","🌳 Не шкодити природі. Це право чи обов’язок?",RW,1,"Це обов’язок.",HR),
+mc("Правда чи неправда?","Конституція — головний закон України.",TF,0,"Так, це правда."),
+mc("Правда чи неправда?","Права людини можна забрати просто так.",TF,1,"Ні. Права людини не можна скасувати."),
+mc("Правда чи неправда?","Закон має виконувати і директор, і учень.",TF,0,"Так. Закон один для всіх."),
+{k:"write"},{k:"end"}];
+const M=STEPS.filter(s=>s.k==="mc").length;
+let i=0,R,NAME="",W1="",W2="";
+const strip=t=>t.replace(/[\p{Extended_Pictographic}\uFE0F]/gu,"");
+function say(t){try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(strip(t));u.lang="uk-UA";u.rate=.8;speechSynthesis.speak(u)}catch(e){}}
+function stats(){let f=0,d=0,r=0;STEPS.forEach((s,j)=>{if(s.k==="mc"){if(R[j].ok)d++;if(R[j].first)f++;if(R[j].t>1)r++}});return{f,d,r}}
+function report(){const x=stats();return `Адаптований робочий аркуш: Конституція України\nУчень/учениця: ${NAME.trim()||"—"}\nВиконано завдань: ${x.d} із ${M}\nПравильно з першої спроби: ${x.f} із ${M}\nЗавдань, де були потрібні повторні спроби: ${x.r}\nМоє право: ${W1.trim()||"—"}\nМій обов’язок: ${W2.trim()||"—"}`}
+function render(){
+const s=STEPS[i],c=$("#card"),r=R[i];let h="",sp="";
+if(s.k==="start"){sp="Привіт! Це завдання про головний закон України. Роби один крок за разом. Поспішати не треба. Як тебе звати?";
+h=`<div class="big">⚖️</div><h2>Конституція України</h2><p>Привіт! Це завдання про головний закон України.</p><p>Роби один крок за разом. Поспішати не треба.</p><label for="nm">Як тебе звати?</label><input type="text" id="nm" autocomplete="off" value="${NAME}">`}
+else if(s.k==="info"){sp=s.t+". "+s.p.join(" ");h=`<div class="big">${s.icon}</div><h2>${s.t}</h2>${s.p.map(t=>`<p>${t}</p>`).join("")}`}
+else if(s.k==="mc"){sp=s.q+" "+(s.h||"")+" Варіанти: "+s.o.join(". ");
+h=`<p class="grp">${s.g}</p><h2 class="q">${s.q}</h2>${s.h?`<p class="hint">💡 ${s.h}</p>`:""}<div class="opts">${s.o.map(t=>`<button type="button">${t}</button>`).join("")}</div><p class="fb" id="fb"></p>`}
+else if(s.k==="write"){sp="Напиши одне своє право і один свій обов’язок. Можна розповісти дорослому.";
+h=`<div class="big">✏️</div><h2>Напиши своє</h2><p>Можна написати самому або розповісти дорослому.</p><label for="w1">🙋 Одне моє право:</label><input type="text" id="w1" value="${W1}"><label for="w2">🛠️ Один мій обов’язок:</label><input type="text" id="w2" value="${W2}">`}
+else{const x=stats();sp=`Молодець! Ти пройшов усі кроки. Правильно з першої спроби: ${x.f} із ${M}.`;
+h=`<div class="big">🌟</div><h2>Молодець!</h2><p>Ти пройшов усі кроки.</p><p>⭐ З першої спроби: ${x.f} із ${M}</p><button type="button" class="primary" id="go">Сформувати результат для вчителя</button><textarea id="out" readonly hidden aria-label="Результат"></textarea><p class="fb" id="msg"></p><button type="button" id="rs">Почати заново</button>`}
+c.innerHTML=`<button type="button" class="say" id="sy">🔊 Прочитати</button>${h}`;
+$("#sy").onclick=()=>say(sp);
+if(s.k==="mc"){const bs=[...c.querySelectorAll(".opts button")],fb=$("#fb");
+const win=()=>{bs.forEach(b=>b.disabled=true);bs[s.a].classList.add("ok");bs[s.a].disabled=true;fb.className="fb gd";fb.textContent="✅ Правильно! "+s.e;nav()};
+r.bad.forEach(j=>{bs[j].classList.add("bad");bs[j].disabled=true});if(r.ok)win();
+bs.forEach((b,j)=>b.onclick=()=>{r.t++;if(j===s.a){r.ok=true;r.first=r.t===1;win();say("Правильно")}else{r.bad.push(j);b.classList.add("bad");b.disabled=true;fb.className="fb nd";fb.textContent="🔁 Ще не те. Спробуй ще раз."}})}
+if(s.k==="start")$("#nm").oninput=e=>NAME=e.target.value;
+if(s.k==="write"){$("#w1").oninput=e=>W1=e.target.value;$("#w2").oninput=e=>W2=e.target.value}
+if(s.k==="end"){$("#go").onclick=async()=>{const t=report(),o=$("#out");o.value=t;o.hidden=false;try{await navigator.clipboard.writeText(t);$("#msg").textContent="✅ Результат скопійовано. Встав його в повідомлення вчительці."}catch(e){o.select();$("#msg").textContent="Виділи текст і скопіюй його."}};$("#rs").onclick=init}
+$("#stat").textContent=`Крок ${i+1} з ${STEPS.length}`;$("#fill").style.width=(i+1)/STEPS.length*100+"%";nav()}
+function nav(){const s=STEPS[i];$("#pv").disabled=i===0;$("#nx").hidden=i===STEPS.length-1;$("#nx").disabled=s.k==="mc"&&!R[i].ok}
+function go(d){try{speechSynthesis.cancel()}catch(e){}i=Math.max(0,Math.min(STEPS.length-1,i+d));render();window.scrollTo(0,0)}
+function init(){R=STEPS.map(()=>({t:0,ok:false,first:false,bad:[]}));i=0;NAME=W1=W2="";render()}
+let fs=22;const setfs=d=>{fs=Math.max(18,Math.min(34,fs+d));document.documentElement.style.setProperty("--fs",fs+"px")};
+$("#fm").onclick=()=>setfs(-3);$("#fp").onclick=()=>setfs(3);$("#pv").onclick=()=>go(-1);$("#nx").onclick=()=>go(1);
+init();
+</script>
+</body>
+</html>
