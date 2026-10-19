@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Робочий аркуш: Конституція України та правова держава</title>
+<link href="https://fonts.googleapis.com/css2?family=Literata:wght@500;700&family=Onest:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f2f5fa;--card:#fff;--ink:#1b2433;--muted:#5a6579;--line:#d5dce9;--blue:#1d4e89;--soft:#e6eef9;--gold:#e3ad00;--ok:#1b7a45;--okbg:#e0f3e8;--bad:#b3261e;--badbg:#fbe6e4;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1522;--card:#17202f;--ink:#e8edf6;--muted:#9aa6bb;--line:#2c3850;--blue:#8dbbf2;--soft:#1c2c45;--gold:#f0c23a;--ok:#6fd49a;--okbg:#12301f;--bad:#ff9a92;--badbg:#3a1916;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0e1522;--card:#17202f;--ink:#e8edf6;--muted:#9aa6bb;--line:#2c3850;--blue:#8dbbf2;--soft:#1c2c45;--gold:#f0c23a;--ok:#6fd49a;--okbg:#12301f;--bad:#ff9a92;--badbg:#3a1916;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Onest,system-ui,sans-serif}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--card);z-index:10}
+.wrap{max-width:760px;margin:0 auto;padding:0 16px 48px}
+header{padding:28px 0 8px;border-left:6px solid var(--gold);padding-left:16px;margin-top:20px}
+h1{font:700 28px/1.2 Literata,Georgia,serif;margin:0 0 6px;color:var(--blue)}
+h2{font:700 20px/1.3 Literata,Georgia,serif;margin:0 0 4px}
+.sub{margin:0;color:var(--muted)}
+.who{display:flex;gap:12px;flex-wrap:wrap;margin:18px 0 0}
+.who label{flex:1 1 220px;font-size:14px;color:var(--muted)}
+input[type=text],textarea,select{width:100%;box-sizing:border-box;font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+.who input{margin-top:4px}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:11;background:var(--card);border-bottom:1px solid var(--line);padding:10px 16px;margin:16px -16px 0}
+.bar p{margin:0 0 6px;font-weight:600;font-size:14px}
+.track{height:8px;background:var(--soft);border-radius:4px;overflow:hidden}
+#fill{height:100%;width:0;background:var(--blue);transition:width .3s}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin:18px 0}
+.hint{color:var(--muted);margin:0 0 12px;font-size:15px}
+.item{padding:12px 0;border-top:1px solid var(--line)}
+.q{margin:0 0 8px;font-weight:500}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+button{font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 12px;cursor:pointer}
+button:hover:not(:disabled){background:var(--soft)}
+button:disabled,select:disabled,input:disabled{cursor:default;opacity:1}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+button.primary{background:var(--blue);color:var(--card);border-color:var(--blue);font-weight:600;margin-top:12px}
+button.primary:hover:not(:disabled){background:var(--blue);filter:brightness(1.1)}
+button.primary:disabled{opacity:.6}
+.ok{background:var(--okbg)!important;border-color:var(--ok)!important}
+.bad{background:var(--badbg)!important;border-color:var(--bad)!important}
+.fb{margin:8px 0 0;font-size:15px}
+.gd{color:var(--ok)}.nd{color:var(--bad)}
+.item input[type=text]{display:inline-block;width:150px;margin:0 4px}
+textarea{min-height:70px;margin:4px 0 10px;resize:vertical}
+details{margin-top:6px;background:var(--soft);border-radius:8px;padding:10px 14px}
+summary{cursor:pointer;font-weight:600}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+#out{min-height:160px;font-size:14px}
+@media print{.bar,.row,button{display:none}.card{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+<h1>Конституція України та правова держава</h1>
+<p class="sub">Основи правознавства, 9 клас</p>
+<p class="sub">Правовий статус людини і громадянина. Конституція України — Основний закон нашої держави. Засади конституційного ладу України. Правова держава. Верховенство права.</p>
+<div class="who">
+<label>Прізвище та ім’я<input type="text" id="nm" autocomplete="name"></label>
+<label>Клас<input type="text" id="kl" autocomplete="off"></label>
+</div>
+</header>
+<div class="bar" aria-live="polite"><p id="stat">Виконано 0 із 29, правильно 0</p><div class="track"><div id="fill"></div></div></div>
+
+<section class="card"><h2>Завдання 1. Тест</h2><p class="hint">Обери одну відповідь. Результат одразу з’явиться під питанням.</p><div id="quiz"></div></section>
+<section class="card"><h2>Завдання 2. Правда чи хибність</h2><p class="hint">Визнач, чи відповідає твердження Конституції України.</p><div id="tf"></div></section>
+<section class="card"><h2>Завдання 3. Добери визначення</h2><p class="hint">До кожного поняття обери визначення. Вибір остаточний.</p><div id="match"></div></section>
+<section class="card"><h2>Завдання 4. Права, свободи, обов’язки</h2><p class="hint">До якої групи належить кожне з положень розділу II Конституції?</p><div id="sort"></div></section>
+<section class="card"><h2>Завдання 5. Заповни пропуски</h2><p class="hint">Впиши пропущені слова з тексту Конституції. Регістр не важливий.</p><div id="cloze"></div></section>
+
+<section class="card"><h2>Завдання 6. Ситуація</h2>
+<p class="hint">Міська рада ухвалила рішення: у мирний час жителі міста можуть виїжджати за його межі лише з дозволу посадовця. Жителька міста Оксана вважає таке рішення незаконним.</p>
+<label for="c1">1. Які конституційні права й принципи порушено?</label><textarea id="c1"></textarea>
+<label for="c2">2. Чому таке рішення можна оскаржити і скасувати?</label><textarea id="c2"></textarea>
+<label for="c3">3. До кого й куди може звернутися Оксана?</label><textarea id="c3"></textarea>
+<details><summary>Орієнтири для самоперевірки</summary>
+<p>1. Порушено свободу пересування (ст. 33), принцип верховенства права (ст. 8) та правило, що органи влади діють лише в межах повноважень і у спосіб, визначені законом (ст. 19).</p>
+<p>2. Рішення органу місцевого самоврядування має відповідати Конституції (ст. 8). Конституційні права не можуть бути скасовані, а обмеження можливі лише у випадках, прямо передбачених Конституцією (ст. 22, 64).</p>
+<p>3. До суду: звернення до суду для захисту прав можливе безпосередньо на підставі Конституції (ст. 8). Також можна звернутися до Уповноваженого Верховної Ради України з прав людини.</p></details>
+</section>
+
+<section class="card"><h2>Підсумок</h2>
+<p class="hint">Натисни кнопку, щоб сформувати результат. Його можна скопіювати й надіслати вчительці.</p>
+<div class="row"><button class="primary" id="go" type="button">Сформувати результат</button><button id="pr" type="button">Друкувати</button><button id="rs" type="button">Почати заново</button></div>
+<p class="fb" id="msg"></p>
+<textarea id="out" readonly hidden aria-label="Результат"></textarea>
+</section>
+</div>
+<script>
+const $=s=>document.querySelector(s);
+const NAMES={quiz:"Тест",tf:"Правда чи хибність",match:"Відповідність",sort:"Права й обов’язки",cloze:"Пропуски"};
+const quiz=[
+{q:"Коли було ухвалено Конституцію України?",o:["24 серпня 1991 року","28 червня 1996 року","1 грудня 1991 року","8 грудня 2004 року"],a:1,e:"Конституцію ухвалила Верховна Рада 28 червня 1996 року, це день Конституції."},
+{q:"За формою державного устрою Україна є:",o:["федерацією","конфедерацією","унітарною державою","імперією"],a:2,e:"Україна є унітарною державою (ст. 2)."},
+{q:"Єдиним джерелом влади в Україні є:",o:["Президент","Верховна Рада","народ","Кабінет Міністрів"],a:2,e:"Народ є носієм суверенітету і єдиним джерелом влади (ст. 5)."},
+{q:"Із чого складається Конституція України?",o:["з 10 розділів і 100 статей","з 12 розділів і 120 статей","з 15 розділів і 161 статті","з 20 розділів і 200 статей"],a:2,e:"Конституція містить 15 розділів і 161 статтю."},
+{q:"На які гілки поділяється державна влада?",o:["законодавчу, виконавчу, судову","законодавчу, виконавчу, контрольну","виконавчу, судову, військову","законодавчу, судову, президентську"],a:0,e:"Державна влада здійснюється на засадах її поділу на законодавчу, виконавчу і судову (ст. 6)."},
+{q:"Яку юридичну силу має Конституція?",o:["рекомендаційну","рівну зі звичайними законами","вищу","залежно від рішення парламенту"],a:2,e:"Конституція має найвищу юридичну силу, закони мають їй відповідати (ст. 8)."}];
+const tf=[
+{q:"Конституція має вищу юридичну силу, а закони й інші акти мають їй відповідати.",a:0,e:"Так, це закріплено в ст. 8."},
+{q:"Конституційні права і свободи можна скасувати звичайним законом.",a:1,e:"Конституційні права і свободи гарантуються й не можуть бути скасовані (ст. 22)."},
+{q:"Захищати свої права в суді можна, посилаючись безпосередньо на Конституцію.",a:0,e:"Норми Конституції є нормами прямої дії (ст. 8)."},
+{q:"Конституція закріплює існування подвійного громадянства.",a:1,e:"В Україні існує єдине громадянство (ст. 4)."},
+{q:"Органи влади й посадові особи діють лише на підставі, в межах повноважень та у спосіб, визначені Конституцією і законами.",a:0,e:"Так, це принцип ст. 19."},
+{q:"В Україні діє обов’язкова державна ідеологія.",a:1,e:"Жодна ідеологія не може визнаватися державою як обов’язкова, цензура заборонена (ст. 15)."}].map(x=>({...x,o:["Правда","Хибність"]}));
+const D=["принцип, за яким право обов’язкове для всіх, зокрема й для органів влади, а закони мають відповідати Конституції","сукупність прав, свобод і обов’язків особи, закріплених у законодавстві","держава, у якій влада обмежена правом, діє поділ влади та гарантовано права людини","стійкий правовий зв’язок особи з державою, що виявляється в їхніх взаємних правах і обов’язках","засади організації держави і суспільства, закріплені в Конституції"];
+const match=[{q:"Правовий статус людини і громадянина",a:1},{q:"Громадянство",a:3},{q:"Конституційний лад",a:4},{q:"Правова держава",a:2},{q:"Верховенство права",a:0}];
+const G=["Особисті","Політичні","Соціально-економічні та культурні","Обов’язок"];
+const sort=[
+{q:"Право на життя",a:0,e:"Особисте право (ст. 27)."},
+{q:"Свобода пересування",a:0,e:"Особисте право (ст. 33)."},
+{q:"Виборче право",a:1,e:"Політичне право (ст. 38)."},
+{q:"Свобода об’єднання в політичні партії",a:1,e:"Політична свобода (ст. 36)."},
+{q:"Право на працю",a:2,e:"Соціально-економічне право (ст. 43)."},
+{q:"Право на освіту",a:2,e:"Соціально-культурне право (ст. 53)."},
+{q:"Захист Вітчизни, незалежності та територіальної цілісності України",a:3,e:"Обов’язок (ст. 65)."},
+{q:"Сплата податків і зборів",a:3,e:"Обов’язок (ст. 67)."}].map(x=>({...x,o:G}));
+const cloze=[
+{p:"Україна є суверенна і незалежна, демократична, соціальна, ",s:" держава.",ok:["правова"]},
+{p:"Людина, її життя і здоров’я, честь і гідність визнаються в Україні найвищою соціальною ",s:".",ok:["цінністю"]},
+{p:"В Україні визнається і діє принцип ",s:".",ok:["верховенства права"]},
+{p:"Усі люди є ",s:" у своїй гідності та правах.",ok:["вільні і рівні","вільні та рівні"]}];
+const SIZE={quiz:quiz.length,tf:tf.length,match:match.length,sort:sort.length,cloze:cloze.length};
+const TOTAL=Object.values(SIZE).reduce((a,b)=>a+b,0);
+let S;
+function upd(){$("#stat").textContent=`Виконано ${S.done} із ${TOTAL}, правильно ${S.ok}`;$("#fill").style.width=S.done/TOTAL*100+"%"}
+function done(b,ok){S.done++;if(ok){S.ok++;S.b[b]=(S.b[b]||0)+1}upd()}
+function show(fb,ok,t){fb.hidden=false;fb.className="fb "+(ok?"gd":"nd");fb.textContent=t}
+function item(box,i,q,inner){const d=document.createElement("div");d.className="item";d.innerHTML=`<p class="q">${i+1}. ${q}</p>${inner}<p class="fb" hidden></p>`;box.append(d);return d}
+function chips(b,items){const box=$("#"+b);box.innerHTML="";items.forEach((it,i)=>{
+const d=item(box,i,it.q,`<div class="opts">${it.o.map(t=>`<button type="button">${t}</button>`).join("")}</div>`);
+const bs=[...d.querySelectorAll("button")],fb=d.querySelector(".fb");
+bs.forEach((x,j)=>x.onclick=()=>{const ok=j===it.a;bs.forEach(y=>y.disabled=true);x.classList.add(ok?"ok":"bad");bs[it.a].classList.add("ok");show(fb,ok,(ok?"Правильно. ":"Ні. ")+(it.e||""));done(b,ok)})})}
+function matching(){const box=$("#match");box.innerHTML="";match.forEach((it,i)=>{
+const d=item(box,i,it.q,`<select aria-label="${it.q}"><option value="">Обери визначення…</option>${D.map((t,j)=>`<option value="${j}">${t}</option>`).join("")}</select>`);
+const s=d.querySelector("select"),fb=d.querySelector(".fb");
+s.onchange=()=>{if(s.value==="")return;const ok=+s.value===it.a;s.disabled=true;s.classList.add(ok?"ok":"bad");show(fb,ok,ok?"Правильно.":"Правильне визначення: "+D[it.a]);done("match",ok)}})}
+function gaps(){const box=$("#cloze");box.innerHTML="";cloze.forEach((it,i)=>{
+const d=document.createElement("div");d.className="item";d.innerHTML=`<p class="q">${i+1}. ${it.p}<input type="text" autocomplete="off" aria-label="пропуск ${i+1}">${it.s}</p><p class="fb" hidden></p>`;box.append(d)});
+const btn=document.createElement("button");btn.type="button";btn.className="primary";btn.textContent="Перевірити пропуски";
+btn.onclick=()=>{btn.disabled=true;box.querySelectorAll(".item").forEach((d,i)=>{const inp=d.querySelector("input"),it=cloze[i];
+const v=inp.value.trim().toLowerCase().replace(/\s+/g," ").replace(/[.,;]$/,"");const ok=it.ok.includes(v);
+inp.disabled=true;inp.classList.add(ok?"ok":"bad");show(d.querySelector(".fb"),ok,ok?"Правильно.":"Правильна відповідь: "+it.ok[0]);done("cloze",ok)})};
+box.append(btn)}
+function report(){const p=Math.round(S.ok/TOTAL*100);
+return `Робочий аркуш: Конституція України та правова держава\nУчень/учениця: ${$("#nm").value.trim()||"—"}, клас: ${$("#kl").value.trim()||"—"}\nПравильно: ${S.ok} із ${TOTAL} (${p}%)\nОпрацьовано завдань: ${S.done} із ${TOTAL}\n`+Object.keys(SIZE).map(x=>`${NAMES[x]}: ${S.b[x]||0} із ${SIZE[x]}`).join("\n")+`\n\nЗавдання 6 (ситуація)\n1) ${$("#c1").value.trim()||"—"}\n2) ${$("#c2").value.trim()||"—"}\n3) ${$("#c3").value.trim()||"—"}`}
+function init(){S={ok:0,done:0,b:{}};chips("quiz",quiz);chips("tf",tf);matching();chips("sort",sort);gaps();
+["#c1","#c2","#c3"].forEach(s=>$(s).value="");document.querySelector("details").open=false;
+$("#out").hidden=true;$("#msg").textContent="";upd()}
+$("#go").onclick=async()=>{const t=report(),o=$("#out");o.value=t;o.hidden=false;
+try{await navigator.clipboard.writeText(t);$("#msg").textContent="Результат скопійовано. Встав його в повідомлення вчительці."}
+catch(e){o.select();$("#msg").textContent="Виділи текст нижче й скопіюй його вручну."}};
+$("#pr").onclick=()=>{try{window.print()}catch(e){}};
+$("#rs").onclick=init;
+init();
+</script>
+</body>
+</html>
