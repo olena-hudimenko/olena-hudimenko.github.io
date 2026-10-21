@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Українська Держава гетьмана П. Скоропадського — робочий аркуш</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#f6f4fb;--card:#fff;--tx:#23202e;--mut:#6b6580;--pr:#5b2ca0;--prt:#fff;--ok:#1f7a45;--okb:#e3f4ea;--no:#b3261e;--nob:#fbe7e5;--bd:#d9d3e8}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#17141f;--card:#221e2d;--tx:#ece8f5;--mut:#a59fba;--pr:#a98bf0;--prt:#17141f;--ok:#6fd49a;--okb:#16301f;--no:#ff8a80;--nob:#3a1c1a;--bd:#3a3450}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#17141f;--card:#221e2d;--tx:#ece8f5;--mut:#a59fba;--pr:#a98bf0;--prt:#17141f;--ok:#6fd49a;--okb:#16301f;--no:#ff8a80;--nob:#3a1c1a;--bd:#3a3450}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:760px;margin:0 auto;padding:16px}
+header{background:var(--pr);color:var(--prt);border-radius:14px;padding:18px 20px;margin-bottom:16px}
+h1{font-size:1.35rem;margin:0 0 4px}header p{margin:0;opacity:.9;font-size:.95rem}
+section{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px 18px;margin-bottom:16px}
+h2{font-size:1.1rem;margin:0 0 4px}.hint{color:var(--mut);font-size:.9rem;margin:0 0 12px}
+.row{padding:10px 0;border-top:1px solid var(--bd)}.row:first-of-type{border-top:0}
+select,button{font:inherit;color:var(--tx);background:var(--bg);border:1px solid var(--bd);border-radius:9px;padding:8px 10px;max-width:100%}
+select{width:100%;margin-top:6px}
+button{cursor:pointer}button.pr{background:var(--pr);color:var(--prt);border-color:var(--pr)}
+.tf{display:flex;gap:8px;margin-top:8px}.tf button{flex:1}
+.ok{background:var(--okb)!important;border-color:var(--ok)!important}.no{background:var(--nob)!important;border-color:var(--no)!important}
+.fb{margin-top:6px;font-size:.9rem;color:var(--mut)}
+.acts{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:12px}
+.score{font-weight:600}
+.pool{display:flex;flex-direction:column;gap:8px}.pool button{text-align:left}
+.pool button:disabled{opacity:.35}
+ol{padding-left:0;list-style:none;margin:12px 0 0;counter-reset:n}
+ol li{counter-increment:n;padding:8px 10px;margin-bottom:6px;border:1px solid var(--bd);border-radius:9px}
+ol li::before{content:counter(n) ". ";font-weight:700;color:var(--pr)}
+ol li small{display:block;color:var(--mut)}
+#total{position:sticky;bottom:8px;background:var(--pr);color:var(--prt);text-align:center;border-radius:12px;padding:10px;font-weight:600}
+</style>
+</head>
+<body>
+<main>
+<header><h1>Українська Держава гетьмана Павла Скоропадського</h1><p>10 клас · Історія України · три швидкі завдання</p></header>
+
+<section id="s1">
+<h2>1. Хто або що це?</h2>
+<p class="hint">Добери до кожного опису правильне поняття чи імена.</p>
+<div id="t1"></div>
+<div class="acts"><button class="pr" onclick="check1()">Перевірити</button><button onclick="reset1()">Спробувати ще</button><span class="score" id="r1"></span></div>
+</section>
+
+<section id="s2">
+<h2>2. Правда чи неправда?</h2>
+<p class="hint">Оціни твердження про внутрішню політику Гетьманату.</p>
+<div id="t2"></div>
+<div class="acts"><button onclick="reset2()">Спробувати ще</button><span class="score" id="r2"></span></div>
+</section>
+
+<section id="s3">
+<h2>3. Зовнішня політика: у якому порядку?</h2>
+<p class="hint">Натискай на події в хронологічному порядку — від найранішої до найпізнішої.</p>
+<div class="pool" id="pool"></div>
+<ol id="seq"></ol>
+<div class="acts"><button class="pr" onclick="check3()">Перевірити</button><button onclick="reset3()">Спробувати ще</button><span class="score" id="r3"></span></div>
+<div class="fb" id="f3"></div>
+</section>
+
+<div id="total">Результат: 0 з 16</div>
+</main>
+<script>
+const S={a:0,b:0,c:0};
+function tot(){document.getElementById('total').textContent='Результат: '+(S.a+S.b+S.c)+' з 16';}
+const $=id=>document.getElementById(id);
+
+/* Завдання 1 */
+const T1=[
+ ['Визначення в договорі загального напрямку лінії кордону між державами та її зображення на карті','Делімітація'],
+ ['З’їзд, що 29 квітня 1918 р. проголосив гетьманом Павла Скоропадського','Всеукраїнський хліборобський конгрес'],
+ ['Очолював гетьманський уряд','Федір Лизогуб'],
+ ['Брав участь у переговорах із Гетьманатом від більшовиків у травні 1918 р.','Христіан Раковський'],
+ ['Генерал, із Добровольчою армією якого гетьман вів переговори про союз','Антон Денікін']
+];
+const names=['Антон Денікін','Делімітація','Федір Лизогуб','Всеукраїнський хліборобський конгрес','Христіан Раковський'];
+function build1(){
+ $('t1').innerHTML=T1.map((r,i)=>'<div class="row"><div>'+r[0]+'</div><select id="a'+i+'"><option value="">— обери —</option>'+names.map(n=>'<option>'+n+'</option>').join('')+'</select></div>').join('');
+ $('r1').textContent='';S.a=0;tot();
+}
+function check1(){
+ let k=0;
+ T1.forEach((r,i)=>{const s=$('a'+i);const g=s.value===r[1];if(g)k++;s.className=g?'ok':'no';});
+ S.a=k;$('r1').textContent=k+' з 5';tot();
+}
+function reset1(){build1();}
+
+/* Завдання 2 */
+const T2=[
+ ['Скоропадського обрав гетьманом Всеукраїнський хліборобський конгрес.',true,'Так, це відбулося 29 квітня 1918 р.'],
+ ['Гетьман скасував приватну власність на землю та відновив спільне користування.',false,'Навпаки: було відновлено приватну власність і поміщицьке землеволодіння.'],
+ ['Було відновлено 8-годинний робочий день.',false,'8-годинний робочий день скасували, а страйки заборонили.'],
+ ['Опорою гетьманського режиму були поміщики, буржуазія та заможні селяни.',true,'Саме так: режим спирався на власників.'],
+ ['У 1918 р. були засновані Українська академія наук і Національна бібліотека.',true,'Так, Гетьманат підтримував науку й культуру.'],
+ ['Гетьман не залежав від австро-німецьких військових формувань.',false,'Залежність від них була однією з головних особливостей режиму.']
+];
+function build2(){
+ $('t2').innerHTML=T2.map((r,i)=>'<div class="row"><div>'+r[0]+'</div><div class="tf"><button onclick="ans('+i+',true,this)">Правда</button><button onclick="ans('+i+',false,this)">Неправда</button></div><div class="fb" id="fb'+i+'"></div></div>').join('');
+ S.b=0;$('r2').textContent='';tot();
+}
+const done2={};
+function ans(i,v,btn){
+ if(done2[i]!==undefined)return;
+ const g=v===T2[i][1];done2[i]=g;
+ btn.classList.add(g?'ok':'no');
+ $('fb'+i).textContent=(g?'Вірно! ':'Не зовсім. ')+T2[i][2];
+ btn.parentNode.querySelectorAll('button').forEach(b=>b.disabled=true);
+ S.b=Object.values(done2).filter(Boolean).length;
+ $('r2').textContent=S.b+' з 6';tot();
+}
+function reset2(){for(const k in done2)delete done2[k];build2();}
+
+/* Завдання 3 */
+const T3=[
+ ['Переговори з більшовиками (Х. Раковський)','травень 1918'],
+ ['Капітуляція Німеччини','11 листопада 1918'],
+ ['Переговори з Добровольчою армією А. Денікіна','пошук нових союзників'],
+ ['Грамота про федерацію з небільшовицькою Росією','14 листопада 1918'],
+ ['Антигетьманське повстання','листопад — грудень 1918']
+];
+const order=[3,0,4,2,1];let pick=[];
+function build3(){
+ pick=[];S.c=0;
+ $('pool').innerHTML=order.map(i=>'<button id="p'+i+'" onclick="take('+i+')">'+T3[i][0]+'</button>').join('');
+ $('seq').innerHTML='';$('r3').textContent='';$('f3').textContent='';tot();
+}
+function take(i){
+ if(pick.includes(i))return;
+ pick.push(i);$('p'+i).disabled=true;
+ const li=document.createElement('li');li.textContent=T3[i][0];$('seq').appendChild(li);
+}
+function check3(){
+ if(pick.length<5){$('f3').textContent='Спочатку розстав усі 5 подій.';return;}
+ let k=0;
+ [...$('seq').children].forEach((li,n)=>{const g=pick[n]===n;if(g)k++;li.className=g?'ok':'no';
+  li.innerHTML=T3[pick[n]][0]+'<small>'+T3[pick[n]][1]+'</small>';});
+ S.c=k;$('r3').textContent=k+' з 5';
+ $('f3').textContent=k===5?'Чудово! Ти простежив(-ла) логіку: капітуляція Німеччини позбавила гетьмана опори, тож він шукав нових союзників.':'Правильний порядок: '+T3.map((t,n)=>(n+1)+') '+t[0]).join('; ')+'.';
+ tot();
+}
+function reset3(){build3();}
+
+build1();build2();build3();
+</script>
+</body>
+</html>
