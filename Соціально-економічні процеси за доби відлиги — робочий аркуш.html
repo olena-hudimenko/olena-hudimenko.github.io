@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Соціально-економічні процеси за доби відлиги — робочий аркуш</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#f6f4fb;--card:#fff;--tx:#23202e;--mut:#6b6580;--pr:#5b2ca0;--prt:#fff;--ok:#1f7a45;--okb:#e3f4ea;--no:#b3261e;--nob:#fbe7e5;--bd:#d9d3e8}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#17141f;--card:#221e2d;--tx:#ece8f5;--mut:#a59fba;--pr:#a98bf0;--prt:#17141f;--ok:#6fd49a;--okb:#16301f;--no:#ff8a80;--nob:#3a1c1a;--bd:#3a3450}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#17141f;--card:#221e2d;--tx:#ece8f5;--mut:#a59fba;--pr:#a98bf0;--prt:#17141f;--ok:#6fd49a;--okb:#16301f;--no:#ff8a80;--nob:#3a1c1a;--bd:#3a3450}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:760px;margin:0 auto;padding:16px}
+header{background:var(--pr);color:var(--prt);border-radius:14px;padding:18px 20px;margin-bottom:16px}
+h1{font-size:1.3rem;margin:0 0 4px}header p{margin:0;opacity:.9;font-size:.95rem}
+section{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px 18px;margin-bottom:16px}
+h2{font-size:1.05rem;margin:0 0 4px}.hint{color:var(--mut);font-size:.9rem;margin:0 0 12px}
+.row{padding:10px 0;border-top:1px solid var(--bd)}.row:first-of-type{border-top:0}
+select,button,textarea{font:inherit;color:var(--tx);background:var(--bg);border:1px solid var(--bd);border-radius:9px;padding:8px 10px;max-width:100%}
+select{margin-top:6px;width:100%}
+textarea{width:100%;box-sizing:border-box;min-height:110px;resize:vertical}
+button{cursor:pointer;text-align:left}button.pr{background:var(--pr);color:var(--prt);border-color:var(--pr)}
+button:disabled{cursor:default}
+.opts{display:flex;flex-direction:column;gap:8px}
+.tf{display:flex;gap:8px;margin-top:8px}.tf button{flex:1;text-align:center}
+.ok{background:var(--okb)!important;border-color:var(--ok)!important}.no{background:var(--nob)!important;border-color:var(--no)!important}
+.fb{margin-top:8px;font-size:.9rem;color:var(--mut)}
+.acts{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:12px}.acts button{text-align:center}
+.score{font-weight:600}
+.cloze select{display:inline-block;width:auto;margin:0 4px}
+.pool button:disabled{opacity:.35}
+ol{padding:0;list-style:none;margin:12px 0 0;counter-reset:n}
+ol li{counter-increment:n;padding:8px 10px;margin-bottom:6px;border:1px solid var(--bd);border-radius:9px}
+ol li::before{content:counter(n) ". ";font-weight:700;color:var(--pr)}
+ol li small{display:block;color:var(--mut)}
+.sample{margin-top:10px;padding:10px 12px;border-radius:9px;background:var(--okb);display:none}
+#total{position:sticky;bottom:8px;background:var(--pr);color:var(--prt);text-align:center;border-radius:12px;padding:10px;font-weight:600}
+</style>
+</head>
+<body>
+<main>
+<header><h1>Соціально-економічні процеси за доби відлиги</h1><p>Інтерактивний робочий аркуш · 6 завдань</p></header>
+
+<section><h2>Завдання 1. Одна правильна відповідь</h2>
+<p class="hint">Якою була головна мета створення раднаргоспів у 1957 році?</p>
+<div class="opts" id="t1"></div><div class="fb" id="f1"></div>
+<div class="acts"><button onclick="build1()">Спробувати ще</button><span class="score" id="r1"></span></div></section>
+
+<section><h2>Завдання 2. Встановлення відповідності</h2>
+<p class="hint">Зіставте історичне поняття з його змістом.</p>
+<div id="t2"></div>
+<div class="acts"><button class="pr" onclick="check2()">Перевірити</button><button onclick="build2()">Спробувати ще</button><span class="score" id="r2"></span></div></section>
+
+<section><h2>Завдання 3. Заповніть пропуски</h2>
+<p class="hint">Оберіть пропущені слова зі списку.</p>
+<div class="cloze" id="t3"></div>
+<div class="acts"><button class="pr" onclick="check3()">Перевірити</button><button onclick="build3()">Спробувати ще</button><span class="score" id="r3"></span></div></section>
+
+<section><h2>Завдання 4. Вірно чи невірно</h2>
+<p class="hint">Визначте правильність тверджень.</p>
+<div id="t4"></div>
+<div class="acts"><button onclick="build4()">Спробувати ще</button><span class="score" id="r4"></span></div></section>
+
+<section><h2>Завдання 5. Хронологічна послідовність</h2>
+<p class="hint">Натискайте на події від найранішої до найпізнішої.</p>
+<div class="opts pool" id="pool"></div><ol id="seq"></ol>
+<div class="acts"><button class="pr" onclick="check5()">Перевірити</button><button onclick="build5()">Спробувати ще</button><span class="score" id="r5"></span></div>
+<div class="fb" id="f5"></div></section>
+
+<section><h2>Завдання 6. Коротка відкрита відповідь</h2>
+<p class="hint">Назвіть 2 позитивні та 2 негативні наслідки масового зведення «хрущовок» для жителів українських міст у 1950–1960-х роках.</p>
+<textarea id="open" placeholder="Позитивні наслідки: 1) … 2) …&#10;Негативні наслідки: 1) … 2) …"></textarea>
+<div class="acts"><button class="pr" onclick="document.getElementById('smp').style.display='block'">Порівняти зі зразком</button></div>
+<div class="sample" id="smp"><b>Зразок.</b> Позитивні: окремі квартири замість бараків і комуналок, що пом’якшило житлову кризу; швидкі темпи будівництва та зручності (водопровід, газ, каналізація). Негативні: мала площа й низькі стелі; однотипна забудова та низька якість (погана звукоізоляція). Це завдання оцінює вчитель: по 1 балу за кожен наслідок.</div></section>
+
+<div id="total">Автоматична перевірка: 0 з 15</div>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const S=[0,0,0,0,0,0];
+function tot(){$('total').textContent='Автоматична перевірка: '+S.reduce((a,b)=>a+b,0)+' з 15';}
+function shuf(a){return a.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).map(x=>x[1]);}
+
+/* 1 */
+const O1=['Повна ліквідація колгоспної системи та перехід до приватного фермерства','Децентралізація управління промисловістю й будівництвом та подолання відомчих бар’єрів','Залучення іноземних інвестицій у важку промисловість УРСР','Перехід до ринкових відносин у сфері торгівлі та послуг'];
+function build1(){
+ const L='АБВГ';
+ $('t1').innerHTML=O1.map((o,i)=>'<button onclick="a1('+i+',this)"><b>'+L[i]+')</b> '+o+'</button>').join('');
+ $('f1').textContent='';$('r1').textContent='';S[1]=0;tot();
+}
+function a1(i,b){
+ const bs=document.querySelectorAll('#t1 button');
+ bs.forEach(x=>x.disabled=true);
+ b.classList.add(i===1?'ok':'no');if(i!==1)bs[1].classList.add('ok');
+ S[1]=i===1?1:0;$('r1').textContent=S[1]+' з 1';
+ $('f1').textContent=i===1?'Вірно!':'Правильна відповідь — Б: раднаргоспи були територіальними органами, що замінили галузеві міністерства.';
+ tot();
+}
+
+/* 2 */
+const T2=[['Раднаргоспи','Б'],['«Хрущовки»','В'],['«Надпрограми»','Г'],['Грошова реформа 1961 р.','А']];
+const D2={А:'Деномінація карбованця у співвідношенні 10:1 та підвищення цін на базові товари',Б:'Територіальні органи управління промисловістю в економічних адміністративних районах',В:'Найдешевше великопанельне типове житло для розв’язання житлової кризи',Г:'Надмірні аграрні ініціативи (освоєння цілини, кукурудзяна кампанія, «наздогнати і перегнати США»)'};
+function build2(){
+ const o='<option value="">— обери —</option>'+'АБВГ'.split('').map(k=>'<option value="'+k+'">'+k+') '+D2[k]+'</option>').join('');
+ $('t2').innerHTML=T2.map((r,i)=>'<div class="row"><b>'+r[0]+'</b><select id="m'+i+'">'+o+'</select></div>').join('');
+ $('r2').textContent='';S[2]=0;tot();
+}
+function check2(){
+ let k=0;T2.forEach((r,i)=>{const s=$('m'+i),g=s.value===r[1];if(g)k++;s.className=g?'ok':'no';});
+ S[2]=k;$('r2').textContent=k+' з 4';tot();
+}
+
+/* 3 */
+const W=['кукурудзяна','продовольчий','цілинних'];
+const P3=['У 1954 році в СРСР розпочалося масове освоєння ','1',' земель, що призвело до відпливу матеріальних і трудових ресурсів з України. Водночас у сільському господарстві розгорнулася масштабна ','2',' кампанія. Незважаючи на це, на початку 1960-х років в СРСР виник гострий ','3',' дефіцит, що змусило державу вперше закуповувати зерно за кордоном.'];
+const A3={1:'цілинних',2:'кукурудзяна',3:'продовольчий'};
+function build3(){
+ const o='<option value="">…</option>'+W.map(w=>'<option>'+w+'</option>').join('');
+ $('t3').innerHTML=P3.map(p=>/^\d$/.test(p)?'<select id="c'+p+'">'+o+'</select>':p).join('');
+ $('r3').textContent='';S[3]=0;tot();
+}
+function check3(){
+ let k=0;[1,2,3].forEach(n=>{const s=$('c'+n),g=s.value===A3[n];if(g)k++;s.className=g?'ok':'no';});
+ S[3]=k;$('r3').textContent=k+' з 3';tot();
+}
+
+/* 4 */
+const T4=[['За доби «відлиги» було скасовано плату за навчання у старших класах шкіл та вищих навчальних закладах.',true,'Так, плату за навчання скасували в 1956 р.'],['Хрущовські аграрні реформи передбачали розширення присадибних господарств селян та стимулювання приватної ініціативи.',false,'Навпаки: присадибні господарства обмежували.'],['У 1956 році було прийнято Закон про державні пенсії, який суттєво покращив становище робітників і службовців.',true,'Так, закон 1956 р. значно підвищив пенсійне забезпечення.']];
+const d4={};
+function build4(){
+ for(const k in d4)delete d4[k];
+ $('t4').innerHTML=T4.map((r,i)=>'<div class="row"><div>'+r[0]+'</div><div class="tf"><button onclick="a4('+i+',true,this)">+</button><button onclick="a4('+i+',false,this)">−</button></div><div class="fb" id="g'+i+'"></div></div>').join('');
+ S[4]=0;$('r4').textContent='';tot();
+}
+function a4(i,v,b){
+ if(d4[i]!==undefined)return;
+ const g=v===T4[i][1];d4[i]=g;b.classList.add(g?'ok':'no');
+ b.parentNode.querySelectorAll('button').forEach(x=>x.disabled=true);
+ $('g'+i).textContent=(g?'Вірно! ':'Не зовсім. ')+T4[i][2];
+ S[4]=Object.values(d4).filter(Boolean).length;$('r4').textContent=S[4]+' з 3';tot();
+}
+
+/* 5 */
+const T5=[['Початок широкомасштабного освоєння цілинних земель','1954 р.'],['Ліквідація галузевих міністерств і створення раднаргоспів','1957 р.'],['Проведення грошової реформи та деномінація карбованця','1961 р.'],['Новочеркаський розстріл робітничої демонстрації, обуреної підвищенням цін на продукти','1962 р.']];
+let ord5=[],pick=[];
+function build5(){
+ pick=[];ord5=shuf([0,1,2,3]);
+ $('pool').innerHTML=ord5.map(i=>'<button id="p'+i+'" onclick="take('+i+')">'+T5[i][0]+'</button>').join('');
+ $('seq').innerHTML='';$('r5').textContent='';$('f5').textContent='';S[5]=0;tot();
+}
+function take(i){if(pick.includes(i))return;pick.push(i);$('p'+i).disabled=true;const li=document.createElement('li');li.textContent=T5[i][0];$('seq').appendChild(li);}
+function check5(){
+ if(pick.length<4){$('f5').textContent='Спочатку розставте всі 4 події.';return;}
+ let k=0;[...$('seq').children].forEach((li,n)=>{const g=pick[n]===n;if(g)k++;li.className=g?'ok':'no';li.innerHTML=T5[pick[n]][0]+'<small>'+T5[pick[n]][1]+'</small>';});
+ S[5]=k;$('r5').textContent=k+' з 4';
+ $('f5').textContent=k===4?'Чудово!':'Правильний порядок: '+T5.map((t,n)=>(n+1)+') '+t[1]).join('; ')+'.';
+ tot();
+}
+
+build1();build2();build3();build4();build5();
+</script>
+</body>
+</html>
