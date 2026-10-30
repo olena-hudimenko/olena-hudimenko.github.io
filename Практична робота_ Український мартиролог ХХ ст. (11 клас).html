@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Практична робота: «Український мартиролог ХХ ст.» — доба відлиги</title>
+<style>
+:root{--bg:#f6f4ef;--card:#fff;--ink:#222;--mute:#666;--line:#d9d4c7;--acc:#8a2b2b;--acc2:#f3e3e0;--ok:#2d6a4f;--bad:#a4262c;color-scheme:light dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17161a;--card:#222126;--ink:#ece9e2;--mute:#a9a69f;--line:#3a383f;--acc:#e08a82;--acc2:#3a2523;--ok:#6fcf97;--bad:#ff8d8d}}
+:root[data-theme="dark"]{--bg:#17161a;--card:#222126;--ink:#ece9e2;--mute:#a9a69f;--line:#3a383f;--acc:#e08a82;--acc2:#3a2523;--ok:#6fcf97;--bad:#ff8d8d}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Georgia,"Times New Roman",serif}
+main{max-width:760px;margin:0 auto;padding:16px}
+h1{font-size:1.4rem;margin:.2em 0}
+h2{font-size:1.1rem;margin:0 0 .6em;color:var(--acc)}
+.sub{color:var(--mute);margin:0 0 1em}
+section{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;margin:14px 0}
+label{display:block;font-size:.9rem;color:var(--mute);margin:.7em 0 .2em}
+input,select,textarea{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:8px}
+textarea{min-height:80px;resize:vertical}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:560px){.row{grid-template-columns:1fr}}
+.note{background:var(--acc2);border-left:4px solid var(--acc);padding:8px 12px;border-radius:4px;font-size:.92rem;margin:.6em 0}
+.btn{display:inline-block;font:inherit;background:var(--acc);color:#fff;border:0;border-radius:6px;padding:9px 14px;margin:6px 6px 0 0;cursor:pointer;text-decoration:none}
+.btn.alt{background:transparent;color:var(--acc);border:1px solid var(--acc)}
+.calc{font-weight:bold;color:var(--ok);margin-top:.6em;min-height:1.4em}
+.chk{display:flex;gap:8px;align-items:flex-start;margin:.8em 0;color:var(--ink);font-size:.95rem}
+.chk input{width:auto;margin-top:5px}
+#msg{margin-top:.6em;font-weight:bold}
+#out{min-height:150px;font:13px/1.4 ui-monospace,Consolas,monospace}
+</style>
+</head>
+<body>
+<main>
+<h1>Практична робота: доля людини за картку «Українського мартиролога»</h1>
+<p class="sub">Історія України, 11 клас · тема «Доба відлиги: десталінізація та реабілітація»</p>
+
+<section>
+<h2>Хто виконує</h2>
+<div class="row">
+<div><label for="fn">Ім’я *</label><input id="fn" autocomplete="given-name"></div>
+<div><label for="ln">Прізвище *</label><input id="ln" autocomplete="family-name"></div>
+</div>
+<label for="cl">Клас</label><input id="cl" placeholder="наприклад, 11-А">
+</section>
+
+<section>
+<h2>Крок 1. Пошук у базі</h2>
+<p>Відкрийте базу й знайдіть картку людини. Спробуйте різні написання прізвища (г/ґ, и/і, російська й українська форми).</p>
+<a class="btn" href="https://archives.gov.ua/um.php" target="_blank" rel="noopener">Відкрити «Український мартиролог ХХ ст.»</a>
+<label for="st">За чим шукали?</label>
+<select id="st"><option value="">— оберіть —</option><option>За моїм прізвищем</option><option>За дівочим прізвищем мами</option><option>Картка від вчителя(ки) — збігів не було або я обираю цей варіант</option></select>
+<label for="sq">Яке прізвище вводили?</label><input id="sq">
+<div class="note">Збіг прізвища ≠ родинний зв’язок. Допоки ви не з’ясували це в родині, пишіть «людина з таким самим прізвищем», а не «мій родич».</div>
+</section>
+
+<section>
+<h2>Крок 2. Дані з картки</h2>
+<p class="sub">Заповнюйте лише те, що є в картці. Якщо поля немає, пишіть «не вказано».</p>
+<label for="pib">Прізвище, ім’я, по батькові *</label><input id="pib">
+<div class="row">
+<div><label for="by">Рік народження</label><input id="by" inputmode="numeric" placeholder="1905"></div>
+<div><label for="pl">Місце проживання / народження</label><input id="pl"></div>
+</div>
+<div class="row">
+<div><label for="oc">Рід занять</label><input id="oc"></div>
+<div><label for="na">Національність</label><input id="na"></div>
+</div>
+<div class="row">
+<div><label for="ay">Рік арешту / засудження</label><input id="ay" inputmode="numeric" placeholder="1937"></div>
+<div><label for="ag">Звинувачення або підстава</label><input id="ag"></div>
+</div>
+<label for="sn">Вирок / покарання</label><input id="sn">
+<div class="row">
+<div><label for="ry">Рік реабілітації</label><input id="ry" inputmode="numeric" placeholder="1956"></div>
+<div><label for="rb">Ким реабілітовано(а)</label><input id="rb" placeholder="суд, прокуратура, комісія…"></div>
+</div>
+<label for="ar">Архів, де зберігається справа</label><input id="ar">
+</section>
+
+<section>
+<h2>Крок 3. Аналіз</h2>
+<div class="calc" id="calc">Введіть роки арешту та реабілітації — тут з’явиться підказка.</div>
+<label for="rt">Тип реабілітації</label>
+<select id="rt"><option value="">— оберіть —</option><option>Прижиттєва</option><option>Посмертна</option><option>З картки незрозуміло</option></select>
+<label for="q1">1. До якого етапу десталінізації належить дата реабілітації? Чи можна пов’язати її з політикою відлиги (XX з’їзд КПРС, комісії з перегляду справ)? Поясніть, спираючись на дані картки та знання з уроку. *</label>
+<textarea id="q1"></textarea>
+<label for="q2">2. Що картка розповідає про цю людину, а чого в ній бракує? Де можна шукати більше (архів, родина, місцеві джерела)?</label>
+<textarea id="q2"></textarea>
+<label for="q3">3. Висновок (3–4 речення): що ця історія показує про можливості та межі відлиги? *</label>
+<textarea id="q3"></textarea>
+<label class="chk"><input type="checkbox" id="ck"><span>Я розумію, що збіг прізвищ не доводить родинного зв’язку, і не видаю припущення за факт.</span></label>
+</section>
+
+<section>
+<h2>Надіслати вчительці</h2>
+<p>Натисніть «Сформувати», перевірте текст нижче та оберіть спосіб надсилання. Найнадійніший: скопіювати й вставити у чат уроку, Classroom чи месенджер.</p>
+<button class="btn" id="bBuild">Сформувати результат</button>
+<button class="btn alt" id="bCopy">Скопіювати</button>
+<button class="btn alt" id="bDl" hidden>Завантажити .txt</button>
+<a class="btn alt" id="bMail" href="#">Надіслати листом</a>
+<div id="msg"></div>
+<label for="out">Текст відповіді</label>
+<textarea id="out" readonly></textarea>
+</section>
+</main>
+
+<script>
+// Вчителько: впишіть сюди свою адресу, щоб кнопка «Надіслати листом» одразу адресувала лист вам.
+var TEACHER_EMAIL = "";
+
+var $ = function(id){ return document.getElementById(id); };
+var F = [
+ ["fn","Ім’я"],["ln","Прізвище"],["cl","Клас"],
+ ["st","Пошук за"],["sq","Введене прізвище"],
+ ["pib","ПІБ у картці"],["by","Рік народження"],["pl","Місце"],["oc","Рід занять"],["na","Національність"],
+ ["ay","Рік арешту/засудження"],["ag","Підстава"],["sn","Вирок"],["ry","Рік реабілітації"],["rb","Ким реабілітовано"],["ar","Архів"],
+ ["rt","Тип реабілітації"],
+ ["q1","1. Етап десталінізації та відлига"],["q2","2. Що є в картці, чого бракує"],["q3","3. Висновок"]
+];
+
+function phase(y){
+  if(y<=1952) return "до смерті Сталіна";
+  if(y<=1955) return "перший етап реабілітації (1953–1955)";
+  if(y<=1964) return "відлига після XX з’їзду КПРС (1956–1964)";
+  if(y<=1990) return "пізній радянський період (1965–1990)";
+  return "незалежна Україна (з 1991)";
+}
+function calc(){
+  var a = parseInt($("ay").value,10), r = parseInt($("ry").value,10), c = $("calc");
+  if(!a || !r){ c.textContent = "Введіть роки арешту та реабілітації — тут з’явиться підказка."; return; }
+  if(r < a){ c.textContent = "Рік реабілітації раніше за рік арешту: перевірте дані."; return; }
+  c.textContent = "Між арештом і реабілітацією минуло " + (r-a) + " р. Реабілітація: " + phase(r) + ".";
+}
+["ay","ry"].forEach(function(i){ $(i).addEventListener("input", calc); });
+
+function build(){
+  var m = $("msg"); m.style.color = "var(--bad)";
+  var need = [["fn","ім’я"],["ln","прізвище"],["pib","ПІБ із картки"],["q1","відповідь на питання 1"],["q3","висновок"]];
+  for(var i=0;i<need.length;i++){
+    if(!$(need[i][0]).value.trim()){ m.textContent = "Заповніть: " + need[i][1] + "."; $(need[i][0]).focus(); return null; }
+  }
+  var t = "ПРАКТИЧНА РОБОТА · «Український мартиролог ХХ ст.» · 11 клас\n";
+  t += "Дата: " + new Date().toLocaleString("uk-UA") + "\n\n";
+  F.forEach(function(f){ var v = $(f[0]).value.trim(); t += f[1] + ": " + (v || "—") + "\n"; });
+  t += "\n" + ($("calc").textContent || "") + "\n";
+  t += "Усвідомлення (збіг прізвищ ≠ родинний зв’язок): " + ($("ck").checked ? "так" : "ні") + "\n";
+  $("out").value = t; m.style.color = "var(--ok)"; m.textContent = "Готово. Тепер скопіюйте або надішліть.";
+  setMail(t); return t;
+}
+function setMail(t){
+  var s = "Практична робота: " + $("ln").value.trim() + " " + $("fn").value.trim();
+  $("bMail").href = "mailto:" + encodeURIComponent(TEACHER_EMAIL).replace("%40","@") + "?subject=" + encodeURIComponent(s) + "&body=" + encodeURIComponent(t);
+}
+function ready(){ return $("out").value || build(); }
+
+$("bBuild").onclick = build;
+$("bCopy").onclick = function(){
+  var t = ready(); if(!t) return;
+  var done = function(){ $("msg").style.color = "var(--ok)"; $("msg").textContent = "Скопійовано. Вставте у чат або повідомлення вчительці."; };
+  var fallback = function(){ $("out").select(); try{ document.execCommand("copy"); done(); }catch(e){ $("msg").style.color="var(--bad)"; $("msg").textContent = "Виділіть текст нижче й скопіюйте вручну."; } };
+  if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(t).then(done, fallback); } else { fallback(); }
+};
+$("bMail").addEventListener("click", function(e){ if(!ready()){ e.preventDefault(); } });
+
+var dl = null;
+(async function(){
+  try{
+    var d = window.claude && await window.claude.use("downloads");
+    if(d){ dl = d; $("bDl").hidden = false; }
+  }catch(e){}
+})();
+$("bDl").onclick = async function(){
+  var t = ready(); if(!t || !dl) return;
+  var name = "martyrology_" + ($("ln").value.trim() || "robota").replace(/\s+/g,"_") + ".txt";
+  try{ await dl.save({filename:name, data:new Blob([t],{type:"text/plain"})}); }
+  catch(e){ $("msg").style.color="var(--bad)"; $("msg").textContent = "Файл не збережено. Скористайтеся кнопкою «Скопіювати»."; }
+};
+</script>
+</body>
+</html>
