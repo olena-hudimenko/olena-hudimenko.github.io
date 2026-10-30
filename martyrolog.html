@@ -94,7 +94,7 @@ textarea{min-height:80px;resize:vertical}
 
 <section>
 <h2>Надіслати вчительці</h2>
-<p>Натисніть «Сформувати», перевірте текст нижче та оберіть спосіб надсилання. Найнадійніший: скопіювати й вставити у чат уроку, Classroom чи месенджер.</p>
+<p>Натисніть «Сформувати», перевірте текст нижче та оберіть спосіб надсилання. Найнадійніший: скопіювати й вставити у відповідь на НЗ.</p>
 <button class="btn" id="bBuild">Сформувати результат</button>
 <button class="btn alt" id="bCopy">Скопіювати</button>
 <button class="btn alt" id="bDl" hidden>Завантажити .txt</button>
@@ -107,7 +107,7 @@ textarea{min-height:80px;resize:vertical}
 
 <script>
 // Вчителько: впишіть сюди свою адресу, щоб кнопка «Надіслати листом» одразу адресувала лист вам.
-var TEACHER_EMAIL = "";
+var TEACHER_EMAIL = "gudimenko1995@gmail.com";
 
 var $ = function(id){ return document.getElementById(id); };
 var F = [
@@ -157,7 +157,7 @@ function ready(){ return $("out").value || build(); }
 $("bBuild").onclick = build;
 $("bCopy").onclick = function(){
   var t = ready(); if(!t) return;
-  var done = function(){ $("msg").style.color = "var(--ok)"; $("msg").textContent = "Скопійовано. Вставте у чат або повідомлення вчительці."; };
+  var done = function(){ $("msg").style.color = "var(--ok)"; $("msg").textContent = "Скопійовано. Вставте у відповідь на завдання на НЗ."; };
   var fallback = function(){ $("out").select(); try{ document.execCommand("copy"); done(); }catch(e){ $("msg").style.color="var(--bad)"; $("msg").textContent = "Виділіть текст нижче й скопіюйте вручну."; } };
   if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(t).then(done, fallback); } else { fallback(); }
 };
