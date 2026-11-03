@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Нукліди. Ізотопи — інтерактивний урок</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Fira+Sans+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f3f7f4;--card:#fff;--ink:#17302a;--mute:#5b7068;--line:#d5e2db;--p:#e8772e;--n:#3a86a8;--e:#7a5cc7;--ok:#1f9d63;--bad:#d64545;--acc:#1f9d63;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1a17;--card:#172722;--ink:#e6f2ec;--mute:#9bb2a8;--line:#2a3f37;--p:#ff9650;--n:#6bb9da;--e:#a68cf0;--ok:#43c388;--bad:#ff7070;--acc:#43c388}}
+:root[data-theme="dark"]{--bg:#0f1a17;--card:#172722;--ink:#e6f2ec;--mute:#9bb2a8;--line:#2a3f37;--p:#ff9650;--n:#6bb9da;--e:#a68cf0;--ok:#43c388;--bad:#ff7070;--acc:#43c388}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.6 Nunito,system-ui,sans-serif}
+h1,h2,h3{font-family:"Fira Sans Condensed",Nunito,sans-serif;line-height:1.2;margin:0 0 .5em}
+h1{font-size:clamp(2rem,6vw,3.2rem)}h2{font-size:1.7rem}h3{font-size:1.2rem}
+main{max-width:860px;margin:0 auto;padding:0 18px 60px}
+section{margin-top:40px}
+.hero{padding:36px 0 8px}
+.hero p{color:var(--mute);max-width:60ch}
+.quote{border-left:4px solid var(--acc);padding:4px 16px;margin:18px 0;font-style:italic}
+.quote small{display:block;font-style:normal;color:var(--mute)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin:14px 0}
+.formula{font:700 1.5rem "Fira Sans Condensed";text-align:center;padding:10px}
+.formula b{color:var(--p)}.formula i{color:var(--n);font-style:normal}
+.def{border:2px solid var(--acc);border-radius:12px;padding:12px 16px;font-weight:700;margin:12px 0}
+.lab{display:grid;grid-template-columns:minmax(150px,230px) 1fr;gap:18px;align-items:center}
+@media(max-width:640px){.lab{grid-template-columns:1fr}}
+.atom{width:100%;max-width:240px;aspect-ratio:1;margin:auto}
+.ctl{display:flex;align-items:center;gap:10px;margin:8px 0;flex-wrap:wrap}
+.ctl label{min-width:110px;font-weight:700}
+.ctl input[type=range]{flex:1;min-width:120px;accent-color:var(--acc)}
+.val{font:700 1.3rem "Fira Sans Condensed";min-width:2ch;text-align:right}
+button{font:700 1rem Nunito,sans-serif;background:var(--acc);color:#fff;border:0;border-radius:10px;padding:9px 16px;cursor:pointer}
+button.alt{background:transparent;color:var(--ink);border:2px solid var(--line)}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--n);outline-offset:2px}
+.sym{display:inline-grid;grid-template-columns:auto auto;align-items:center;font-family:"Fira Sans Condensed";font-weight:700}
+.sym .ix{display:flex;flex-direction:column;font-size:.85rem;text-align:right;line-height:1.1;margin-right:3px}
+.sym .big{font-size:3rem;line-height:1}
+.read{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.chip{padding:3px 10px;border-radius:99px;font-weight:700;font-size:.9rem;border:1px solid var(--line)}
+.p{color:var(--p)}.n{color:var(--n)}.e{color:var(--e)}
+.tabs{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.tabs button{background:transparent;color:var(--ink);border:2px solid var(--line)}
+.tabs button[aria-pressed=true]{background:var(--acc);color:#fff;border-color:var(--acc)}
+table{border-collapse:collapse;width:100%}
+th,td{border:1px solid var(--line);padding:6px 10px;text-align:center}
+th{background:color-mix(in srgb,var(--acc) 14%,transparent)}
+.scroll{overflow-x:auto}
+input[type=text],input[type=number],select{font:inherit;padding:6px 8px;border-radius:8px;border:2px solid var(--line);background:var(--card);color:var(--ink);width:100%;max-width:90px}
+td input.good{border-color:var(--ok)}td input.bad{border-color:var(--bad)}
+.fb{font-weight:700;min-height:1.6em}
+.ok{color:var(--ok)}.no{color:var(--bad)}
+.opts{display:grid;gap:8px;margin:10px 0}
+.opts button{background:var(--card);color:var(--ink);border:2px solid var(--line);text-align:left}
+.opts button.right{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 18%,var(--card))}
+.opts button.wrong{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 15%,var(--card))}
+.bar{height:10px;background:var(--line);border-radius:9px;overflow:hidden;margin:10px 0}
+.bar div{height:100%;background:var(--acc);width:0;transition:width .3s}
+.theme{position:absolute;right:16px;top:calc(12px + env(safe-area-inset-top,0px))}
+nav.toc{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+nav.toc a{color:var(--ink);text-decoration:none;border:1px solid var(--line);padding:3px 12px;border-radius:99px;font-weight:700;font-size:.92rem}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<button class="alt theme" id="th" aria-label="Змінити тему">◐</button>
+<main>
+<header class="hero">
+<h1>Нукліди. Ізотопи</h1>
+<p>Хімія, 7 клас · Урок 1. Збери атом власноруч, дізнайся, чим відрізняються ізотопи, і визнач вік кісток із палеолітичної стоянки.</p>
+<div class="quote">Коли ми дізнаємося, як улаштовано ядро атома, відкриємо найбільшу таємницю з усіх, окрім життя.<small>Ернест Резерфорд, британський фізик. Як ти розумієш цей вислів? Спробуй відповісти наприкінці уроку.</small></div>
+<nav class="toc"><a href="#s1">Числа атома</a><a href="#s2">Конструктор</a><a href="#s3">Ізотопи</a><a href="#s4">Радіоактивність</a><a href="#s5">Задача</a><a href="#s6">Тест</a></nav>
+</header>
+
+<section id="s1">
+<h2>1. Три числа атома</h2>
+<div class="card">
+<p><b class="p">Протонне число Z</b> — кількість протонів у ядрі; дорівнює заряду ядра й порядковому номеру елемента.</p>
+<p><b class="n">Нейтронне число N</b> — кількість нейтронів у ядрі.</p>
+<p><b>Нуклонне (масове) число A</b> — загальна кількість нуклонів (протонів і нейтронів).</p>
+<div class="formula">A = <b>Z</b> + <i>N</i> &nbsp;&nbsp;⇒&nbsp;&nbsp; N = A − Z</div>
+<p>Приклад: Літій, A = 7, Z = 3, тож N = 7 − 3 = 4.</p>
+</div>
+<div class="def">Нуклід — різновид атома з певною кількістю протонів і нейтронів у ядрі.</div>
+<div class="def">Ізотопи — нукліди одного хімічного елемента, які мають різну кількість нейтронів, а отже, різні нуклонні числа.</div>
+<p>Слово «ізотоп» від грецьких <i>isos</i> — «однаковий» і <i>topos</i> — «місце»: усі ізотопи займають одну клітинку в періодичній таблиці.</p>
+</section>
+
+<section id="s2">
+<h2>2. Конструктор нукліда</h2>
+<p>Рухай повзунки: додавай протони та нейтрони й дивись, який нуклід утворюється.</p>
+<div class="card lab">
+<svg class="atom" viewBox="0 0 240 240" id="svg" role="img" aria-label="Модель атома"></svg>
+<div>
+<div class="ctl"><label for="zr" class="p">Протони Z</label><input type="range" id="zr" min="1" max="20" value="6"><span class="val p" id="zv">6</span></div>
+<div class="ctl"><label for="nr" class="n">Нейтрони N</label><input type="range" id="nr" min="0" max="24" value="6"><span class="val n" id="nv">6</span></div>
+<div class="read">
+<div class="sym"><div class="ix"><span id="sa">12</span><span id="sz">6</span></div><span class="big" id="ss">C</span></div>
+<div><b id="nm">Карбон-12</b><div class="chips" id="chips"></div></div>
+</div>
+<p class="fb" id="st"></p>
+</div>
+</div>
+<p style="color:var(--mute);font-size:.92rem">Електронів стільки ж, скільки протонів, тому атом електронейтральний.</p>
+</section>
+
+<section id="s3">
+<h2>3. Ізотопи на прикладах</h2>
+<div class="tabs" id="tabs" role="group" aria-label="Елемент"></div>
+<div class="card scroll"><table id="itab"></table></div>
+<p id="inote"></p>
+<h3>Два способи запису ізотопу</h3>
+<p>1) Символ із індексами: <b>⁶₃Li, ⁷₃Li, ⁸₃Li</b> (верхній — A, нижній — Z).<br>2) Назва через дефіс: <b>Літій-6, Літій-7, Літій-8</b>.</p>
+
+<h3>Практика: заповни таблицю</h3>
+<div class="card scroll">
+<table id="pr"><thead><tr><th>Z</th><th>N</th><th>A</th><th>Елемент</th><th>Запис (напр. Li-7)</th></tr></thead><tbody></tbody></table>
+<div class="ctl" style="margin-top:12px"><button id="prc">Перевірити</button><button class="alt" id="prs">Показати відповіді</button></div>
+<p class="fb" id="prf"></p>
+</div>
+</section>
+
+<section id="s4">
+<h2>4. Стабільні й радіоактивні ізотопи</h2>
+<p>Нестабільні ізотопи радіоактивні: вони перетворюються на ізотопи інших елементів, випромінюючи частинки й енергію. Передбачити, коли розпадеться конкретний атом, неможливо, але можна виміряти <b>період піврозпаду</b> — час, за який розпадається половина атомів у зразку.</p>
+<div class="card">
+<h3>Де застосовують радіоактивні ізотопи</h3>
+<div class="tabs" id="apps"></div>
+<p id="appt"></p>
+</div>
+</section>
+
+<section id="s5">
+<h2>5. Задача-дослідження: радіовуглецевий метод</h2>
+<p>Період піврозпаду ¹⁴C — <b>5 730 років</b>. Живі організми накопичують цей ізотоп, а після смерті його вміст зменшується вдвічі за кожен період. У кістках зі стоянки первісних людей залишилось <b>1/32 (3,125 %)</b> початкового ¹⁴C.</p>
+<div class="card">
+<div class="ctl"><label for="hl">Періодів піврозпаду</label><input type="range" id="hl" min="0" max="6" value="0"><span class="val" id="hv">0</span></div>
+<svg viewBox="0 0 400 130" id="dec" style="width:100%;max-width:560px" role="img" aria-label="Графік розпаду"></svg>
+<p>Залишилось ¹⁴C: <b id="pc">100 %</b> · Минуло років: <b id="yr">0</b></p>
+<div class="ctl"><label for="ans">Вік кісток, років</label><input type="number" id="ans" style="max-width:130px"><button id="ansb">Перевірити</button></div>
+<p class="fb" id="ansf"></p>
+</div>
+</section>
+
+<section id="s6">
+<h2>6. Підсумковий тест</h2>
+<div class="bar"><div id="qb"></div></div>
+<div class="card" id="quiz"></div>
+</section>
+
+<section>
+<h2>Запам’ятай</h2>
+<div class="def">Нуклід — різновид атома з певною кількістю протонів і нейтронів у ядрі.</div>
+<div class="def">Ізотопи — нукліди одного елемента з різною кількістю нейтронів і різними нуклонними числами.</div>
+<p>Тепер ще раз прочитай слова Резерфорда: що змінилось у твоєму розумінні?</p>
+</section>
+</main>
+
+<script>
+const $=s=>document.querySelector(s);
+const EL=[,["H","Гідроген"],["He","Гелій"],["Li","Літій"],["Be","Берилій"],["B","Бор"],["C","Карбон"],["N","Нітроген"],["O","Оксиген"],["F","Флуор"],["Ne","Неон"],["Na","Натрій"],["Mg","Магній"],["Al","Алюміній"],["Si","Силіцій"],["P","Фосфор"],["S","Сульфур"],["Cl","Хлор"],["Ar","Аргон"],["K","Калій"],["Ca","Кальцій"]];
+const sup="⁰¹²³⁴⁵⁶⁷⁸⁹";
+// theme
+try{const t=localStorage.getItem("th");if(t)document.documentElement.dataset.theme=t}catch(e){}
+$("#th").onclick=()=>{const d=document.documentElement,dark=d.dataset.theme?d.dataset.theme==="dark":matchMedia("(prefers-color-scheme:dark)").matches;d.dataset.theme=dark?"light":"dark";try{localStorage.setItem("th",d.dataset.theme)}catch(e){}};
+
+// builder
+const STABLE={1:[0,1],2:[1,2],3:[3,4],4:[5],5:[5,6],6:[6,7],7:[7,8],8:[8,9,10],9:[10],10:[10,11,12],11:[12],12:[12,13,14],13:[14],14:[14,15,16],15:[16],16:[16,17,18,20],17:[18,20],18:[18,20,22],19:[20,22],20:[20,22,23,24,26]};
+const SPEC={"1-0":"Протій","1-1":"Дейтерій","1-2":"Тритій (радіоактивний, добутий штучно)"};
+function drawAtom(z,n){
+ let s='<circle cx="120" cy="120" r="105" fill="none" stroke="currentColor" stroke-opacity=".25" stroke-dasharray="4 5"/>';
+ const nuc=[];for(let i=0;i<z;i++)nuc.push("p");for(let i=0;i<n;i++)nuc.push("n");
+ // deterministic shuffle
+ nuc.sort((a,b)=>((a.charCodeAt(0)*31)%7)-((b.charCodeAt(0)*31)%7));
+ const m=nuc.length,R=Math.min(38,6+Math.sqrt(m)*5.2);
+ for(let i=0;i<m;i++){const g=i*2.39996,r=R*Math.sqrt((i+.5)/m),x=120+r*Math.cos(g),y=120+r*Math.sin(g);
+  const p=nuc[(i*7)%m];
+  s+=`<circle cx="${x}" cy="${y}" r="6.5" fill="${p==="p"?"var(--p)":"var(--n)"}" stroke="var(--card)" stroke-width="1"/>`;}
+ const shells=[2,8,8],rr=[62,84,104];let left=z,k=0;
+ for(let sh=0;sh<3&&left>0;sh++){const c=Math.min(shells[sh],left);left-=c;
+  s+=`<circle cx="120" cy="120" r="${rr[sh]}" fill="none" stroke="var(--e)" stroke-opacity=".25"/>`;
+  for(let j=0;j<c;j++){const a=2*Math.PI*j/c+sh;s+=`<circle cx="${120+rr[sh]*Math.cos(a)}" cy="${120+rr[sh]*Math.sin(a)}" r="5" fill="var(--e)"/>`}}
+ $("#svg").innerHTML=s;
+}
+function upd(){
+ const z=+$("#zr").value,n=+$("#nr").value,a=z+n,[s,nm]=EL[z];
+ $("#zv").textContent=z;$("#nv").textContent=n;$("#sa").textContent=a;$("#sz").textContent=z;$("#ss").textContent=s;
+ $("#nm").textContent=nm+"-"+a+(SPEC[z+"-"+n]?" ("+SPEC[z+"-"+n].split(" (")[0]+")":"");
+ $("#chips").innerHTML=`<span class="chip p">Z = ${z}</span><span class="chip n">N = ${n}</span><span class="chip">A = ${a}</span><span class="chip e">e⁻ = ${z}</span>`;
+ const ok=(STABLE[z]||[]).includes(n);
+ $("#st").className="fb "+(ok?"ok":"no");
+ $("#st").textContent=ok?"Цей нуклід існує в природі як стабільний.":"Нестабільний або штучний нуклід: ядро схильне до радіоактивного розпаду.";
+ drawAtom(z,n);
+}
+$("#zr").oninput=$("#nr").oninput=upd;upd();
+
+// isotope tabs
+const ISO={H:{z:1,l:[["Протій",0,"найпоширеніший"],["Дейтерій",1,"трапляється зрідка"],["Тритій",2,"добутий штучно, радіоактивний"]]},
+C:{z:6,l:[["Карбон-12",6,"найпоширеніший, стабільний"],["Карбон-13",7,"стабільний"],["Карбон-14",8,"радіоактивний"]]},
+O:{z:8,l:[["Оксиген-16",8,"найпоширеніший"],["Оксиген-17",9,"стабільний"],["Оксиген-18",10,"стабільний"]]}};
+function showIso(k){
+ const d=ISO[k];document.querySelectorAll("#tabs button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.k===k));
+ $("#itab").innerHTML="<tr><th>Нуклід</th><th>Протони</th><th>Нейтрони</th><th>Електрони</th><th>A</th><th>Примітка</th></tr>"+d.l.map(r=>`<tr><td>${r[0]}</td><td>${d.z}</td><td>${r[1]}</td><td>${d.z}</td><td>${d.z+r[1]}</td><td>${r[2]}</td></tr>`).join("");
+ $("#inote").innerHTML="Спільне: однакове число протонів (<b>"+d.z+"</b>) і електронів — тому це один елемент. Відмінне: кількість нейтронів, а отже й нуклонне число.";
+}
+$("#tabs").innerHTML=[["H","Гідроген"],["C","Карбон"],["O","Оксиген"]].map(x=>`<button data-k="${x[0]}" aria-pressed="false">${x[1]}</button>`).join("");
+$("#tabs").onclick=e=>{if(e.target.dataset.k)showIso(e.target.dataset.k)};showIso("H");
+
+// practice
+const PR=[[3,null,6],[5,5,null],[6,7,null],[null,12,22]];
+const rows=PR.map(r=>{const z=r[0]??(r[2]-r[1]),n=r[1]??(r[2]-z);return{z,n,a:z+n,r}});
+$("#pr tbody").innerHTML=rows.map((w,i)=>{const c=(v,k,t)=>w.r[t]!==null?`<td>${v}</td>`:`<td><input type="number" data-i="${i}" data-k="${k}" aria-label="${k}"></td>`;
+ return `<tr>${c(w.z,"z",0)}${c(w.n,"n",1)}${c(w.a,"a",2)}<td><input type="text" data-i="${i}" data-k="name" style="max-width:130px"></td><td><input type="text" data-i="${i}" data-k="sym" style="max-width:100px" placeholder="Li-6"></td></tr>`}).join("");
+const norm=s=>s.trim().toLowerCase().replace(/[\s\-–]/g,"");
+function checkPr(show){
+ let good=0,tot=0;
+ document.querySelectorAll("#pr input").forEach(inp=>{const w=rows[+inp.dataset.i],k=inp.dataset.k,el=EL[w.z];
+  const exp=k==="name"?el[1]:k==="sym"?el[0]+"-"+w.a:String(w[k]);
+  if(show)inp.value=exp;
+  const ok=k==="name"?norm(inp.value)===norm(exp):k==="sym"?norm(inp.value)===norm(exp)||norm(inp.value)===norm(w.a+el[0]):inp.value===exp;
+  tot++;if(ok)good++;inp.className=inp.value?(ok?"good":"bad"):"";});
+ $("#prf").className="fb "+(good===tot?"ok":"no");$("#prf").textContent=good===tot?"Усе правильно!":`Правильно ${good} із ${tot}. Підказка: A = Z + N, елемент визначає Z.`;
+}
+$("#prc").onclick=()=>checkPr(false);$("#prs").onclick=()=>checkPr(true);
+
+// applications
+const APPS=[["Медицина","Радіотерапія: ізотопи з коротким періодом піврозпаду допомагають лікувати онкологічні захворювання."],["Археологія","Радіовуглецеве датування визначає вік органічних решток за вмістом ¹⁴C."],["Геологія","Радіометричне датування визначає вік гірських порід і подій в історії Землі."],["Енергетика","Уран-235 підтримує ланцюгову реакцію на атомних електростанціях; його отримують збагаченням урану."],["Астрофізика","Сліди розпаду елементів допомагають зрозуміти процеси в зірках."]];
+$("#apps").innerHTML=APPS.map((a,i)=>`<button data-i="${i}" aria-pressed="${i===0}">${a[0]}</button>`).join("");
+function app(i){document.querySelectorAll("#apps button").forEach((b,j)=>b.setAttribute("aria-pressed",i===j));$("#appt").textContent=APPS[i][1]}
+$("#apps").onclick=e=>{if(e.target.dataset.i)app(+e.target.dataset.i)};app(0);
+
+// decay
+function dec(){
+ const k=+$("#hl").value,pct=100/2**k;$("#hv").textContent=k;
+ $("#pc").textContent=(+pct.toFixed(3)).toString().replace(".",",")+" %";$("#yr").textContent=(k*5730).toLocaleString("uk-UA");
+ let s="";for(let i=0;i<=6;i++){const x=30+i*55,h=100/2**i*.9;
+  s+=`<rect x="${x-18}" y="${110-h}" width="36" height="${h}" rx="4" fill="${i<=k?"var(--acc)":"var(--line)"}"/><text x="${x}" y="125" font-size="11" text-anchor="middle" fill="currentColor">${i}</text>`;}
+ $("#dec").innerHTML=s;
+}
+$("#hl").oninput=dec;dec();
+$("#ansb").onclick=()=>{const v=+$("#ans").value,f=$("#ansf");
+ if(v===28650){f.className="fb ok";f.textContent="Правильно! 1/32 = (1/2)⁵, тобто 5 періодів: 5 × 5 730 = 28 650 років."}
+ else{f.className="fb no";f.textContent="Спробуй ще. Підказка: скільки разів треба поділити 100 % навпіл, щоб отримати 3,125 %? Скористайся повзунком."}};
+
+// quiz
+const Q=[["Що показує протонне число Z?",["Кількість нейтронів","Кількість протонів і заряд ядра","Загальну кількість нуклонів"],1],
+["Атом має 17 протонів і 18 нейтронів. Яке його нуклонне число?",["17","18","35"],2],
+["Що однакове в ізотопів одного елемента?",["Нуклонне число","Кількість нейтронів","Кількість протонів"],2],
+["Скільки нейтронів у Карбоні-14?",["6","8","14"],1],
+["Який ізотоп Гідрогену має в ядрі протон і два нейтрони?",["Протій","Дейтерій","Тритій"],2],
+["Через скільки років вміст ¹⁴C зменшиться до 25 %?",["5 730","11 460","17 190"],1]];
+let qi=0,sc=0;
+function showQ(){
+ $("#qb").style.width=qi/Q.length*100+"%";
+ if(qi>=Q.length){const m=sc>=5?"Чудово!":sc>=3?"Непогано, повтори розділ про ізотопи.":"Перечитай теорію й спробуй ще раз.";
+  $("#quiz").innerHTML=`<h3>Результат: ${sc} із ${Q.length}</h3><p>${m}</p><button id="rs">Пройти ще раз</button>`;$("#rs").onclick=()=>{qi=0;sc=0;showQ()};return}
+ const q=Q[qi];$("#quiz").innerHTML=`<p><b>Питання ${qi+1} з ${Q.length}.</b> ${q[0]}</p><div class="opts">${q[1].map((o,i)=>`<button data-i="${i}">${o}</button>`).join("")}</div><p class="fb" id="qf"></p>`;
+ $("#quiz .opts").onclick=e=>{const b=e.target.closest("button");if(!b||b.disabled)return;const i=+b.dataset.i;
+  document.querySelectorAll("#quiz .opts button").forEach(x=>x.disabled=true);
+  b.classList.add(i===q[2]?"right":"wrong");if(i!==q[2])document.querySelector(`#quiz .opts [data-i="${q[2]}"]`).classList.add("right");
+  if(i===q[2])sc++;$("#qf").textContent=i===q[2]?"Правильно!":"Не зовсім. Правильна відповідь підсвічена.";
+  const nb=document.createElement("button");nb.textContent=qi<Q.length-1?"Далі":"Показати результат";nb.onclick=()=>{qi++;showQ()};$("#quiz").appendChild(nb);};
+}
+showQ();
+</script>
+</body>
+</html>
