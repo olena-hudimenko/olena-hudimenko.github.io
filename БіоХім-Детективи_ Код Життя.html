@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>БіоХім-Детективи: Код Життя</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@600;800&family=Nunito:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eef5f6;--card:#fff;--ink:#0e2a3a;--mut:#52707e;--acc:#0b7f86;--key:#f0a030;--ok:#1f9d6b;--bad:#d6455d;--line:#cfe0e4;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1b24;--card:#12303c;--ink:#e6f2f4;--mut:#9bb8c2;--acc:#4fd1d9;--key:#f5b85a;--ok:#4cd9a0;--bad:#ff7a90;--line:#24505f;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0b1b24;--card:#12303c;--ink:#e6f2f4;--mut:#9bb8c2;--acc:#4fd1d9;--key:#f5b85a;--ok:#4cd9a0;--bad:#ff7a90;--line:#24505f;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:500 17px/1.55 Nunito,system-ui,sans-serif}
+h1,h2,h3{font-family:"Exo 2",Nunito,sans-serif;margin:0 0 .4em;line-height:1.15}
+header{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;max-width:760px;margin:0 auto;padding:18px 16px 6px}
+header h1{font-size:1.25rem;font-weight:800}
+header small{display:block;color:var(--mut);font-weight:500;font-size:.8rem}
+#tray{display:flex;gap:10px}
+.tube{width:44px;height:62px;border:2.5px solid var(--acc);border-radius:7px 7px 22px 22px;position:relative;overflow:hidden;display:grid;place-items:center;font-family:"Exo 2";font-weight:800;color:var(--mut)}
+.tube::before{content:"";position:absolute;inset:auto 0 0 0;height:0;background:var(--key);transition:height .9s}
+.tube.on::before{height:100%}
+.tube b{position:relative;font-size:.95rem}.tube.on b{color:#1b1200}
+main{max-width:760px;margin:0 auto;padding:10px 16px 60px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin:14px 0}
+.lead{color:var(--mut);margin:0 0 12px}
+.btn{font:700 1rem "Exo 2",Nunito,sans-serif;background:var(--acc);color:#fff;border:0;border-radius:10px;padding:12px 20px;cursor:pointer;margin-top:8px}
+:root[data-theme="dark"] .btn{color:#06222a}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .btn{color:#06222a}}
+.btn:hover{filter:brightness(1.1)}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid var(--key);outline-offset:2px}
+.row{display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.row span{min-width:120px;font-weight:700}
+select,input{font:inherit;color:var(--ink);background:var(--bg);border:2px solid var(--line);border-radius:8px;padding:8px;max-width:100%}
+select{flex:1;min-width:200px}
+.ok{border-color:var(--ok)!important;background:color-mix(in srgb,var(--ok) 22%,var(--card))!important}
+.bad{border-color:var(--bad)!important;background:color-mix(in srgb,var(--bad) 20%,var(--card))!important}
+.opt,.chip,.yn{display:block;width:100%;text-align:left;font:inherit;color:var(--ink);background:var(--bg);border:2px solid var(--line);border-radius:10px;padding:10px 14px;margin:8px 0;cursor:pointer}
+.chip{display:inline-block;width:auto;margin:4px 6px 4px 0}
+.chip.sel{border-color:var(--acc);background:color-mix(in srgb,var(--acc) 20%,var(--card))}
+.item{padding:10px 0;border-bottom:1px solid var(--line)}
+.item .yn{display:inline-block;width:auto;margin:6px 8px 0 0}
+.item p{margin:6px 0 0;color:var(--mut);font-size:.92rem}
+.q{font-weight:700;font-size:1.08rem}.fb{color:var(--mut);margin:8px 0 0}
+.found{border:2px solid var(--key)}.k{background:var(--key);color:#1b1200;padding:0 12px;border-radius:8px}
+.msg{margin:10px 0 0;font-weight:700}
+.flask{position:relative;width:110px;height:140px;margin:10px auto;border:3px solid var(--acc);border-top:0;border-radius:0 0 46px 46px;overflow:hidden}
+.liq{position:absolute;inset:auto 0 0 0;height:0;background:#7fd6e0;opacity:.75;transition:height .6s}
+.bub{position:absolute;bottom:0;width:10px;height:10px;border-radius:50%;background:#fff;opacity:.9;animation:rise 1.6s infinite ease-in}
+@keyframes rise{to{transform:translateY(-130px);opacity:0}}
+@media(prefers-reduced-motion:reduce){.bub{animation:none}.tube::before,.liq{transition:none}}
+.codes{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px}
+.codes label{font-size:.85rem;color:var(--mut)}.codes input{width:100%;text-align:center;font:800 1.3rem "Exo 2"}
+.cert{text-align:center;border:4px double var(--key);padding:28px 16px;border-radius:12px;background:var(--card)}
+.cert h2{font-size:1.7rem}.cert .nm{font:800 1.8rem "Exo 2";color:var(--acc);margin:8px 0}
+@media print{header,.btn,.noprint{display:none!important}body{background:#fff}}
+</style>
+</head>
+<body>
+<header>
+  <div><h1>БіоХім-Детективи: Код Життя</h1><small>Всесвітній день науки заради миру та розвитку</small></div>
+  <div id="tray" aria-label="Знайдені ключі"></div>
+</header>
+<main id="app"></main>
+<script>
+const $=s=>document.querySelector(s),A=$('#app');
+const KEYS=['М','4','К','CO₂'];
+let S={keys:[],miss:0};
+const sh=a=>[...a].sort(()=>Math.random()-.5);
+const set=h=>{A.innerHTML=h};
+function tray(){$('#tray').innerHTML=KEYS.map((k,i)=>`<div class="tube ${S.keys[i]?'on':''}" title="Ключ ${i+1}"><b>${S.keys[i]?k:'?'}</b></div>`).join('')}
+function go(n){tray();scrollTo(0,0);[intro,r1,r2,r3,r4,fin][n]()}
+function found(i,txt){S.keys[i]=KEYS[i];tray();A.insertAdjacentHTML('beforeend',`<div class="card found"><h3>Ключ знайдено: <span class="k">${KEYS[i]}</span></h3><p>${txt}</p><button class="btn" onclick="go(${i+2})">${i<3?'До наступної лабораторії':'До сейфа з еліксиром'}</button></div>`);A.lastElementChild.scrollIntoView({behavior:'smooth'})}
+function quiz(Q,done){let n=0;const el=document.createElement('div');el.className='card';A.appendChild(el);
+ (function show(){if(n>=Q.length){el.remove();return done()}
+  const[q,o,c,e]=Q[n];
+  el.innerHTML=`<p class="q">${n+1}/${Q.length}. ${q}</p>`+o.map((t,j)=>`<button class="opt" data-j="${j}">${t}</button>`).join('')+'<p class="fb"></p>';
+  el.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+   if(+b.dataset.j===c){b.classList.add('ok');el.querySelectorAll('.opt').forEach(x=>x.disabled=true);
+    el.querySelector('.fb').innerHTML=e+'<br><button class="btn" id="nx">Далі</button>';
+    el.querySelector('#nx').onclick=()=>{n++;show()}}
+   else{S.miss++;b.classList.add('bad');b.disabled=true;el.querySelector('.fb').textContent='Ще не те. Спробуй іншу відповідь.'}})})()}
+
+function intro(){set(`<div class="card"><h2>Зник еліксир, що може зупинити зміни клімату!</h2>
+<p>З віртуальної лабораторії зникла секретна формула. Ти — детектив-дослідник. Пройди 4 лабораторії з біології та хімії, збери 4 ключі в пробірках угорі та відкрий сейф.</p>
+<p class="lead">Наука не має кордонів: щоб зберегти мир, чисте довкілля й розвиток, вчені різних країн діляться знаннями. Покажи, що ти теж на це здатен(на)! Тривалість: 20–30 хвилин. Для 7–8 класів.</p>
+<button class="btn" onclick="go(1)">Почати розслідування</button></div>`)}
+
+const CELL=[['Ядро','Зберігає спадкову інформацію'],['Мітохондрії','Виробляють енергію для клітини'],['Хлоропласти','Здійснюють фотосинтез (у рослин)'],['Мембрана','Регулює вхід і вихід речовин'],['Вакуоль','Накопичує воду та поживні речовини'],['Рибосоми','Синтезують білки']];
+function r1(){const F=sh(CELL.map(c=>c[1]));
+ set(`<h2>Лабораторія 1. Таємниці клітини</h2><p class="lead">Зістав кожну органелу з її функцією.</p><div class="card">`+
+ CELL.map((c,i)=>`<div class="row"><span>${c[0]}</span><select id="s${i}"><option value="">— обери функцію —</option>${F.map(f=>`<option>${f}</option>`).join('')}</select></div>`).join('')+
+ `<button class="btn" id="chk">Перевірити</button><p class="msg" id="m"></p></div>`);
+ $('#chk').onclick=()=>{let ok=0;CELL.forEach((c,i)=>{const s=$('#s'+i),g=s.value===c[1];s.className=g?'ok':'bad';ok+=g});
+  if(ok<6){S.miss++;$('#m').textContent=`Правильно: ${ok} із 6. Виправ червоні.`}
+  else{$('#chk').remove();$('#m').textContent='Усе вірно!';found(0,'Мітохондрії — «енергетичні станції» клітини. Перша літера їхньої назви — М.')}}}
+
+const IT=[['Горіння свічки',1,'Утворюються нові речовини: вуглекислий газ і водяна пара.'],['Танення льоду',0,'Змінюється лише агрегатний стан води.'],['Іржавіння заліза',1,'Залізо реагує з киснем і водою — утворюється іржа.'],['Кипіння води',0,'Вода залишається водою, лише переходить у пару.'],['Скисання молока',1,'Бактерії перетворюють лактозу на молочну кислоту.'],['Розчинення солі у воді',0,'Сіль можна виділити назад випарюванням.'],['Гниття яблука',1,'Мікроорганізми руйнують речовини плоду, утворюються нові сполуки.'],['Подрібнення крейди',0,'Змінюється лише розмір частинок.']];
+function r2(){let d=0;
+ set(`<h2>Лабораторія 2. Хімічний калейдоскоп</h2><p class="lead">Визнач, яке явище хімічне, а яке фізичне. Порахуй хімічні!</p><div class="card" id="L">`+
+ IT.map((t,i)=>`<div class="item" id="i${i}"><b>${t[0]}</b><br><button class="yn" data-v="1">Хімічне</button><button class="yn" data-v="0">Фізичне</button></div>`).join('')+'</div>');
+ IT.forEach((t,i)=>{const el=$('#i'+i);el.querySelectorAll('.yn').forEach(b=>b.onclick=()=>{
+  if(el.dataset.d)return;el.dataset.d=1;const g=+b.dataset.v===t[1];if(!g)S.miss++;
+  b.classList.add(g?'ok':'bad');el.insertAdjacentHTML('beforeend',`<p>${g?'Вірно. ':'Ні, це '+(t[1]?'хімічне':'фізичне')+'. '}${t[2]}</p>`);
+  if(++d===IT.length)found(1,'Хімічних явищ серед запропонованих було 4: горіння, іржавіння, скисання, гниття. Ключ — цифра 4.')})})}
+
+const Q3=[['Яка з цих структур НЕ належить до дихальної системи?',['Трахея','Бронхи','Печінка','Легені'],2,'Печінка — орган травної системи.'],
+['Який орган НЕ є вегетативним органом рослини?',['Корінь','Стебло','Лист','Квітка'],3,'Квітка — генеративний орган, відповідає за розмноження.'],
+['Що зайве в нервовій системі?',['Головний мозок','Спинний мозок','Нерви','Нирки'],3,'Нирки належать до видільної системи.'],
+['Рідка тканина, що розносить кисень і поживні речовини по тілу, — це…',['Слина','Кров','Жовч','Піт'],1,'Це кров. Перша літера — К.']];
+function r3(){set('<h2>Лабораторія 3. Анатомічний пазл</h2><p class="lead">Знайди зайве та впізнай загадкову рідину.</p>');
+ quiz(Q3,()=>found(2,'Ключ — літера К від слова «кров»: вона об’єднує всі органи та системи в єдине ціле.'))}
+
+const ING=['Харчова сода','Оцет','Вода','Сіль','Лимонний сік'];
+const Q4=[['Яка ознака хімічної реакції була в досліді?',['Виділення газу','Зміна форми посудини','Подрібнення речовини','Танення льоду'],0,'Так, бульбашки газу — ознака того, що утворилася нова речовина.'],
+['Який газ виділився? NaHCO₃ + CH₃COOH → CH₃COONa + H₂O + …',['O₂','H₂','CO₂','N₂'],2,'Це вуглекислий газ CO₂ — той самий, надлишок якого посилює потепління клімату.']];
+function r4(){const sel=new Set();let q=0;
+ set(`<h2>Лабораторія 4. Кухонна алхімія</h2><p class="lead">Віртуальний дослід. Вибери 2–3 інгредієнти та змішай їх. Вдома дослід проводь лише з дорослими.</p><div class="card">`+
+ ING.map(n=>`<button class="chip">${n}</button>`).join('')+`<div class="flask"><div class="liq" id="liq"></div><div id="bub"></div></div><button class="btn" id="mix">Змішати</button><p class="msg" id="m"></p></div>`);
+ document.querySelectorAll('.chip').forEach((b,i)=>b.onclick=()=>{b.classList.toggle('sel');sel.has(ING[i])?sel.delete(ING[i]):sel.add(ING[i])});
+ $('#mix').onclick=()=>{const h=n=>sel.has(n),m=$('#m'),bub=$('#bub');bub.innerHTML='';
+  if(sel.size<2){m.textContent='Обери щонайменше два інгредієнти.';return}
+  $('#liq').style.height='45%';
+  if(h('Харчова сода')&&(h('Оцет')||h('Лимонний сік'))){
+   bub.innerHTML=Array.from({length:16},()=>`<span class="bub" style="left:${Math.random()*90}%;animation-delay:${Math.random()*1.6}s"></span>`).join('');
+   m.textContent='Рідина шипить, з’являються бульбашки газу!';
+   if(!q){q=1;quiz(Q4,()=>found(3,'Ключ — формула газу CO₂.'))}}
+  else m.textContent='Бульбашок немає — ознак хімічної реакції не видно. Спробуй іншу пару.'}}
+
+const N=(s,i)=>{s=s.trim().toUpperCase().replace('₂','2').replace(/\s/g,'');return i==3?s.replace('С','C').replace('О','O'):s.replace('M','М').replace('K','К')};
+function fin(){set(`<h2>Сейф з еліксиром</h2><p class="lead">Введи чотири ключі з пробірок угорі в порядку лабораторій.</p><div class="card"><div class="codes">`+
+ [1,2,3,4].map(i=>`<div><label for="c${i}">Ключ ${i}</label><input id="c${i}" autocomplete="off"></div>`).join('')+`</div><button class="btn" id="op">Відкрити сейф</button><p class="msg" id="m"></p></div>`);
+ $('#op').onclick=()=>{const ok=KEYS.every((k,i)=>N($('#c'+(i+1)).value,i)===k.replace('₂','2'));
+  if(!ok){S.miss++;$('#m').textContent='Код не підходить. Перевір ключі в пробірках угорі.';return}
+  const r=S.miss<=3?'Головний детектив':S.miss<=8?'Старший дослідник':'Юний науковець';
+  set(`<div class="card"><h2>Сейф відкрито!</h2><p>Еліксир виявився не речовиною, а знанням: клімат, здоров’я й мир залежать від науки, якою люди діляться між країнами. Помилок за гру: <b>${S.miss}</b>. Твій ранг — <b>${r}</b>.</p>
+  <div class="noprint"><label for="nm">Введи ім’я для сертифіката</label><br><input id="nm" placeholder="Оксиген_Андрій"> <button class="btn" id="mk">Створити сертифікат</button></div></div><div id="ct"></div>`);
+  $('#mk').onclick=()=>{$('#ct').innerHTML=`<div class="cert"><h2>Сертифікат юного науковця 2026</h2><p>Цим засвідчується, що</p><div class="nm"></div><p>розкрив(ла) Код Життя та здобув(ла) ранг «${r}».<br>Всесвітній день науки заради миру та розвитку, 10 листопада 2026</p></div><button class="btn noprint" onclick="print()">Друкувати</button>`;
+   $('.nm').textContent=$('#nm').value.trim()||'Юний дослідник'}}}
+go(0);
+</script>
+</body>
+</html>
