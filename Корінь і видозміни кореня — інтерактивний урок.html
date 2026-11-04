@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Корінь і видозміни кореня — інтерактивний урок</title>
+<style>
+:root{--bg:#f6faf3;--card:#fff;--tx:#1d2b1f;--mut:#5b6b5e;--ac:#2e8b4a;--ac2:#e8742a;--ok:#2e8b4a;--bad:#c0392b;--bd:#d5e5d0;--soft:#e7f3e2;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121a14;--card:#1c271f;--tx:#e8f0e9;--mut:#9fb2a2;--ac:#5fc27d;--ac2:#f2975a;--ok:#5fc27d;--bad:#ef6b5c;--bd:#2f4234;--soft:#233328;color-scheme:dark}}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+header{padding:22px 16px 10px;text-align:center}
+h1{margin:0;font-size:clamp(22px,5vw,32px);color:var(--ac)}
+header p{margin:6px 0 0;color:var(--mut)}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);display:flex;gap:6px;overflow-x:auto;padding:8px 12px;border-bottom:1px solid var(--bd)}
+nav button{flex:none;border:1px solid var(--bd);background:var(--card);color:var(--tx);padding:8px 12px;border-radius:20px;cursor:pointer;font:inherit;font-size:14px}
+nav button.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+main{max-width:860px;margin:0 auto;padding:16px}
+section{display:none}section.on{display:block}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px;margin:0 0 14px}
+h2{margin:0 0 10px;color:var(--ac2);font-size:21px}h3{margin:0 0 6px;font-size:17px}
+.def{border-left:5px solid var(--ac);background:var(--soft);padding:10px 14px;border-radius:8px;margin:10px 0}
+.btn{border:0;background:var(--ac);color:#fff;padding:10px 16px;border-radius:10px;cursor:pointer;font:inherit}
+.btn.alt{background:var(--card);color:var(--tx);border:1px solid var(--bd)}
+.row{display:flex;flex-wrap:wrap;gap:8px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.mod{cursor:pointer;text-align:left;font:inherit;color:inherit;background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px}
+.mod .e{font-size:34px}.mod .more{display:none;margin-top:8px;font-size:14.5px;color:var(--mut)}
+.mod.open{border-color:var(--ac2);background:var(--soft)}.mod.open .more{display:block}
+.opt{display:block;width:100%;text-align:left;margin:6px 0;padding:10px 12px;border-radius:10px;border:1px solid var(--bd);background:var(--card);color:var(--tx);font:inherit;cursor:pointer}
+.opt.ok{background:var(--ok);color:#fff;border-color:var(--ok)}.opt.bad{background:var(--bad);color:#fff;border-color:var(--bad)}
+.why{display:none;margin-top:6px;font-size:14.5px;color:var(--mut)}.why.show{display:block}
+select{font:inherit;padding:6px;border-radius:8px;border:1px solid var(--bd);background:var(--card);color:var(--tx);max-width:100%}
+.m{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:6px 0;border-bottom:1px dashed var(--bd)}
+.m b{min-width:110px}.m.ok select{border-color:var(--ok)}.m.bad select{border-color:var(--bad)}
+svg{max-width:100%;height:auto}svg line,svg path{stroke:var(--ac2);fill:none;stroke-linecap:round}
+.bar{height:8px;background:var(--bd);border-radius:6px;overflow:hidden;margin:8px 0}.bar i{display:block;height:100%;background:var(--ac);width:0;transition:width .3s}
+.score{font-size:40px;font-weight:700;color:var(--ac)}
+</style>
+</head>
+<body>
+<header><h1>🌱 Корінь і видозміни кореня</h1><p>Біологія, 7 клас · Урок 1 · Спорові та насінні рослини</p></header>
+<nav id="nav"></nav>
+<main>
+
+<section id="s0">
+<div class="card"><h2>1. Органи рослини</h2>
+<p>Тіло наземних рослин поділене на <b>органи</b>. <b>Орган</b> — частина організму, що має певну будову й виконує певні функції.</p>
+<div class="grid">
+<div class="card"><h3>🌿 Вегетативні</h3>Корінь, пагін — забезпечують життєдіяльність, зокрема живлення.</div>
+<div class="card"><h3>🌸 Генеративні</h3>Квітка, плід, насінина — забезпечують статеве розмноження.</div>
+</div>
+<p>За розташуванням щодо земної поверхні: <b>підземні</b> (корінь) і <b>надземні</b> (пагін).</p>
+<div class="def"><b>Корінь</b> — підземний вегетативний орган наземних рослин. Він утримує рослину в ґрунті, усмоктує воду й розчинені мінеральні речовини, транспортує їх до надземних органів та забезпечує вегетативне розмноження (розмноження частинами тіла).</div>
+</div>
+<div class="card"><h3>Перевір себе</h3><div id="q0"></div></div>
+</section>
+
+<section id="s1">
+<div class="card"><h2>2. Види коренів</h2>
+<p>Торкнися кожного виду, щоб дізнатися більше.</p>
+<div class="grid" id="kinds"></div></div>
+<div class="card"><h2>Кореневі системи</h2>
+<div class="def"><b>Коренева система</b> — сукупність усіх коренів рослини.</div>
+<div class="row"><button class="btn" id="bT">Стрижнева</button><button class="btn alt" id="bF">Мичкувата</button></div>
+<svg id="rs" viewBox="0 0 300 200" width="300" role="img" aria-label="Схема кореневої системи"></svg>
+<p id="rst"></p></div>
+<div class="card"><h3>Перевір себе</h3><div id="q1"></div></div>
+</section>
+
+<section id="s2">
+<div class="card"><h2>3. Видозміни кореня</h2>
+<div class="def"><b>Видозміна</b> — явище зміни будови органа, що забезпечує виконання додаткових функцій.</div>
+<p>Торкнися картки, щоб розгорнути.</p>
+<div class="grid" id="mods"></div></div>
+<div class="card"><h3>Знайди пару: рослина → видозміна</h3><div id="match"></div>
+<div class="row" style="margin-top:10px"><button class="btn" id="chk">Перевірити</button></div><p id="mres"></p></div>
+</section>
+
+<section id="s3">
+<div class="card"><h2>4. Біологічні задачі</h2><div id="q3"></div></div>
+<div class="card"><h3>🌳 Баньян</h3>
+<p>Баньян — національний символ Індії. 240-річне дерево в ботанічному саду Колкати має 1800 коренів і крону периметром 420 м. Тому його називають «дерево-ліс».</p><div id="q3b"></div></div>
+</section>
+
+<section id="s4">
+<div class="card"><h2>5. Тест</h2><div id="q4"></div></div>
+</section>
+
+<section id="s5">
+<div class="card" style="text-align:center"><h2>6. Підсумок</h2>
+<div class="score" id="sc">0 / 0</div><p id="scm">Пройди тести, і тут з’явиться твій результат.</p>
+<div class="bar"><i id="pb"></i></div></div>
+<div class="card"><h3>Запам’ятай</h3><ol>
+<li>Корінь — підземний вегетативний орган.</li>
+<li>Види коренів: головний, додаткові, бічні.</li>
+<li>Системи: стрижнева та мичкувата.</li>
+<li>Видозміни: коренеплоди, кореневі бульби, гаусторії, дихальні, повітряні й опорні корені.</li></ol>
+<p><b>Запиши в зошит:</b> що нового ти дізнався / дізналася на уроці?</p>
+<textarea rows="4" style="width:100%;font:inherit;padding:8px;border-radius:8px;border:1px solid var(--bd);background:var(--card);color:var(--tx)" placeholder="Твої нотатки (вони не зберігаються після закриття сторінки)"></textarea></div>
+</section>
+</main>
+
+<script>
+var TABS=["Органи","Корінь","Видозміни","Задачі","Тест","Підсумок"];
+var nav=document.getElementById("nav"),secs=[].slice.call(document.querySelectorAll("section"));
+TABS.forEach(function(t,i){var b=document.createElement("button");b.textContent=(i+1)+". "+t;b.onclick=function(){go(i)};nav.appendChild(b)});
+function go(i){secs.forEach(function(s,j){s.classList.toggle("on",i===j);nav.children[j].classList.toggle("on",i===j)});window.scrollTo(0,0);if(i===5)upd()}
+go(0);
+
+var total=0,good=0,answered={};
+function upd(){document.getElementById("sc").textContent=good+" / "+total;
+var p=total?Math.round(100*good/total):0;document.getElementById("pb").style.width=p+"%";
+document.getElementById("scm").textContent=!total?"Пройди тести, і тут з’явиться твій результат.":p>=80?"Чудово! Ти добре засвоїв(-ла) тему 🎉":p>=50?"Непогано! Повтори видозміни та спробуй ще.":"Перечитай розділи й спробуй ще раз 💪"}
+function mcq(id,list){var box=document.getElementById(id);
+list.forEach(function(it,n){var k=id+n;total++;var d=document.createElement("div");d.style.margin="0 0 16px";
+d.innerHTML="<b>"+it.q+"</b>";var w=document.createElement("div");w.className="why";w.textContent=it.why;
+it.o.forEach(function(t,i){var b=document.createElement("button");b.className="opt";b.textContent=t;
+b.onclick=function(){if(answered[k])return;answered[k]=1;var ok=i===it.a;if(ok)good++;
+b.classList.add(ok?"ok":"bad");if(!ok)d.querySelectorAll(".opt")[it.a].classList.add("ok");w.classList.add("show");w.textContent=(ok?"✅ Правильно! ":"❌ Ні. ")+it.why;upd()};d.appendChild(b)});
+d.appendChild(w);box.appendChild(d)})}
+
+mcq("q0",[
+{q:"Який орган НЕ є вегетативним?",o:["Корінь","Пагін","Квітка"],a:2,why:"Квітка — генеративний орган, що забезпечує статеве розмноження."},
+{q:"Які органи підземні?",o:["Пагін","Корінь","Плід"],a:1,why:"Корінь — підземний орган, пагін — надземний."}]);
+mcq("q1",[
+{q:"Головний корінь розвивається з…",o:["зачаткового кореня насінини","стебла","бічних коренів"],a:0,why:"Додаткові корені ростуть на стеблі, бічні — з боків інших коренів."},
+{q:"У мичкуватої кореневої системи…",o:["є чітко виражений головний корінь","головний корінь не виділяється","немає бічних коренів"],a:1,why:"Усі корені майже однакових розмірів і ростуть пучком від основи стебла (пшениця, кукурудза)."}]);
+mcq("q3",[
+{q:"6.1. Тонкий ниткоподібний корінь звисає з кори дерева, не торкаючись ґрунту, і вкритий губчастою тканиною. Яка це видозміна?",o:["Коренеплід","Повітряні корені","Дихальні корені"],a:1,why:"Повітряні корені епіфітів (орхідеї, ліани) поглинають воду з повітря й опадів. Вони розвиваються на надземних органах."},
+{q:"6.2. Рослина має товстий набряклий корінь із запасом поживних речовин. Листки відмерли, а корінь зберігся. Що це?",o:["Корені-присоски","Опорні корені","Коренеплід або кореневі бульби"],a:2,why:"Запасні речовини накопичуються в корені, тому він переживає період, коли надземна частина відмирає."}]);
+mcq("q3b",[
+{q:"Яка видозміна кореня характерна для баньяна?",o:["Опорні корені","Гаусторії","Пневматофори"],a:0,why:"Додаткові корені опускаються від гілок до ґрунту й слугують опорами для величезної крони. Без них дерево не змогло б так розрослись."}]);
+mcq("q4",[
+{q:"Корені рослини можуть розвиватися тільки в ґрунті?",o:["Так","Ні"],a:1,why:"Повітряні корені орхідей розвиваються на надземних органах."},
+{q:"Корінь — підземний генеративний орган?",o:["Так","Ні"],a:1,why:"Корінь — вегетативний орган."},
+{q:"Що таке пневматофори?",o:["Корені, що забезпечують дихання тканин коренів","Корені-присоски паразитів","Запасальні корені"],a:0,why:"Дихальні корені ростуть угору в умовах затоплення (болотний кипарис)."},
+{q:"Яка функція коренів-присосок (гаусторій)?",o:["Запасання води","Усмоктування органічних речовин з організму хазяїна","Підтримка стебла"],a:1,why:"Гаусторії повитиці та омели проникають у тканини рослини-хазяїна."},
+{q:"Яка рослина має опорні ходульні корені?",o:["Редька","Кукурудза","Батат"],a:1,why:"Ходульні корені кукурудзи — додаткові опорні корені."},
+{q:"Що називають коренеплодом?",o:["Потовщений головний корінь із запасними речовинами","Потовщений додатковий корінь","Корінь паразита"],a:0,why:"Коренеплоди мають буряк, морква, редька, петрушка."}]);
+
+var kinds=[["🌰 Головний","Розвивається із зачаткового кореня насінини."],["🌾 Додаткові","Розвиваються на стеблах та інших ділянках пагона."],["🌿 Бічні","Розвиваються з боків інших коренів; розгалужують систему, збільшують площу всмоктування й покращують фіксацію в ґрунті."]];
+var kb=document.getElementById("kinds");kinds.forEach(function(k){var b=document.createElement("button");b.className="mod";b.innerHTML="<h3>"+k[0]+"</h3><div class='more'>"+k[1]+"</div>";b.onclick=function(){b.classList.toggle("open")};kb.appendChild(b)});
+
+function draw(t){var s="";if(t){s+='<line x1="150" y1="30" x2="150" y2="190" stroke-width="5"/>';
+for(var i=0;i<6;i++){var y=60+i*25,l=70-i*8;s+='<line x1="150" y1="'+y+'" x2="'+(150-l)+'" y2="'+(y+25)+'" stroke-width="2.5"/><line x1="150" y1="'+y+'" x2="'+(150+l)+'" y2="'+(y+25)+'" stroke-width="2.5"/>'}
+document.getElementById("rst").textContent="Стрижнева: чітко виражений головний корінь, що росте вертикально (морква, кульбаба, дводольні рослини).";}
+else{for(var j=0;j<13;j++){var x=150+(j-6)*22,e=150+(j-6)*10;s+='<line x1="'+(150+(j-6)*3)+'" y1="30" x2="'+x+'" y2="'+(120+(j%3)*30)+'" stroke-width="2.5"/>'}
+document.getElementById("rst").textContent="Мичкувата: головний корінь не виділяється, усі корені майже однакові й ростуть пучком від основи стебла (пшениця, кукурудза, цибуля).";}
+s+='<rect x="120" y="14" width="60" height="16" rx="6" fill="#4caf50" stroke="none"/><line x1="10" y1="30" x2="290" y2="30" stroke-width="1" stroke-dasharray="4 4"/>';
+document.getElementById("rs").innerHTML=s}
+document.getElementById("bT").onclick=function(){draw(1)};document.getElementById("bF").onclick=function(){draw(0)};draw(1);
+
+var mods=[["🥕","Коренеплоди","Запасні речовини накопичуються в головному корені: буряк, морква, редька, петрушка, редиска."],
+["🍠","Кореневі бульби","Запасання в додаткових або бічних коренях: батат, жоржина. Мають бульбоподібну форму."],
+["🪱","Корені-присоски (гаусторії)","Видозмінені додаткові корені паразитів (повитиця) і напівпаразитів (омела). Проникають у тканини хазяїна, забезпечують прикріплення й живлення."],
+["🌊","Дихальні корені (пневматофори)","Ростуть угору в умовах затоплення (болотний кипарис) для дихання тканин коренів."],
+["🌺","Повітряні корені","Додаткові корені епіфітів (орхідеї, ліани) на надземних органах; поглинають воду з повітря й опадів."],
+["🏛️","Опорні корені","Додаткові корені на стеблі: ходульні (кукурудза), дошкоподібні (фікус каучуконосний), причіпки (плющ), звисаючі (монстера, баньян)."]];
+var mb=document.getElementById("mods");mods.forEach(function(m){var b=document.createElement("button");b.className="mod";b.innerHTML="<div class='e'>"+m[0]+"</div><h3>"+m[1]+"</h3><div class='more'>"+m[2]+"</div>";b.onclick=function(){b.classList.toggle("open")};mb.appendChild(b)});
+
+var pairs=[["Редька","Коренеплід"],["Батат","Кореневі бульби"],["Повитиця","Корені-присоски"],["Фікус","Опорні корені"],["Кипарис","Дихальні корені"],["Орхідея","Повітряні корені"]];
+var names=["Коренеплід","Кореневі бульби","Корені-присоски","Опорні корені","Дихальні корені","Повітряні корені"],mt=document.getElementById("match");
+pairs.forEach(function(p,i){var r=document.createElement("div");r.className="m";r.id="m"+i;
+r.innerHTML="<b>"+p[0]+"</b><span>→</span><select><option value=''>— обери —</option>"+names.map(function(n){return"<option>"+n+"</option>"}).join("")+"</select>";mt.appendChild(r)});
+var mdone=false;
+document.getElementById("chk").onclick=function(){var c=0;pairs.forEach(function(p,i){var r=document.getElementById("m"+i),v=r.querySelector("select").value,ok=v===p[1];r.className="m "+(ok?"ok":"bad");if(ok)c++});
+document.getElementById("mres").textContent="Правильно: "+c+" з "+pairs.length+(c===pairs.length?" 🎉":". Спробуй виправити червоні.");
+if(!mdone){mdone=true;total+=pairs.length;good+=c}};
+</script>
+</body>
+</html>
