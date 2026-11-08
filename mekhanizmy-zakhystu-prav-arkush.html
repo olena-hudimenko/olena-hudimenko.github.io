@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Робочий аркуш: Механізми захисту прав і свобод. Омбудсмени</title>
+<style>
+:root{--bg:#f2f5fa;--card:#fff;--ink:#1b2433;--muted:#5a6579;--line:#d5dce9;--blue:#1d4e89;--soft:#e6eef9;--gold:#e3ad00;--ok:#1b7a45;--okbg:#e0f3e8;--bad:#b3261e;--badbg:#fbe6e4;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1522;--card:#17202f;--ink:#e8edf6;--muted:#9aa6bb;--line:#2c3850;--blue:#8dbbf2;--soft:#1c2c45;--gold:#f0c23a;--ok:#6fd49a;--okbg:#12301f;--bad:#ff9a92;--badbg:#3a1916;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0e1522;--card:#17202f;--ink:#e8edf6;--muted:#9aa6bb;--line:#2c3850;--blue:#8dbbf2;--soft:#1c2c45;--gold:#f0c23a;--ok:#6fd49a;--okbg:#12301f;--bad:#ff9a92;--badbg:#3a1916;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Onest,system-ui,"Segoe UI",sans-serif}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--card);z-index:10}
+.wrap{max-width:760px;margin:0 auto;padding:0 16px 48px}
+header{margin-top:20px;padding:24px 0 8px 16px;border-left:6px solid var(--gold)}
+h1{font:700 27px/1.2 Georgia,"Times New Roman",serif;margin:0 0 6px;color:var(--blue)}
+h2{font:700 20px/1.3 Georgia,"Times New Roman",serif;margin:0 0 4px}
+.sub{margin:0;color:var(--muted)}
+.who{display:flex;gap:12px;flex-wrap:wrap;margin:16px 0 0}
+.who label{flex:1 1 220px;font-size:14px;color:var(--muted)}
+input[type=text],textarea,select{width:100%;box-sizing:border-box;font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+.who input{margin-top:4px}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:11;background:var(--card);border-bottom:1px solid var(--line);padding:10px 16px;margin:16px -16px 0}
+.bar p{margin:0 0 6px;font-weight:600;font-size:14px}
+.track{height:8px;background:var(--soft);border-radius:4px;overflow:hidden}
+#fill{height:100%;width:0;background:var(--blue);transition:width .3s}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin:18px 0}
+.hint{color:var(--muted);margin:0 0 12px;font-size:15px}
+.item{padding:12px 0;border-top:1px solid var(--line)}
+.q{margin:0 0 8px;font-weight:500}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+button{font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 12px;cursor:pointer}
+button:hover:not(:disabled){background:var(--soft)}
+button:disabled,select:disabled{cursor:default;opacity:1}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+button.primary{background:var(--blue);color:var(--card);border-color:var(--blue);font-weight:600}
+button.primary:hover:not(:disabled){background:var(--blue);filter:brightness(1.1)}
+.ok{background:var(--okbg)!important;border-color:var(--ok)!important}
+.bad{background:var(--badbg)!important;border-color:var(--bad)!important}
+.fb{margin:8px 0 0;font-size:15px}
+.gd{color:var(--ok)}.nd{color:var(--bad)}
+textarea{min-height:70px;margin:4px 0 10px;resize:vertical}
+details{margin:8px 0;background:var(--soft);border-radius:8px;padding:10px 14px}
+summary{cursor:pointer;font-weight:600}
+details ul{margin:8px 0 0;padding-left:20px}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+#out{min-height:160px;font-size:14px}
+@media print{.bar,.row,button{display:none}.card{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+<h1>Механізми захисту прав і свобод людини і громадянина. Омбудсмени</h1>
+<p class="sub">Робочий аркуш до уроку за матеріалами підручника (§ 10-11.6)</p>
+<div class="who">
+<label>Прізвище та ім’я<input type="text" id="nm" autocomplete="name"></label>
+<label>Клас<input type="text" id="kl" autocomplete="off"></label>
+</div>
+</header>
+<div class="bar" aria-live="polite"><p id="stat"></p><div class="track"><div id="fill"></div></div></div>
+
+<details open><summary>Опорний конспект</summary><ul>
+<li>Права людини порушує держава, її органи, посадові особи та ті, хто діє від її імені. Дії однієї особи проти іншої — це правопорушення (адміністративне, цивільне, кримінальне), а не порушення прав людини.</li>
+<li>У справах Європейського суду з прав людини заявники — фізичні особи, а відповідач — завжди держава.</li>
+<li>Механізм захисту прав: Президент (гарант), Верховна Рада, Уповноважений ВР з прав людини, органи виконавчої влади, суди, правоохоронні органи, місцеве самоврядування.</li>
+<li>Спеціалізовані уповноважені: з прав дитини (2011), Освітній омбудсмен (2018), із захисту державної мови (2019), Військовий омбудсмен (2025).</li>
+<li>Форми захисту: захист органами влади, захист громадськими об’єднаннями, самозахист.</li>
+</ul></details>
+
+<section class="card"><h2>Завдання 1. Тест</h2><p class="hint">Обери одну відповідь.</p><div id="quiz"></div></section>
+<section class="card"><h2>Завдання 2. Хто за що відповідає</h2><p class="hint">До кожної посади добери її функцію. Вибір остаточний.</p><div id="who"></div></section>
+<section class="card"><h2>Завдання 3. Форми захисту прав</h2><p class="hint">До якої форми захисту належить кожна дія?</p><div id="forms"></div></section>
+<section class="card"><h2>Завдання 4. Правда чи хибність</h2><div id="tf"></div></section>
+<section class="card"><h2>Завдання 5. Юридичні ситуації</h2><p class="hint">Які права людини порушено в ситуаціях з підручника? Одна з них не є порушенням прав людини державою.</p><div id="situ"></div></section>
+<section class="card"><h2>Завдання 6. Куди звернутися</h2><p class="hint">Обери посадову особу, яка найбільше підходить для ситуації.</p><div id="where"></div></section>
+
+<section class="card"><h2>Завдання 7. Письмова відповідь</h2>
+<p class="hint">Обери одну ситуацію із завдання 5, окрім крадіжки на дачі, і дай відповіді.</p>
+<label for="c1">1. Чиї права порушено і ким?</label><textarea id="c1"></textarea>
+<label for="c2">2. До яких органів чи організацій можна звернутися?</label><textarea id="c2"></textarea>
+<label for="c3">3. Чого можна вимагати від суду?</label><textarea id="c3"></textarea>
+<details><summary>Орієнтири для самоперевірки</summary><ul>
+<li>Звернутися можна до органів державної влади (усно чи письмово, окремо чи колективно), до місцевого самоврядування, правоохоронних органів, Уповноваженого ВР з прав людини, правозахисних організацій, у ЗМІ, а після використання всіх національних засобів захисту — до міжнародних органів, зокрема Європейського суду з прав людини.</li>
+<li>У суді можна вимагати: відшкодувати матеріальні чи моральні збитки; визнати незаконним рішення органу влади чи самоврядування; визнати право (наприклад, авторство); повернути майно; припинити певні дії.</li></ul></details>
+</section>
+
+<section class="card"><h2>Підсумок</h2>
+<p class="hint">Сформуй результат, скопіюй його й надішли вчителю.</p>
+<div class="row"><button class="primary" id="go" type="button">Сформувати результат</button><button id="pr" type="button">Друкувати</button><button id="rs" type="button">Почати заново</button></div>
+<p class="fb" id="msg"></p>
+<textarea id="out" readonly hidden aria-label="Результат"></textarea>
+</section>
+</div>
+<script>
+const $=s=>document.querySelector(s);
+const NAMES={quiz:"Тест",who:"Хто за що відповідає",forms:"Форми захисту",tf:"Правда чи хибність",situ:"Юридичні ситуації",where:"Куди звернутися"};
+const quiz=[
+{q:"Права людини можуть порушувати:",o:["державні органи та посадові особи","сусід, який шумить уночі","будь-яка людина щодо іншої людини","лише іноземні держави"],a:0,e:"Право людини порушує держава, її органи, посадові особи та ті, хто діє від імені держави."},
+{q:"Хто завжди є відповідачем у справах Європейського суду з прав людини?",o:["конкретна посадова особа","держава","поліцейський","заявник"],a:1,e:"Заявниками виступають фізичні особи, а відповідачем завжди є держава."},
+{q:"Хто здійснює парламентський контроль за дотриманням конституційних прав і свобод людини?",o:["Уповноважений Верховної Ради з прав людини","Президент України","Освітній омбудсмен","Кабінет Міністрів України"],a:0,e:"Це функція Уповноваженого ВР з прав людини (ст. 101 Конституції)."},
+{q:"Що таке самозахист прав?",o:["людина сама захищає свої права засобами, не забороненими законом","звернення до суду","розгляд справи прокурором","допомога громадської організації"],a:0,e:"Кожен може захищати свої права будь-якими не забороненими законом засобами (ст. 55)."},
+{q:"Коли людина може звернутися за захистом прав до міжнародних судових установ?",o:["після використання всіх національних засобів захисту","одразу, оминаючи суди України","лише за дозволом Президента","лише через Верховну Раду"],a:0,e:"Так передбачає ст. 55 Конституції."}];
+const D=["забезпечує дотримання прав військовослужбовців","захищає права учасників освітнього процесу","є гарантом прав і свобод людини і громадянина","здійснює парламентський контроль за дотриманням прав і свобод","захищає українську мову як державну","ухвалює закони, що захищають права людини","сприяє захисту прав і свобод дітей"];
+const who=[{q:"Президент України",a:2},{q:"Верховна Рада України",a:5},{q:"Уповноважений Верховної Ради з прав людини",a:3},{q:"Уповноважений Президента з прав дитини (посаду запроваджено 2011 року)",a:6},{q:"Освітній омбудсмен (посаду введено 2018 року)",a:1},{q:"Військовий омбудсмен (посаду введено 2025 року)",a:0},{q:"Уповноважений із захисту державної мови (посаду введено 2019 року)",a:4}];
+const F=["Захист органами влади","Захист громадськими об’єднаннями","Самозахист"],FE=["Це захист органами влади.","Правозахисні організації — це громадські об’єднання.","Самозахист — це власні законні дії людини."];
+const forms=[["Подати позов до суду про повернення майна",0],["Скаржитися Уповноваженому ВР з прав людини",0],["Звернутися по допомогу до правозахисної організації",1],["Попросити громадську організацію допомогти з юристом і документами",1],["Самому вимагати від порушника припинити незаконні дії",2],["Самому письмово заперечити проти незаконної вимоги посадовця",2]].map(([q,a])=>({q,a,o:F,e:FE[a]}));
+const tf=[
+{q:"Права людини може порушити сусід, який голосно шумить уночі.",a:1,e:"Це правопорушення, а не порушення прав людини державою."},
+{q:"У справах Європейського суду з прав людини заявниками виступають конкретні фізичні особи.",a:0,e:"Так, а відповідачем завжди є держава."},
+{q:"Захист прав завжди відбувається лише за рішенням державного органу.",a:1,e:"У більшості випадків захист відбувається за бажанням особи (заява, скарга)."},
+{q:"Особа може здійснювати свої права самостійно або доручити це представнику (довіреність).",a:0,e:"Так, особа здійснює права на власний розсуд."}].map(x=>({...x,o:["Правда","Хибність"]}));
+const R=["Право на життя","Заборона катувань і жорстокого поводження","Свобода й особиста недоторканність (затримання)","Таємниця телефонних розмов, приватне життя","Свобода слова","Рівність і заборона дискримінації","Не порушення прав людини державою, а злочин"];
+const situ=[
+{q:"Міжнародний кримінальний суд видав ордер на арешт президента Судану за воєнні злочини й злочини проти людяності в Дарфурі, де загинули сотні тисяч людей.",a:0,e:"Ст. 27: життя людини — недоторканне."},
+{q:"Під час допиту підозрюваного правоохоронці погрозами й фізичною силою «вибивали» з нього свідчення.",a:1,e:"Ст. 28: ніхто не може бути підданий катуванню чи жорстокому поводженню."},
+{q:"Двох неповнолітніх затримала поліція, причин не повідомила, батькам про це сказали через чотири дні.",a:2,e:"Ст. 29: причини затримання повідомляють невідкладно, родичів — негайно."},
+{q:"З протоколу поліції: двоє осіб виламали двері дачного будинку, але нічого не вкрали й втекли.",a:6,e:"Дії приватних осіб щодо інших — злочин, а не порушення прав людини державою."},
+{q:"Директор комунальної установи за допомогою міні-АТС прослуховував телефонні розмови працівників і втручався в них.",a:3,e:"Ст. 31 і 32: таємниця телефонних розмов, невтручання в особисте життя."},
+{q:"Місцева телерадіостанція, кореспонденти якої критикували місцеву владу, позбулася частотного ефіру за «підрив авторитету влади».",a:4,e:"Ст. 34: свобода слова; цензура заборонена (ст. 15)."},
+{q:"До школи приймають дітей, які розмовляють польською, а їхні батьки є католиками.",a:5,e:"Ст. 24: не може бути привілеїв чи обмежень за мовною, релігійною та іншими ознаками."}].map(x=>({...x,o:R}));
+const O=["Освітній омбудсмен","Уповноважений Президента з прав дитини","Військовий омбудсмен","Уповноважений із захисту державної мови","Уповноважений Верховної Ради з прав людини"];
+const where=[{q:"Заклад освіти порушує права учасників освітнього процесу.",a:0},{q:"Дитина-сирота не може реалізувати право на житло.",a:1},{q:"Військовослужбовець вважає, що командування порушило його права.",a:2},{q:"У сфері обслуговування відмовляються обслуговувати державною мовою.",a:3},{q:"Мешканець громади вважає, що орган місцевого самоврядування порушив його конституційні права, і хоче звернутися не до суду.",a:4}];
+const SIZE={quiz:quiz.length,who:who.length,forms:forms.length,tf:tf.length,situ:situ.length,where:where.length};
+const TOTAL=Object.values(SIZE).reduce((a,b)=>a+b,0);
+let S;
+function upd(){$("#stat").textContent=`Виконано ${S.done} із ${TOTAL}, правильно ${S.ok}`;$("#fill").style.width=S.done/TOTAL*100+"%"}
+function done(b,ok){S.done++;if(ok){S.ok++;S.b[b]=(S.b[b]||0)+1}upd()}
+function show(fb,ok,t){fb.hidden=false;fb.className="fb "+(ok?"gd":"nd");fb.textContent=t}
+function item(box,i,q,inner){const d=document.createElement("div");d.className="item";d.innerHTML=`<p class="q">${i+1}. ${q}</p>${inner}<p class="fb" hidden></p>`;box.append(d);return d}
+function chips(b,items){const box=$("#"+b);box.innerHTML="";items.forEach((it,i)=>{
+const d=item(box,i,it.q,`<div class="opts">${it.o.map(t=>`<button type="button">${t}</button>`).join("")}</div>`);
+const bs=[...d.querySelectorAll("button")],fb=d.querySelector(".fb");
+bs.forEach((x,j)=>x.onclick=()=>{const ok=j===it.a;bs.forEach(y=>y.disabled=true);x.classList.add(ok?"ok":"bad");bs[it.a].classList.add("ok");show(fb,ok,(ok?"Правильно. ":"Ні. ")+(it.e||""));done(b,ok)})})}
+function sels(b,items,opts){const box=$("#"+b);box.innerHTML="";items.forEach((it,i)=>{
+const d=item(box,i,it.q,`<select aria-label="Відповідь ${i+1}"><option value="">Обери відповідь…</option>${opts.map((t,j)=>`<option value="${j}">${t}</option>`).join("")}</select>`);
+const s=d.querySelector("select"),fb=d.querySelector(".fb");
+s.onchange=()=>{if(s.value==="")return;const ok=+s.value===it.a;s.disabled=true;s.classList.add(ok?"ok":"bad");show(fb,ok,(ok?"Правильно. ":"Правильна відповідь: "+opts[it.a]+". ")+(it.e||""));done(b,ok)}})}
+function report(){const p=Math.round(S.ok/TOTAL*100);
+return `Робочий аркуш: Механізми захисту прав і свобод. Омбудсмени\nУчень/учениця: ${$("#nm").value.trim()||"—"}, клас: ${$("#kl").value.trim()||"—"}\nПравильно: ${S.ok} із ${TOTAL} (${p}%)\nОпрацьовано завдань: ${S.done} із ${TOTAL}\n`+Object.keys(SIZE).map(x=>`${NAMES[x]}: ${S.b[x]||0} із ${SIZE[x]}`).join("\n")+`\n\nЗавдання 7 (письмова відповідь)\n1) ${$("#c1").value.trim()||"—"}\n2) ${$("#c2").value.trim()||"—"}\n3) ${$("#c3").value.trim()||"—"}`}
+function init(){S={ok:0,done:0,b:{}};chips("quiz",quiz);sels("who",who,D);chips("forms",forms);chips("tf",tf);sels("situ",situ,R);sels("where",where,O);
+["#c1","#c2","#c3"].forEach(s=>$(s).value="");document.querySelectorAll(".card details").forEach(d=>d.open=false);
+$("#out").hidden=true;$("#msg").textContent="";upd()}
+$("#go").onclick=async()=>{const t=report(),o=$("#out");o.value=t;o.hidden=false;
+try{await navigator.clipboard.writeText(t);$("#msg").textContent="Результат скопійовано. Встав його в повідомлення вчителю."}
+catch(e){o.select();$("#msg").textContent="Виділи текст нижче й скопіюй його вручну."}};
+$("#pr").onclick=()=>{try{window.print()}catch(e){}};
+$("#rs").onclick=init;
+init();
+</script>
+</body>
+</html>
