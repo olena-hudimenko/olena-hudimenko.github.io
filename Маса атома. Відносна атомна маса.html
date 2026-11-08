@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Маса атома. Відносна атомна маса</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;700&family=Unbounded:wght@600&display=swap">
+<style>
+:root{--bg:#F1F6F8;--card:#fff;--ink:#12303B;--mute:#4D6A74;--teal:#0E7C86;--onteal:#fff;--amber:#F2B134;--ok:#1F8A4C;--bad:#C93C48;--line:#CFDDE2;--soft:#E3F0F2;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0D1C22;--card:#14282F;--ink:#E4F0F3;--mute:#9DB6BE;--teal:#4CC2CD;--onteal:#08242A;--ok:#4CC98A;--bad:#FF7C86;--line:#264249;--soft:#193640;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0D1C22;--card:#14282F;--ink:#E4F0F3;--mute:#9DB6BE;--teal:#4CC2CD;--onteal:#08242A;--ok:#4CC98A;--bad:#FF7C86;--line:#264249;--soft:#193640;color-scheme:dark}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.6 Onest,system-ui,"Segoe UI",Arial,sans-serif}
+main{max-width:780px;margin:0 auto;padding:20px 16px 56px}
+h1,h2{font-family:Unbounded,Onest,system-ui,sans-serif;font-weight:600;line-height:1.2;margin:0}
+h1{font-size:clamp(26px,6vw,40px)}
+h2{font-size:clamp(19px,4vw,24px);margin-bottom:12px}
+p{margin:0 0 12px}
+.lead{color:var(--mute);max-width:60ch}
+.prog{display:flex;align-items:center;gap:12px;margin:18px 0 28px;font-size:15px;color:var(--mute)}
+.bar{flex:1;height:10px;border-radius:5px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--amber);transition:width .4s}
+section{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 20px;margin-bottom:20px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+button{font:inherit;cursor:pointer;border-radius:10px;border:2px solid var(--line);background:var(--card);color:var(--ink);padding:8px 14px;min-height:44px}
+button:hover{border-color:var(--teal)}
+button:focus-visible,input:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+button.on,button.sel{background:var(--teal);border-color:var(--teal);color:var(--onteal)}
+button.primary{background:var(--teal);border-color:var(--teal);color:var(--onteal);font-weight:700}
+.scale{background:var(--soft);border-radius:12px;padding:16px}
+.big{font:600 clamp(20px,5vw,28px) Unbounded,Onest,sans-serif}
+.blocks{display:flex;flex-wrap:wrap;gap:4px;margin:12px 0;min-height:22px}
+.blocks b{width:20px;height:20px;border-radius:4px;background:var(--teal)}
+.blocks b.half{width:10px}
+.note{font-size:15px;color:var(--mute)}
+.facts{display:grid;gap:12px;margin:14px 0}
+.fact{border-left:5px solid var(--amber);padding:6px 0 6px 14px}
+.fact:nth-child(2){border-color:var(--teal)}
+.fact:nth-child(3){border-color:var(--ok)}
+.frm{font:italic 500 20px Onest,serif;margin:8px 0}
+.frac{display:inline-block;vertical-align:middle;text-align:center}
+.frac span{display:block;padding:0 6px}.frac span:first-child{border-bottom:2px solid var(--ink)}
+.task{padding:14px 0;border-top:1px dashed var(--line)}
+.task:first-of-type{border-top:0}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:8px}
+input[type=text]{font:inherit;width:120px;padding:8px 10px;min-height:44px;border-radius:10px;border:2px solid var(--line);background:var(--card);color:var(--ink)}
+input.ok{border-color:var(--ok)}input.no{border-color:var(--bad)}
+.msg{margin-top:8px;font-size:15px;min-height:1.4em}
+.msg.ok{color:var(--ok)}.msg.no{color:var(--bad)}
+.match{display:grid;grid-template-columns:1fr 1fr;gap:10px 40px;max-width:360px;margin:12px 0}
+.match button.done{border-color:var(--ok);background:var(--ok);color:var(--card);opacity:.9}
+.match button.shake{border-color:var(--bad)}
+.tbl{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px 16px;margin:12px 0}
+.tbl label{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.tbl input{width:80px}
+.q{padding:14px 0;border-top:1px dashed var(--line)}
+.q:first-of-type{border-top:0}
+.opts{display:grid;gap:8px;margin-top:8px}
+.opts button{text-align:left}
+.opts button.good{border-color:var(--ok);background:var(--ok);color:var(--card)}
+.opts button.bad{border-color:var(--bad)}
+.final{text-align:center}
+@media (prefers-reduced-motion:reduce){.bar i{transition:none}}
+</style>
+</head>
+<body>
+<main>
+<header>
+  <h1>Маса атома. Відносна атомна маса</h1>
+  <p class="lead" style="margin-top:12px">Хімія, 7 клас. Дізнайся, чому хіміки не зважують атоми в грамах, і навчись обчислювати відносну атомну масу.</p>
+  <div class="prog"><span id="pt">0 із 11</span><div class="bar"><i id="pb"></i></div></div>
+</header>
+
+<section>
+  <h2>Чи можна виміряти масу атома в грамах?</h2>
+  <p>Масу яблук вимірюють у грамах. Для атомів це незручно: обери елемент і порівняй числа.</p>
+  <div class="chips" id="chips" role="group" aria-label="Елемент"></div>
+  <div class="scale" aria-live="polite">
+    <p>Абсолютна маса атома:</p>
+    <div class="big" id="abs"></div>
+    <p class="note" id="calc" style="margin-top:10px"></p>
+    <div class="blocks" id="blocks"></div>
+    <p class="note">Один блок — це 1 а. о. м. Кількість блоків і є відносна атомна маса.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Головне про масу атома</h2>
+  <div class="facts">
+    <div class="fact"><b>Атомна одиниця маси (а. о. м.)</b> — це 1/12 маси атома Карбону-12. Саме з нею порівнюють маси всіх атомів.
+      <div class="frm">1 а. о. м. = 1/12 m<sub>a</sub>(C) = 1,66 · 10<sup>−24</sup> г</div></div>
+    <div class="fact"><b>Відносна атомна маса A<sub>r</sub></b> показує, у скільки разів маса атома більша за 1 а. о. м.
+      <div class="frm">A<sub>r</sub>(E) = <span class="frac"><span>m<sub>a</sub>(E)</span><span>1/12 m<sub>a</sub>(C)</span></span></div></div>
+    <div class="fact"><b>Одиниць вимірювання немає.</b> Це відношення двох мас, тому грами скорочуються. Множник 10<sup>−24</sup> теж скорочують.</div>
+  </div>
+  <p class="note">Дальтон запропонував порівнювати маси атомів із найлегшим атомом Гідрогену. Тривалий час еталоном була 1/16 маси Оксигену. Сьогодні еталон — 1/12 маси Карбону-12.</p>
+</section>
+
+<section>
+  <h2>Обчисли самостійно</h2>
+  <p class="note">Відповідь введи числом. Кому можна, округли до цілого. Скористайся підказкою, якщо застряг.</p>
+  <div id="tasks"></div>
+</section>
+
+<section>
+  <h2>Увідповідни символ і відносну атомну масу</h2>
+  <p>Натисни символ елемента, потім число. Користуйся періодичною таблицею.</p>
+  <div class="match" id="match"></div>
+  <div class="msg" id="mm"></div>
+</section>
+
+<section>
+  <h2>Відносні атомні маси з періодичної таблиці</h2>
+  <p>Впиши округлені значення A<sub>r</sub>.</p>
+  <div class="tbl" id="tbl"></div>
+  <button class="primary" id="tchk">Перевірити</button>
+  <div class="msg" id="tm"></div>
+</section>
+
+<section>
+  <h2>Міні-тест</h2>
+  <div id="quiz"></div>
+</section>
+
+<section class="final">
+  <h2>Підсумок</h2>
+  <p id="fin">Виконуй завдання, і тут з’явиться твій результат.</p>
+  <p class="note">Для цікавих: у таблиці A<sub>r</sub>(Cl) = 35,5, бо це середнє значення за ізотопами Хлор-35 (75,53 %) і Хлор-37 (24,47 %): 0,7553 · 35 + 0,2447 · 37 ≈ 35,5.</p>
+</section>
+</main>
+
+<script>
+const $=s=>document.querySelector(s);
+const num=v=>parseFloat(String(v).trim().replace(',','.'));
+const fmt=x=>String(x).replace('.',',');
+const TOTAL=11, done=new Set();
+function mark(id){
+  done.add(id);
+  $('#pt').textContent=done.size+' із '+TOTAL;
+  $('#pb').style.width=(done.size/TOTAL*100)+'%';
+  if(done.size===TOTAL) $('#fin').textContent='Чудово! Ти виконав(ла) всі завдання. Тепер ти вмієш обчислювати відносну атомну масу за абсолютною масою атома.';
+  else $('#fin').textContent='Виконано '+done.size+' із '+TOTAL+' завдань. Продовжуй!';
+}
+
+/* Пісочниця */
+const EL=[['Гідроген','H',1.67],['Карбон','C',19.9],['Нітроген','N',23.3],['Оксиген','O',26.67],['Натрій','Na',38.2],['Сульфур','S',53.2]];
+const chips=$('#chips');
+EL.forEach((e,i)=>{
+  const b=document.createElement('button');b.textContent=e[0]+' ('+e[1]+')';
+  b.onclick=()=>show(i);chips.appendChild(b);
+});
+function show(i){
+  const [n,s,m]=EL[i];
+  [...chips.children].forEach((c,j)=>c.classList.toggle('on',i===j));
+  const ar=m/1.66;
+  $('#abs').innerHTML='m<sub>a</sub>('+s+') = '+fmt(m)+' · 10<sup>−24</sup> г';
+  $('#calc').innerHTML='A<sub>r</sub>('+s+') = '+fmt(m)+' : 1,66 ≈ <b>'+Math.round(ar)+'</b>';
+  const bl=$('#blocks');bl.innerHTML='';
+  for(let k=0;k<Math.round(ar);k++){bl.appendChild(document.createElement('b'))}
+}
+show(3);
+
+/* Задачі */
+const TASKS=[
+ {q:'Обчисли а. о. м. у грамах, якщо m<sub>a</sub>(C) = 19,994 · 10<sup>−24</sup> г. Відповідь у · 10<sup>−24</sup> г (округли до сотих).',lo:1.66,hi:1.67,h:'Поділи 19,994 на 12.',s:'19,994 : 12 ≈ 1,66 (· 10<sup>−24</sup> г)'},
+ {q:'Обчисли A<sub>r</sub>(O), якщо m<sub>a</sub>(O) = 26,67 · 10<sup>−24</sup> г.',lo:15.9,hi:16.1,h:'Поділи 26,67 на 1,66. Множник 10<sup>−24</sup> скороти.',s:'26,67 · 10<sup>−24</sup> г : 1,66 · 10<sup>−24</sup> г ≈ 16'},
+ {q:'Обчисли A<sub>r</sub>(N), якщо m<sub>a</sub>(N) = 23,3 · 10<sup>−24</sup> г.',lo:13.9,hi:14.1,h:'Поділи 23,3 на 1,66.',s:'23,3 : 1,66 ≈ 14'},
+ {q:'Обчисли A<sub>r</sub>(Na), якщо m<sub>a</sub>(Na) = 38,2 · 10<sup>−24</sup> г.',lo:22.9,hi:23.1,h:'Поділи 38,2 на 1,66.',s:'38,2 : 1,66 ≈ 23'}
+];
+const tk=$('#tasks');
+TASKS.forEach((t,i)=>{
+  const d=document.createElement('div');d.className='task';
+  d.innerHTML='<p>'+(i+1)+'. '+t.q+'</p><div class="row"><input type="text" inputmode="decimal" aria-label="Відповідь до завдання '+(i+1)+'"><button class="primary">Перевірити</button><button class="h">Підказка</button></div><div class="msg"></div>';
+  const inp=d.querySelector('input'),msg=d.querySelector('.msg');
+  const check=()=>{
+    const v=num(inp.value);
+    if(isNaN(v)){msg.className='msg no';msg.textContent='Введи число.';return}
+    if(v>=t.lo&&v<=t.hi){inp.className='ok';msg.className='msg ok';msg.innerHTML='Правильно! '+t.s;mark('t'+i)}
+    else{inp.className='no';msg.className='msg no';msg.textContent='Спробуй ще раз. Подивись підказку.'}
+  };
+  d.querySelector('.primary').onclick=check;
+  inp.onkeydown=e=>{if(e.key==='Enter')check()};
+  d.querySelector('.h').onclick=()=>{msg.className='msg';msg.textContent=t.h};
+  tk.appendChild(d);
+});
+
+/* Відповідність */
+const PAIRS=[['K',39],['Ag',108],['Al',27],['Cu',64],['P',31]];
+const mt=$('#match');let selS=null,got=0;
+const nums=PAIRS.map(p=>p[1]).sort((a,b)=>((a*7)%11)-((b*7)%11));
+const mk=(txt,kind)=>{const b=document.createElement('button');b.textContent=txt;b.dataset.k=kind;b.dataset.v=txt;return b};
+const L=PAIRS.map(p=>mk(p[0],'s')),R=nums.map(n=>mk(n,'n'));
+for(let i=0;i<5;i++){mt.appendChild(L[i]);mt.appendChild(R[i])}
+mt.onclick=e=>{
+  const b=e.target.closest('button');if(!b||b.classList.contains('done'))return;
+  if(b.dataset.k==='s'){L.forEach(x=>x.classList.remove('sel'));b.classList.add('sel');selS=b;return}
+  if(!selS){$('#mm').className='msg';$('#mm').textContent='Спочатку обери символ.';return}
+  const ok=PAIRS.some(p=>p[0]===selS.dataset.v&&String(p[1])===b.dataset.v);
+  if(ok){selS.classList.remove('sel');selS.classList.add('done');b.classList.add('done');selS=null;got++;
+    $('#mm').className='msg ok';$('#mm').textContent='Так! Знайдено пар: '+got+' із 5.';if(got===5)mark('match')}
+  else{b.classList.add('shake');setTimeout(()=>b.classList.remove('shake'),600);$('#mm').className='msg no';$('#mm').textContent='Не збігається. Перевір за періодичною таблицею.'}
+};
+
+/* Таблиця Ar */
+const AR=[['Гідроген',1],['Бор',11],['Нітроген',14],['Натрій',23],['Сульфур',32],['Оксиген',16],['Флуор',19],['Хлор',35.5],['Алюміній',27],['Силіцій',28]];
+const tb=$('#tbl');
+AR.forEach(a=>{const l=document.createElement('label');l.innerHTML=a[0]+'<input type="text" inputmode="decimal" aria-label="Ar('+a[0]+')">';tb.appendChild(l)});
+$('#tchk').onclick=()=>{
+  let ok=0;
+  [...tb.querySelectorAll('input')].forEach((inp,i)=>{
+    const v=num(inp.value),t=AR[i][1];
+    const good=!isNaN(v)&&Math.abs(v-t)<=(t===35.5?0.5:0);
+    inp.className=good?'ok':'no';if(good)ok++;
+  });
+  const m=$('#tm');
+  if(ok===AR.length){m.className='msg ok';m.textContent='Усе правильно! Для Хлору допускається 35 або 35,5.';mark('tbl')}
+  else{m.className='msg no';m.textContent='Правильно: '+ok+' із '+AR.length+'. Виправ червоні поля.'}
+};
+// Хлор: приймаємо і 35, і 35,5
+const _c=AR.findIndex(a=>a[0]==='Хлор');
+$('#tchk').addEventListener('click',()=>{const i=tb.querySelectorAll('input')[_c];const v=num(i.value);if(v===35||v===35.5){i.className='ok'}},true);
+
+/* Тест */
+const QZ=[
+ {q:'Які одиниці вимірювання має відносна атомна маса?',o:['Грами','Кілограми','Атомні одиниці маси','Не має одиниць вимірювання'],a:3,e:'Це відношення двох мас, тому одиниці скорочуються.'},
+ {q:'Чому дорівнює 1 а. о. м.?',o:['Масі атома Гідрогену','1/12 маси атома Карбону-12','1/16 маси атома Карбону-12','Масі атома Оксигену'],a:1,e:'1 а. о. м. = 1/12 m<sub>a</sub>(C) ≈ 1,66 · 10<sup>−24</sup> г.'},
+ {q:'Чому під час обчислень використовують відносні, а не абсолютні атомні маси?',o:['Абсолютні маси атомів дуже малі, з ними незручно рахувати','Абсолютні маси неможливо виміряти','Відносні маси завжди більші','Так вирішив Дальтон для всіх атомів'],a:0,e:'Числа на кшталт 10<sup>−24</sup> г незручні для розрахунків.'},
+ {q:'Маса атома хімічного елемента дорівнює 31,54 · 10<sup>−24</sup> г. Який це елемент?',o:['Оксиген (16)','Флуор (19)','Натрій (23)','Нітроген (14)'],a:1,e:'31,54 : 1,66 = 19. Це Флуор.'},
+ {q:'Чому в періодичній таблиці A<sub>r</sub>(Cl) = 35,5?',o:['Існує атом Хлору з масою 35,5','Це помилка в таблиці','Це середнє значення за природними ізотопами Хлор-35 і Хлор-37','Це сума мас протонів і електронів'],a:2,e:'Значення в таблиці — середнє з урахуванням поширення ізотопів у природі.'}
+];
+const qz=$('#quiz');
+QZ.forEach((q,i)=>{
+  const d=document.createElement('div');d.className='q';
+  d.innerHTML='<p>'+(i+1)+'. '+q.q+'</p><div class="opts"></div><div class="msg"></div>';
+  const ops=d.querySelector('.opts'),msg=d.querySelector('.msg');
+  q.o.forEach((t,j)=>{
+    const b=document.createElement('button');b.innerHTML=t;
+    b.onclick=()=>{
+      if(ops.querySelector('.good'))return;
+      if(j===q.a){b.classList.add('good');msg.className='msg ok';msg.innerHTML='Правильно! '+q.e;mark('q'+i)}
+      else{b.classList.add('bad');msg.className='msg no';msg.textContent='Ще не те. Спробуй інший варіант.'}
+    };
+    ops.appendChild(b);
+  });
+  qz.appendChild(d);
+});
+</script>
+</body>
+</html>

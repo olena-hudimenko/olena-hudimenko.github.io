@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="uk"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Середня відносна атомна маса елемента</title>
+<style>
+:root{--bg:#f3f7f6;--card:#fff;--ink:#17302e;--mut:#51696630;--mt:#4d6663;--acc:#0f766e;--acc2:#b45309;--ok:#15803d;--bad:#b91c1c;--ln:#cfdedb;--hl:#e3f2ef;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1c1b;--card:#172928;--ink:#e6f2f0;--mt:#9fb9b5;--acc:#4fd1c5;--acc2:#f6ad55;--ok:#68d391;--bad:#fc8181;--ln:#2b4543;--hl:#1d3634}}
+:root[data-theme="dark"]{--bg:#0f1c1b;--card:#172928;--ink:#e6f2f0;--mt:#9fb9b5;--acc:#4fd1c5;--acc2:#f6ad55;--ok:#68d391;--bad:#fc8181;--ln:#2b4543;--hl:#1d3634}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 "Nunito","Segoe UI",system-ui,sans-serif}
+main{max-width:760px;margin:0 auto;padding:20px 16px 60px}
+h1{font:800 clamp(26px,6vw,38px)/1.15 "Nunito","Segoe UI",sans-serif;margin:8px 0 6px}
+h2{font-size:22px;margin:0 0 10px}
+.sub{color:var(--mt);margin:0 0 18px}
+section{background:var(--card);border:1px solid var(--ln);border-radius:14px;padding:18px;margin:16px 0}
+.f{font-size:21px;text-align:center;background:var(--hl);border-radius:10px;padding:12px;margin:12px 0;overflow-x:auto}
+sup,sub{line-height:0}
+.iso{display:inline-block;font-weight:800;font-size:22px;color:var(--acc)}
+button,select,input{font:inherit;color:var(--ink)}
+button{background:var(--acc);color:var(--bg);border:0;border-radius:8px;padding:8px 14px;cursor:pointer;font-weight:700}
+button.o{background:var(--card);color:var(--ink);border:1.5px solid var(--ln);display:block;width:100%;text-align:left;margin:6px 0;font-weight:600}
+button.o:hover{border-color:var(--acc)}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid var(--acc2);outline-offset:2px}
+select,input[type=text]{background:var(--bg);border:1.5px solid var(--ln);border-radius:8px;padding:7px 10px}
+input[type=range]{width:100%;accent-color:var(--acc)}
+.bar{display:flex;height:34px;border-radius:8px;overflow:hidden;margin:10px 0;font-weight:800;color:#fff}
+.bar div{display:flex;align-items:center;justify-content:center;transition:width .2s;min-width:0;overflow:hidden;white-space:nowrap}
+.b1{background:#0f766e}.b2{background:#b45309}
+.res{font-size:26px;font-weight:800;color:var(--acc)}
+.fb{margin-top:8px;min-height:1.5em;font-weight:700}
+.ok{color:var(--ok)}.bad{color:var(--bad)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.step{border-left:4px solid var(--acc);padding:4px 0 4px 12px;margin:10px 0}
+details{margin:8px 0}summary{cursor:pointer;font-weight:700}
+.prog{font-weight:800;color:var(--acc2)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style></head><body><main>
+<h1>Середня відносна атомна маса елемента</h1>
+<p class="sub">Хімія, 7 клас. Урок 3. Дізнаєшся, чому в таблиці Менделєєва маси дробові, і навчишся їх обчислювати.</p>
+
+<section><h2>1. Проблема</h2>
+<p>У природі кожен елемент має ізотопи: <b>нукліди з різною кількістю нейтронів</b>, а отже, з різними масовими числами. Наприклад, Хлор існує як <span class="iso"><sup>35</sup>Cl</span> і <span class="iso"><sup>37</sup>Cl</span>. Яку масу записати в таблиці?</p>
+<p>Відповідь: <b>середню</b>, з урахуванням того, скільки кожного ізотопу в природі. Тому й виходить дробове число, наприклад A<sub>r</sub>(Cl) = 35,5.</p>
+<p><b>Чому A<sub>r</sub> елемента не ціле число?</b></p>
+<button class="o" data-q="0" data-a="0">Бо нейтрони мають дробову масу</button>
+<button class="o" data-q="0" data-a="1">Бо це середнє значення мас ізотопів з урахуванням їх поширення</button>
+<button class="o" data-q="0" data-a="2">Бо електрони теж додають масу</button>
+<div class="fb" id="fb0"></div></section>
+
+<section><h2>2. Алгоритм (на прикладі Брому)</h2>
+<p>Природний Бром: <span class="iso"><sup>79</sup>Br</span> — 51 %, <span class="iso"><sup>81</sup>Br</span> — 49 %.</p>
+<div class="step"><b>Крок 1. Умова.</b> Дано: w(<sup>79</sup>Br) = 51 %, w(<sup>81</sup>Br) = 49 %. Обчислити: A<sub>r</sub>(Br).</div>
+<div class="step"><b>Крок 2. Частки від одиниці.</b> 51 % : 100 % = 0,51; 49 % : 100 % = 0,49.</div>
+<div class="step"><b>Крок 3. Формула.</b></div>
+<div class="f">A<sub>r</sub>(E) = w<sub>1</sub> · A<sub>r1</sub> + w<sub>2</sub> · A<sub>r2</sub> + … + w<sub>n</sub> · A<sub>rn</sub></div>
+<div class="step">A<sub>r</sub>(Br) = 0,51 · 79 + 0,49 · 81 = 40,29 + 39,69 = <b>79,98</b></div>
+<div class="step"><b>Крок 4. Порівняння.</b> У періодичній таблиці A<sub>r</sub>(Br) = 79,90. Результат майже збігається, отже, обчислення правильне.</div>
+</section>
+
+<section><h2>3. Лабораторія: рухай суміш ізотопів</h2>
+<div class="row"><label for="el">Елемент:</label>
+<select id="el"></select></div>
+<p id="lbl" style="margin:12px 0 0"></p>
+<input type="range" id="sl" min="0" max="100" step="0.1" aria-label="Відсоток першого ізотопу">
+<div class="bar" id="bar"></div>
+<div class="f" id="calc"></div>
+<div>Результат: <span class="res" id="out"></span> &nbsp; У таблиці: <b id="tab"></b></div>
+<p class="sub" id="note" style="margin-top:8px"></p>
+<p><b>Спостереження:</b> що більше в суміші важчого ізотопу, то більша середня маса. Вона завжди лежить між масами ізотопів.</p>
+</section>
+
+<section><h2>4. Розв’яжи задачі</h2>
+<p class="sub">Округли до сотих. Кому можна писати і комою, і крапкою.</p>
+<div id="tasks"></div>
+<p class="prog" id="tp"></p></section>
+
+<section><h2>5. Міні-тест</h2>
+<div id="quiz"></div><p class="prog" id="qp"></p></section>
+
+<section><h2>Запам’ятай</h2>
+<div class="f" style="font-size:18px">Відносна атомна маса елемента в Періодичній системі — середнє значення відносних атомних мас його природних ізотопів з урахуванням їх поширення в природі.</div></section>
+</main>
+<script>
+const EL={
+Br:{n:"Бром",i:[79,81],p:51,t:79.90},
+B:{n:"Бор",i:[10,11],p:18.9,t:10.81},
+C:{n:"Карбон",i:[12,13],p:98.9,t:12.01},
+Li:{n:"Літій",i:[6,7],p:7.5,t:6.94},
+Cl:{n:"Хлор",i:[35,37],p:75.53,t:35.45},
+Cu:{n:"Купрум",i:[63,65],p:69,t:63.55}};
+const f=(x,d=2)=>x.toFixed(d).replace('.',',');
+const $=id=>document.getElementById(id);
+const sel=$('el'),sl=$('sl');
+for(const k in EL){const o=document.createElement('option');o.value=k;o.textContent=EL[k].n+' ('+k+')';sel.appendChild(o)}
+function load(){const e=EL[sel.value];sl.value=e.p;draw()}
+function draw(){const k=sel.value,e=EL[k],p1=+sl.value,p2=100-p1;
+const [a,b]=e.i,w1=p1/100,w2=p2/100,r=w1*a+w2*b;
+$('lbl').innerHTML='<sup>'+a+'</sup>'+k+': <b>'+f(p1,1)+' %</b> &nbsp;|&nbsp; <sup>'+b+'</sup>'+k+': <b>'+f(p2,1)+' %</b>';
+$('bar').innerHTML='<div class="b1" style="width:'+p1+'%">'+(p1>12?a+k:'')+'</div><div class="b2" style="width:'+p2+'%">'+(p2>12?b+k:'')+'</div>';
+$('calc').innerHTML='A<sub>r</sub>('+k+') = '+f(w1,3)+' · '+a+' + '+f(w2,3)+' · '+b+' = '+f(w1*a,3)+' + '+f(w2*b,3);
+$('out').textContent=f(r,2);$('tab').textContent=f(e.t,2).replace(/^(\d+),(\d)0$/,'$1,$2');
+$('tab').textContent=String(e.t).replace('.',',');
+$('note').textContent=Math.abs(p1-e.p)<0.05?'Це природний склад суміші.':'Це не природний склад. Поверни повзунок до '+f(e.p,1)+' %.';}
+sel.onchange=load;sl.oninput=draw;load();
+
+const T=[
+{q:'Бор: <sup>10</sup>B — 18,9 %, <sup>11</sup>B — 81,1 %. Обчисли A<sub>r</sub>(B).',a:10.81,h:'0,189 · 10 + 0,811 · 11 = 1,89 + 8,921 = 10,811 ≈ 10,81. У таблиці 10,81.'},
+{q:'Карбон: <sup>12</sup>C — 98,9 %, <sup>13</sup>C — 1,1 %. Обчисли A<sub>r</sub>(C).',a:12.01,h:'0,989 · 12 + 0,011 · 13 = 11,868 + 0,143 = 12,011 ≈ 12,01. У таблиці 12,01.'},
+{q:'Літій: <sup>6</sup>Li — 7,5 %, <sup>7</sup>Li — 92,5 %. Обчисли A<sub>r</sub>(Li).',a:6.93,h:'0,075 · 6 + 0,925 · 7 = 0,45 + 6,475 = 6,925 ≈ 6,93. У таблиці 6,94 — різниця через округлення мас ізотопів до цілих.'}];
+const td=$('tasks');let tdone=new Set();
+T.forEach((t,i)=>{const d=document.createElement('div');d.style.margin='14px 0';
+d.innerHTML='<div><b>6.'+(i+1)+'.</b> '+t.q+'</div><div class="row" style="margin-top:6px"><input type="text" inputmode="decimal" id="ti'+i+'" size="8" aria-label="Відповідь"><button>Перевірити</button></div><div class="fb" id="tf'+i+'"></div><details><summary>Підказка</summary>'+t.h+'</details>';
+d.querySelector('button').onclick=()=>{const v=parseFloat($('ti'+i).value.replace(',','.'));const fb=$('tf'+i);
+if(isNaN(v)){fb.className='fb bad';fb.textContent='Введи число.';return}
+if(Math.abs(v-t.a)<0.0051){fb.className='fb ok';fb.textContent='Правильно! A\u1D63 = '+f(t.a);tdone.add(i)}
+else{fb.className='fb bad';fb.textContent='Ще раз. Перевір частки від одиниці й суму добутків.'}
+$('tp').textContent='Розв’язано: '+tdone.size+' з '+T.length+(tdone.size==T.length?'. Чудово!':'')};
+td.appendChild(d)});
+
+const Q=[
+{q:'Що означає w в формулі?',o:['Масу атома','Частку ізотопу в природі (від одиниці)','Кількість нейтронів'],c:1},
+{q:'Cu: <sup>63</sup>Cu — 69 %, <sup>65</sup>Cu — 31 %. Яка приблизно A<sub>r</sub>(Cu)?',o:['63','64','65'],c:1,e:'0,69 · 63 + 0,31 · 65 = 63,62 ≈ 64. Нукліда з масою 64 тут немає: це результат розрахунку.'},
+{q:'Чи може середня A<sub>r</sub> бути меншою за масу найлегшого ізотопу?',o:['Так','Ні, вона завжди між масами ізотопів'],c:1},
+{q:'Скільки природних нуклідів має елемент, якщо його A<sub>r</sub> у таблиці дорівнює масі нукліда?',o:['Один','Два','Десять'],c:0}];
+const qd=$('quiz');let qs=new Set();
+Q.forEach((x,i)=>{const d=document.createElement('div');d.style.margin='14px 0';
+d.innerHTML='<div><b>'+(i+1)+'.</b> '+x.q+'</div>'+x.o.map((s,j)=>'<button class="o" data-j="'+j+'">'+s+'</button>').join('')+'<div class="fb"></div>';
+d.querySelectorAll('button').forEach(b=>b.onclick=()=>{const fb=d.querySelector('.fb'),j=+b.dataset.j;
+if(j===x.c){fb.className='fb ok';fb.textContent='Правильно! '+(x.e||'');qs.add(i)}else{fb.className='fb bad';fb.textContent='Спробуй ще раз.'}
+$('qp').textContent='Правильно: '+qs.size+' з '+Q.length});qd.appendChild(d)});
+
+document.querySelectorAll('[data-q]').forEach(b=>b.onclick=()=>{const fb=$('fb0');
+if(b.dataset.a==='1'){fb.className='fb ok';fb.textContent='Так! Середнє значення мас ізотопів з урахуванням поширення.'}else{fb.className='fb bad';fb.textContent='Ні. Спробуй ще.'}});
+</script></body></html>
