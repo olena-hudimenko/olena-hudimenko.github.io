@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Україна в умовах десталінізації — тест</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+:root{--bg:#F2F5F7;--surface:#FFFFFF;--ink:#16222E;--muted:#4C5B69;--line:#C9D3DB;--accent:#1E5AA8;--accent-ink:#FFFFFF;--soft:#E3EEFA;--good:#1F7A4D;--bad:#B3261E;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121A22;--surface:#1B2631;--ink:#EAF0F5;--muted:#A9B8C5;--line:#33414F;--accent:#7DB4F0;--accent-ink:#0E1822;--soft:#203449;--good:#6FD39B;--bad:#FF9B93;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#121A22;--surface:#1B2631;--ink:#EAF0F5;--muted:#A9B8C5;--line:#33414F;--accent:#7DB4F0;--accent-ink:#0E1822;--soft:#203449;--good:#6FD39B;--bad:#FF9B93;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Atkinson Hyperlegible",Verdana,Tahoma,sans-serif;font-size:21px;line-height:1.65;text-align:left}
+body.big{font-size:26px}
+main{max-width:680px;margin:0 auto;padding:20px 18px 48px}
+h1{font-size:1.45em;line-height:1.3;margin:8px 0 12px}
+h2{font-size:1.2em;line-height:1.4;margin:0 0 18px;font-weight:700}
+p{margin:0 0 14px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:10px;color:var(--muted);font-size:.8em}
+.bar{display:flex;gap:6px;margin-bottom:22px}
+.bar span{flex:1;height:10px;border-radius:5px;background:var(--line)}
+.bar span.done{background:var(--accent)}
+.bar span.now{background:var(--accent);outline:3px solid var(--soft)}
+.card{background:var(--surface);border:2px solid var(--line);border-radius:14px;padding:22px 20px}
+.opt{display:flex;gap:14px;align-items:flex-start;width:100%;text-align:left;font:inherit;color:var(--ink);background:var(--surface);border:2px solid var(--line);border-radius:12px;padding:14px 16px;margin:0 0 12px;cursor:pointer;min-height:64px}
+.opt .l{flex:none;width:36px;height:36px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font-weight:700;font-size:.85em}
+.opt[aria-pressed="true"]{border-color:var(--accent);background:var(--soft)}
+.opt[aria-pressed="true"] .l{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+button{font:inherit}
+.btn{border:2px solid var(--accent);background:var(--accent);color:var(--accent-ink);border-radius:12px;padding:12px 22px;font-weight:700;cursor:pointer;min-height:56px}
+.btn.alt{background:transparent;color:var(--accent)}
+.btn:disabled{opacity:.45;cursor:default}
+.row{display:flex;gap:12px;justify-content:space-between;margin-top:20px;flex-wrap:wrap}
+.link{background:none;border:0;color:var(--accent);text-decoration:underline;cursor:pointer;padding:8px 0;font-size:.85em}
+.hint{background:var(--soft);border-left:6px solid var(--accent);border-radius:8px;padding:12px 14px;margin:6px 0 0;font-size:.9em}
+input[type=text]{font:inherit;width:100%;padding:14px;border:2px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink);margin:6px 0 18px}
+:focus-visible{outline:4px solid var(--accent);outline-offset:3px}
+.score{font-size:2em;font-weight:700;margin:4px 0 6px}
+.rev{border-top:2px solid var(--line);padding:14px 0}
+.ok{color:var(--good);font-weight:700}
+.no{color:var(--bad);font-weight:700}
+textarea{font:inherit;font-size:.8em;width:100%;min-height:150px;padding:12px;border:2px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink)}
+.tools{display:flex;gap:10px}
+.tools .link{font-size:.8em}
+</style>
+</head>
+<body>
+<main id="app"></main>
+<script>
+var Q=[
+{t:"Що означає слово <b>«десталінізація»</b>?",o:["Подолання наслідків культу особи Сталіна","Зміцнення влади Сталіна","Створення колгоспів"],a:0,h:"Частка «де-» означає «скасування». Що скасовували?",e:"Десталінізація — це відмова від сталінських методів правління та подолання їхніх наслідків."},
+{t:"У якому році <b>помер Сталін</b>?",o:["1941","1953","1964"],a:1,h:"Це початок 1950-х років.",e:"Сталін помер у березні 1953 року. Після цього почалася відлига."},
+{t:"Що сталося <b>1956 року</b> на XX з’їзді КПРС?",o:["Почалася Друга світова війна","Україна здобула незалежність","Хрущов виголосив закриту доповідь про культ особи Сталіна"],a:2,h:"Подумай: це був з’їзд правлячої партії. Про кого говорили?",e:"Микита Хрущов розкритикував культ особи Сталіна та репресії."},
+{t:"Що означає слово <b>«реабілітація»</b>?",o:["Покарання за злочин","Визнання людини невинною і повернення їй доброго імені","Переселення в інший район"],a:1,h:"Реабілітованих людей визнавали невинними.",e:"Реабілітація — визнання, що людину засудили несправедливо."},
+{t:"<b>Правда чи ні?</b> У 1950-х роках з таборів почали повертатися тисячі невинно засуджених людей, зокрема й українців.",o:["Так, це правда","Ні, це неправда"],a:0,h:"Згадай, що таке реабілітація.",e:"Після 1953 року з таборів ГУЛАГу повернулися тисячі людей."},
+{t:"<b>Правда чи ні?</b> За доби відлиги людей <b>більше ніколи не карали</b> за політичні погляди.",o:["Так, це правда","Ні, це неправда"],a:1,h:"Слово «ніколи» часто робить твердження хибним.",e:"Переслідування тривали. Наприклад, у 1961 році судили Левка Лук’яненка та його однодумців."},
+{t:"Хто такі <b>шістдесятники</b>?",o:["Радянські генерали","Українські політики в еміграції","Молоді діячі культури, які відстоювали українську мову й культуру"],a:2,h:"Назва походить від 1960-х років.",e:"Шістдесятники — покоління письменників, митців і науковців 1960-х років."},
+{t:"Хто з цих людей належить до <b>шістдесятників</b>?",o:["Леся Українка","Ліна Костенко","Марко Вовчок"],a:1,h:"Ця поетеса почала друкуватися наприкінці 1950-х.",e:"Ліна Костенко — відома поетеса-шістдесятниця. Також до шістдесятників належали Василь Симоненко та Василь Стус."},
+{t:"У <b>1954 році</b> до складу УРСР передали:",o:["Галичину","Закарпаття","Крим"],a:2,h:"Це півострів на півдні.",e:"У 1954 році Кримську область передали зі складу РРФСР до УРСР."},
+{t:"Що змінилося в житті людей за доби відлиги?",o:["Відновили голод 1932–1933 років","Масово почали будувати житло — «хрущовки»","Повністю скасували колгоспи"],a:1,h:"Будинки назвали на честь керівника СРСР.",e:"Хрущовки — типові п’ятиповерхові будинки. Люди масово переселялися з бараків і комуналок."}
+];
+var L=["А","Б","В"];
+var steps=[{k:"start"}];
+Q.forEach(function(q,i){ if(i===5) steps.push({k:"break"}); steps.push({k:"q",i:i}); });
+steps.push({k:"end"});
+var S={s:0,name:"",ans:Q.map(function(){return null}),hint:Q.map(function(){return false}),big:false};
+var app=document.getElementById("app");
+
+function bar(cur){
+  var h='<div class="bar" aria-hidden="true">';
+  for(var i=0;i<Q.length;i++){h+='<span class="'+(i<cur?"done":i===cur?"now":"")+'"></span>';}
+  return h+"</div>";
+}
+function head(txt){
+  return '<div class="top"><span>'+txt+'</span><span class="tools"><button class="link" data-a="size">'+(S.big?"Менший текст":"Більший текст")+'</button></span></div>';
+}
+function score(){var n=0;Q.forEach(function(q,i){if(S.ans[i]===q.a)n++});return n;}
+function report(){
+  var lines=["Тест: Україна в умовах десталінізації","Ім’я: "+S.name,"Результат: "+score()+" з "+Q.length,"Підказок використано: "+S.hint.filter(Boolean).length,"Відповіді:"];
+  Q.forEach(function(q,i){var a=S.ans[i];lines.push((i+1)+". "+(a===null?"—":L[a])+(a===q.a?" ✓":" ✗"));});
+  return lines.join("\n");
+}
+function render(){
+  var st=steps[S.s],h="";
+  document.body.className=S.big?"big":"";
+  if(st.k==="start"){
+    h=head("Історія України, 11 клас")+'<h1 tabindex="-1" id="focus">Україна в умовах десталінізації</h1>'+
+    '<div class="card"><p>У тесті <b>10 питань</b>. Поспішати не треба.</p><p>На кожному екрані — одне питання. Можна повертатися назад.</p><p>Є кнопка «Підказка». Посередині буде коротка перерва.</p>'+
+    '<label for="nm">Твоє ім’я та прізвище:</label><input type="text" id="nm" autocomplete="name" value="'+S.name.replace(/"/g,"&quot;")+'">'+
+    '<button class="btn" data-a="next" id="go"'+(S.name.trim()?"":" disabled")+'>Почати</button></div>';
+  } else if(st.k==="break"){
+    h=head("Перерва")+'<h1 tabindex="-1" id="focus">Перерва</h1><div class="card"><p>Ти відповів на <b>5 питань</b>. Це половина!</p><p>Відпочинь хвилину: випрями спину, випий води, подивися у вікно.</p>'+
+    '<div class="row"><button class="btn alt" data-a="prev">Назад</button><button class="btn" data-a="next">Продовжити</button></div></div>';
+  } else if(st.k==="q"){
+    var i=st.i,q=Q[i];
+    h=head("Питання "+(i+1)+" з "+Q.length)+bar(i)+'<div class="card"><h2 tabindex="-1" id="focus">'+q.t+'</h2><div role="group" aria-label="Варіанти відповіді">';
+    q.o.forEach(function(o,j){h+='<button class="opt" data-a="pick" data-j="'+j+'" aria-pressed="'+(S.ans[i]===j)+'"><span class="l">'+L[j]+'</span><span>'+o+'</span></button>';});
+    h+='</div>';
+    if(S.hint[i]){h+='<p class="hint"><b>Підказка:</b> '+q.h+'</p>';}else{h+='<button class="link" data-a="hint">Підказка</button>';}
+    h+='<div class="row"><button class="btn alt" data-a="prev">Назад</button><button class="btn" data-a="next"'+(S.ans[i]===null?" disabled":"")+'>'+(i===Q.length-1?"Завершити":"Далі")+'</button></div></div>';
+  } else {
+    h=head("Готово")+'<h1 tabindex="-1" id="focus">Ти молодець, '+S.name.split(" ")[0]+'!</h1><div class="card"><div class="score">'+score()+" з "+Q.length+'</div><p>Ось розбір усіх питань.</p>';
+    Q.forEach(function(q,i){
+      var a=S.ans[i],good=a===q.a;
+      h+='<div class="rev"><p><b>'+(i+1)+'.</b> '+q.t+'</p><p class="'+(good?"ok":"no")+'">'+(good?"✓ Правильно: ":"✗ Правильна відповідь: ")+q.o[q.a]+'</p>'+
+      (good?"":'<p>Твоя відповідь: '+(a===null?"немає":q.o[a])+'</p>')+'<p>'+q.e+'</p></div>';
+    });
+    h+='<div class="rev"><p><b>Надішли результат учительці.</b> Натисни кнопку й встав текст у повідомлення.</p><textarea id="rep" readonly>'+report()+'</textarea><div class="row"><button class="btn alt" data-a="prev">Назад до питань</button><button class="btn" data-a="copy" id="cp">Скопіювати результат</button></div></div></div>';
+  }
+  app.innerHTML=h;
+  var f=document.getElementById("focus");if(f&&st.k!=="start"){f.focus({preventScroll:true});}
+  window.scrollTo(0,0);
+}
+app.addEventListener("input",function(e){
+  if(e.target.id==="nm"){S.name=e.target.value;var g=document.getElementById("go");if(g){g.disabled=!S.name.trim();}}
+});
+app.addEventListener("click",function(e){
+  var b=e.target.closest("[data-a]");if(!b)return;
+  var a=b.getAttribute("data-a");
+  if(a==="next"){if(S.s<steps.length-1){S.s++;render();}}
+  else if(a==="prev"){if(S.s>0){S.s--;render();}}
+  else if(a==="pick"){S.ans[steps[S.s].i]=+b.getAttribute("data-j");render();}
+  else if(a==="hint"){S.hint[steps[S.s].i]=true;render();}
+  else if(a==="size"){S.big=!S.big;render();}
+  else if(a==="copy"){
+    var t=document.getElementById("rep");t.select();
+    var done=function(){b.textContent="Скопійовано ✓";};
+    try{navigator.clipboard.writeText(t.value).then(done,function(){try{document.execCommand("copy");done();}catch(x){}});}
+    catch(x){try{document.execCommand("copy");done();}catch(y){}}
+  }
+});
+render();
+</script>
+</body>
+</html>
