@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Україна в період системної кризи СРСР — робочий аркуш</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&family=PT+Serif:wght@400;700&display=swap">
+<style>
+:root{--bg:#eef1f5;--card:#fff;--ink:#1b2a4a;--muted:#5a6785;--red:#b3201f;--line:#cfd6e2;--ok:#1f7a4d;--okbg:#e3f3ea;--bad:#b3201f;--badbg:#fbe6e5;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12182a;--card:#1b2338;--ink:#e6eaf4;--muted:#9aa6c2;--line:#34405e;--ok:#5fd39a;--okbg:#173a2b;--bad:#ff8a87;--badbg:#3d1f23;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#12182a;--card:#1b2338;--ink:#e6eaf4;--muted:#9aa6c2;--line:#34405e;--ok:#5fd39a;--okbg:#173a2b;--bad:#ff8a87;--badbg:#3d1f23;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 "PT Sans",Arial,sans-serif}
+main{max-width:720px;margin:0 auto;padding:16px 16px 56px}
+header{background:#b3201f;color:#fff;border-radius:8px;padding:22px 20px;margin-bottom:18px}
+h1{font:700 26px/1.2 "PT Serif",Georgia,serif;margin:0 0 6px}
+header p{margin:0;opacity:.92;font-size:16px}
+.who{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+.who label{flex:1 1 220px;font-size:15px;color:var(--muted)}
+input[type=text],select,textarea{width:100%;font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:6px;padding:9px 10px}
+textarea{min-height:110px;resize:vertical}
+section{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:18px;margin-bottom:16px}
+h2{font:700 20px/1.3 "PT Serif",Georgia,serif;margin:0 0 6px;display:flex;gap:10px;align-items:baseline}
+h2 i{font:700 15px "PT Sans",sans-serif;font-style:normal;background:var(--red);color:#fff;border-radius:50%;min-width:26px;height:26px;display:inline-grid;place-items:center;flex:none}
+.hint{color:var(--muted);margin:0 0 12px;font-size:15px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:8px 10px;border-radius:6px;border:1px solid transparent}
+.row .lbl{flex:0 0 190px;font-weight:700}
+.row select{flex:1 1 260px;width:auto}
+.ok{background:var(--okbg);border-color:var(--ok)}
+.bad{background:var(--badbg);border-color:var(--bad)}
+ol{list-style:none;margin:0;padding:0}
+#t2 li{display:flex;gap:10px;align-items:center;padding:9px 10px;margin-bottom:6px;border:1px solid var(--line);border-radius:6px}
+#t2 .tx{flex:1}
+#t2 .yr{color:var(--muted);font-family:"PT Serif",serif}
+#t2 li.ok{border-color:var(--ok)}#t2 li.bad{border-color:var(--bad)}
+.mv{display:flex;gap:4px}
+.mv button{padding:2px 10px;font-size:16px}
+button{font:700 15px "PT Sans",sans-serif;color:var(--card);background:var(--ink);border:0;border-radius:6px;padding:9px 16px;cursor:pointer}
+button.alt{background:transparent;color:var(--ink);border:1px solid var(--line)}
+button:disabled{opacity:.35;cursor:default}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--red);outline-offset:2px}
+.st{padding:10px;border-radius:6px;margin-bottom:8px;border:1px solid transparent}
+.st p{margin:0 0 6px}
+.st label{margin-right:16px;cursor:pointer}
+.why{font-size:15px;color:var(--muted);margin-top:6px}
+.opt{display:block;padding:8px 10px;margin-bottom:6px;border-radius:6px;border:1px solid transparent;cursor:pointer}
+.res{margin-top:10px;font-weight:700;min-height:1.5em}
+.total{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.total strong{font:700 28px "PT Serif",Georgia,serif}
+#out{display:none;margin-top:12px;font-size:14px}
+@media (max-width:520px){.row .lbl{flex-basis:100%}}
+</style>
+</head>
+<body>
+<main>
+<header>
+<h1>Україна в період системної кризи СРСР</h1>
+<p>Робочий аркуш, 11 клас · доба «застою»</p>
+</header>
+
+<div class="who">
+<label>Прізвище та ім’я<input type="text" id="name" autocomplete="name"></label>
+</div>
+
+<section>
+<h2><i>1</i>Постаті та поняття</h2>
+<p class="hint">Добери до кожної постаті чи поняття правильний опис.</p>
+<div id="t1"></div>
+<button id="c1">Перевірити</button>
+<div class="res" id="r1"></div>
+</section>
+
+<section>
+<h2><i>2</i>Хронологія</h2>
+<p class="hint">Розташуй події від найранішої до наймолодшої. Користуйся стрілками.</p>
+<ol id="t2"></ol>
+<button id="c2">Перевірити</button>
+<div class="res" id="r2"></div>
+</section>
+
+<section>
+<h2><i>3</i>Конституція УРСР 1978 року</h2>
+<p class="hint">Познач кожне твердження як вірне або хибне.</p>
+<div id="t3"></div>
+<button id="c3">Перевірити</button>
+<div class="res" id="r3"></div>
+</section>
+
+<section>
+<h2><i>4</i>Українська Гельсінська Група</h2>
+<p class="hint">Група виникла 1976 року, мала 36 учасників, її очолив Микола Руденко. Познач усі справжні цілі групи.</p>
+<div id="t4"></div>
+<button id="c4">Перевірити</button>
+<div class="res" id="r4"></div>
+</section>
+
+<section>
+<h2><i>5</i>Власна думка</h2>
+<p class="hint">Відповідай у 2–3 реченнях. Це завдання перевіряє вчитель.</p>
+<p>Чому Українська Гельсінська Група виникла саме після підписання Гельсінського Заключного акта 1975 року? Спирайся на цілі групи.</p>
+<textarea id="open" aria-label="Відповідь на завдання 5"></textarea>
+</section>
+
+<section>
+<div class="total">
+<div>Автоматично перевірено<br><strong><span id="total">0</span> з <span id="max">0</span></strong></div>
+<div><button id="copy">Скопіювати результат для вчителя</button> <button class="alt" id="again">Почати заново</button></div>
+</div>
+<textarea id="out" readonly aria-label="Текст результату"></textarea>
+</section>
+</main>
+
+<script>
+const $=(s)=>document.querySelector(s);
+const el=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
+const MAX={1:5,2:5,3:4,4:5},score={},note={};
+$('#max').textContent=Object.values(MAX).reduce((a,b)=>a+b,0);
+function fin(k,n,s){score[k]=n;note[k]=n+' з '+MAX[k];$(s).textContent='Правильно: '+n+' з '+MAX[k];$('#total').textContent=Object.values(score).reduce((a,b)=>a+b,0)}
+
+/* 1 */
+const people=[
+{n:'Леонід Брежнєв',d:'З 1964 р. — перший секретар ЦК КПРС, з 1966 р. — генеральний секретар'},
+{n:'Петро Шелест',d:'З 1963 р. — перший секретар ЦК Компартії України'},
+{n:'Володимир Щербицький',d:'З 1972 р. — перший секретар ЦК КПУ'},
+{n:'Микола Руденко',d:'Очолив Українську Гельсінську Групу'},
+{n:'Номенклатура',d:'Сукупність управлінців, призначуваних на керівні посади'}];
+const t1=$('#t1');
+people.forEach(p=>{const r=el('div','row');r.append(el('span','lbl',p.n));const s=el('select');s.setAttribute('aria-label',p.n);s.add(new Option('— обери опис —',''));[3,0,4,2,1].forEach(k=>s.add(new Option(people[k].d,k)));r.append(s);t1.append(r)});
+$('#c1').onclick=()=>{let n=0;[...t1.children].forEach((r,i)=>{const ok=r.querySelector('select').value===String(i);r.className='row '+(ok?'ok':'bad');if(ok)n++});fin(1,n,'#r1')};
+
+/* 2 */
+const ev=[
+{y:1964,t:'Обрання Л. Брежнєва першим секретарем ЦК КПРС'},
+{y:1972,t:'Обрання В. Щербицького першим секретарем ЦК КПУ'},
+{y:1975,t:'Підписання в Гельсінкі Заключного акта Конференції з безпеки та співробітництва в Європі'},
+{y:1978,t:'Прийняття Конституції УРСР'},
+{y:1979,t:'Введення радянських військ до Афганістану'}];
+let order=[2,4,0,3,1];
+function draw2(chk){const ul=$('#t2');ul.innerHTML='';order.forEach((id,pos)=>{const li=el('li',chk?(id===pos?'ok':'bad'):'');li.append(el('span','tx',ev[id].t));if(chk)li.append(el('b','yr',ev[id].y));const m=el('span','mv');
+const u=el('button','alt','↑');u.setAttribute('aria-label','Вище');u.disabled=pos===0;u.onclick=()=>mv(pos,-1);
+const d=el('button','alt','↓');d.setAttribute('aria-label','Нижче');d.disabled=pos===order.length-1;d.onclick=()=>mv(pos,1);
+m.append(u,d);li.append(m);ul.append(li)})}
+function mv(p,d){[order[p],order[p+d]]=[order[p+d],order[p]];draw2(false);$('#r2').textContent=''}
+draw2(false);
+$('#c2').onclick=()=>{draw2(true);fin(2,order.filter((id,i)=>id===i).length,'#r2')};
+
+/* 3 */
+const st=[
+{t:'Конституція УРСР 1978 року була створена за зразком союзної Конституції.',a:1,w:'Так, УРСР відтворила модель загальносоюзної Конституції 1977 року.'},
+{t:'Конституція УРСР чітко прописувала механізм виходу республіки з СРСР.',a:0,w:'Право виходу було, але механізм його здійснення не прописали.'},
+{t:'Стаття 6 закріплювала головну роль комуністичної партії.',a:1,w:'Саме так: КПРС визнавалась керівною силою суспільства.'},
+{t:'Метою Конституції була побудова соціалістичного суспільства.',a:1,w:'Її називали Конституцією розвинутого соціалізму.'}];
+const t3=$('#t3');
+st.forEach((s,i)=>{const d=el('div','st');d.append(el('p',null,s.t));
+[['1','Вірно'],['0','Хибно']].forEach(([v,l])=>{const lb=el('label');const r=el('input');r.type='radio';r.name='s'+i;r.value=v;lb.append(r,' '+l);d.append(lb)});
+d.append(el('div','why'));t3.append(d)});
+$('#c3').onclick=()=>{let n=0;[...t3.children].forEach((d,i)=>{const c=d.querySelector('input:checked');const ok=c&&c.value===String(st[i].a);d.className='st '+(ok?'ok':'bad');d.querySelector('.why').textContent=st[i].w;if(ok)n++});fin(3,n,'#r3')};
+
+/* 4 */
+const go=[
+['Ознайомити населення з Декларацією прав людини',1],
+['Сприяти виконанню Підсумкового акта Гельсінської наради',1],
+['Домагатися представлення України окремою делегацією',1],
+['Акредитувати іноземних журналістів',1],
+['Підготувати збройне повстання проти влади',0]];
+const t4=$('#t4');
+go.forEach(g=>{const l=el('label','opt');const c=el('input');c.type='checkbox';l.append(c,' '+g[0]);t4.append(l)});
+$('#c4').onclick=()=>{let n=0;[...t4.children].forEach((l,i)=>{const ok=l.querySelector('input').checked===!!go[i][1];l.className='opt '+(ok?'ok':'bad');if(ok)n++});fin(4,n,'#r4')};
+
+/* підсумок */
+function report(){const tot=Object.values(score).reduce((a,b)=>a+b,0);
+return 'Учень/учениця: '+($('#name').value||'—')+'\nАвтоматично перевірено: '+tot+' з '+$('#max').textContent+'\n'+
+[1,2,3,4].map(k=>'Завдання '+k+': '+(note[k]||'не перевірено')).join('\n')+'\nЗавдання 5 (відкрите):\n'+($('#open').value||'—')}
+$('#copy').onclick=async()=>{const t=report(),o=$('#out');
+try{await navigator.clipboard.writeText(t);$('#copy').textContent='Скопійовано'}
+catch(e){o.style.display='block';o.value=t;o.select()}};
+$('#again').onclick=()=>location.reload();
+</script>
+</body>
+</html>
