@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Хто береже слова: День писемності, 5 клас</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#ecece6;--ink:#1d2a44;--soft:#4b5670;--card:#f8f8f3;--line:#c9c9bd;--gold:#a87714;--ok:#2a6b57;--bad:#a23b3b;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141a26;--ink:#e8e6dc;--soft:#a9b0c2;--card:#1d2535;--line:#34405a;--gold:#e0b04a;--ok:#6cc4a6;--bad:#e58a8a}}
+:root[data-theme="dark"]{--bg:#141a26;--ink:#e8e6dc;--soft:#a9b0c2;--card:#1d2535;--line:#34405a;--gold:#e0b04a;--ok:#6cc4a6;--bad:#e58a8a}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Alegreya,Georgia,serif;font-size:clamp(19px,2.3vw,26px);line-height:1.5;min-height:100vh;display:flex;flex-direction:column}
+main{flex:1;width:100%;max-width:980px;margin:0 auto;padding:clamp(16px,4vw,48px)}
+h1,h2{line-height:1.15;margin:0 0 .5em;font-weight:700}
+h1{font-size:clamp(40px,8vw,88px);letter-spacing:-.01em}
+h2{font-size:clamp(28px,4.4vw,46px)}
+p{margin:0 0 .8em;max-width:36em}
+.hint{color:var(--soft);font-style:italic}
+.gold{color:var(--gold)}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
+button,input{font:inherit;color:inherit}
+.rv{display:block;width:100%;text-align:left;background:var(--card);border:2px solid var(--line);border-radius:10px;padding:14px 18px;cursor:pointer}
+.rv:hover{border-color:var(--gold)}
+.rv .a{display:none;margin-top:.5em;padding-top:.5em;border-top:1px dashed var(--line)}
+.rv.open{border-color:var(--gold)}
+.rv.open .a{display:block}
+.rv .t{font-weight:700}
+.yes{color:var(--ok);font-weight:700}.no{color:var(--bad);font-weight:700}
+.cv{display:flex;flex-wrap:wrap;align-items:center;gap:10px;background:var(--card);border:2px solid var(--line);border-radius:10px;padding:12px 18px;margin-bottom:12px}
+.cv .y{font-size:1.6em;font-weight:700;color:var(--gold);min-width:3.2em}
+.cv .ev{flex:1 1 220px;color:var(--soft)}
+input[type=text],input[type=number]{background:var(--bg);border:2px solid var(--line);border-radius:8px;padding:8px 12px;width:7em}
+input.wide{width:100%;flex:1 1 300px}
+.go{background:var(--ink);color:var(--bg);border:0;border-radius:8px;padding:9px 18px;cursor:pointer;font-weight:700}
+.res{font-weight:700;width:100%}
+.big{font-size:clamp(34px,6vw,64px);font-weight:700;color:var(--gold);margin:.2em 0}
+.quote{border-left:5px solid var(--gold);padding:.2em 0 .2em 18px;margin:0 0 1em;font-size:1.15em}
+ul.chr{padding:0;list-style:none;margin:14px 0 0}
+ul.chr li{padding:8px 0;border-bottom:1px solid var(--line)}
+ul.chr b{color:var(--gold)}
+nav{position:sticky;bottom:0;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px clamp(16px,4vw,48px);background:var(--bg);border-top:2px solid var(--line)}
+nav button{background:transparent;border:2px solid var(--ink);border-radius:8px;padding:8px 20px;cursor:pointer;font-weight:700}
+nav button:disabled{opacity:.35;cursor:default}
+#pos{color:var(--soft)}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<main>
+
+<section class="s">
+<p class="hint">27 жовтня · День української писемності та мови</p>
+<h1>Хто береже слова</h1>
+<p>Сьогодні ми станемо істориками: відгадаємо, на чому писали наші предки, прочитаємо дату з літопису і складемо власний запис для майбутніх поколінь.</p>
+<p class="hint">Відповідаємо в чаті. Вчитель натискає на картки, щоб відкрити відповідь.</p>
+</section>
+
+<section class="s" hidden>
+<h2>Правда чи ні?</h2>
+<p class="hint">Напишіть у чаті «+» або «−», потім відкриємо відповідь.</p>
+<div class="grid">
+<button class="rv"><span class="t">День писемності відзначають 9 листопада.</span><span class="a"><span class="no">Неправда, вже ні.</span> До 2023 року так і було, але указом президента свято перенесли на 27 жовтня. Це день пам’яті Нестора-літописця за новим церковним календарем.</span></button>
+<button class="rv"><span class="t">Нестор жив у XX столітті.</span><span class="a"><span class="no">Неправда.</span> Він був монахом Києво-Печерського монастиря на межі XI–XII століть.</span></button>
+<button class="rv"><span class="t">Літописи писали на пергаменті.</span><span class="a"><span class="yes">Правда.</span> Пергамент — це вичинена шкіра. Папір на Русі з’явився значно пізніше.</span></button>
+<button class="rv"><span class="t">Літописець завжди писав лише чисту правду.</span><span class="a"><span class="no">Неправда.</span> Він міг помилятися, чогось не знати або показувати події так, як вигідно замовникам. Тому історики перевіряють джерела.</span></button>
+</div>
+</section>
+
+<section class="s" hidden>
+<h2>Що на чому писали?</h2>
+<p class="hint">Натискайте на картку, щоб прочитати.</p>
+<div class="grid">
+<button class="rv"><span class="t">Берестяна кора</span><span class="a">Писали гострою паличкою, яка називалась «писало». Листи, записки, рахунки, навіть дитячі малюнки.</span></button>
+<button class="rv"><span class="t">Пергамент</span><span class="a">Дуже дорогий матеріал: на одну книгу йшли шкури багатьох телят. Тому книги були великою цінністю.</span></button>
+<button class="rv"><span class="t">Стіна собору</span><span class="a">У Софії Київській збереглися написи-графіті XI століття, серед них і абетка. Писали не лише книжники.</span></button>
+<button class="rv"><span class="t">Екран і чат</span><span class="a">Сьогодні ми пишемо в месенджерах. <b>Питання класу:</b> чи збережеться це для істориків через тисячу років? Що для цього треба зробити?</span></button>
+</div>
+</section>
+
+<section class="s" hidden>
+<h2>Перекладач часу</h2>
+<p>Літописець рахував роки від створення світу. Щоб дізнатися наш рік, <b class="gold">віднімаємо 5508</b>. Клас рахує в чаті, вчитель вписує відповідь.</p>
+<div class="cv" data-y="988"><span class="y">6496</span><span class="ev">Хрещення Русі (за літописом)</span><input type="number" inputmode="numeric" aria-label="Рік"><button class="go">Перевірити</button><span class="res"></span></div>
+<div class="cv" data-y="1015"><span class="y">6523</span><span class="ev">Смерть князя Володимира</span><input type="number" inputmode="numeric" aria-label="Рік"><button class="go">Перевірити</button><span class="res"></span></div>
+<div class="cv" data-y="1037"><span class="y">6545</span><span class="ev">Літопис пов’язує цей рік зі Софією Київською</span><input type="number" inputmode="numeric" aria-label="Рік"><button class="go">Перевірити</button><span class="res"></span></div>
+</section>
+
+<section class="s" hidden>
+<h2>Три питання до джерела</h2>
+<blockquote class="quote">«Се повѣсти времяньныхъ лѣтъ…» — «Ось повість минулих літ: звідки пішла Руська земля і хто в Києві перший почав княжити».</blockquote>
+<div class="grid">
+<button class="rv"><span class="t">Хто це написав?</span><span class="a">«Повість врем’яних літ» традиційно пов’язують з Нестором, монахом Києво-Печерського монастиря.</span></button>
+<button class="rv"><span class="t">Коли?</span><span class="a">На початку XII століття, приблизно 900 років тому.</span></button>
+<button class="rv"><span class="t">Навіщо?</span><span class="a">Щоб відповісти на головне питання: звідки пішла Руська земля. Це пам’ять, записана для нащадків.</span></button>
+</div>
+</section>
+
+<section class="s" hidden>
+<h2>Літопис нашого класу</h2>
+<p>Якби наш клас вів літопис, у якому році він записав би подію? Рахуємо навпаки:</p>
+<p class="big" id="yr"></p>
+<p>Що найважливіше сталося в класі цього тижня? Клас пише в чаті, вчитель вносить запис.</p>
+<div class="cv"><input class="wide" type="text" id="ent" placeholder="Запис до літопису" aria-label="Запис до літопису"><button class="go" id="add">Додати</button></div>
+<ul class="chr" id="chr"></ul>
+</section>
+
+<section class="s" hidden>
+<h2>Що ми збережемо?</h2>
+<p>Одним словом у чаті: що з нашого життя варто зберегти для майбутніх істориків?</p>
+<p><b class="gold">Домашнє завдання.</b> Знайдіть удома найстаріший писемний документ, листа чи листівку. Сфотографуйте і визначте: що це за джерело, коли воно створене, як його берегти.</p>
+<p class="hint">Дякую за роботу, юні літописці!</p>
+</section>
+
+</main>
+<nav>
+<button id="prev">Назад</button>
+<span id="pos"></span>
+<button id="next">Далі</button>
+</nav>
+<script>
+var S=[].slice.call(document.querySelectorAll('.s')),i=0,pos=document.getElementById('pos');
+function go(n){
+  i=Math.max(0,Math.min(S.length-1,n));
+  S.forEach(function(s,k){s.hidden=k!==i});
+  pos.textContent=(i+1)+' / '+S.length;
+  document.getElementById('prev').disabled=i===0;
+  document.getElementById('next').disabled=i===S.length-1;
+  window.scrollTo(0,0);
+}
+document.getElementById('prev').onclick=function(){go(i-1)};
+document.getElementById('next').onclick=function(){go(i+1)};
+document.addEventListener('keydown',function(e){
+  if(e.target.tagName==='INPUT')return;
+  if(e.key==='ArrowRight')go(i+1);
+  if(e.key==='ArrowLeft')go(i-1);
+});
+document.querySelectorAll('.rv').forEach(function(b){
+  b.onclick=function(){b.classList.toggle('open')};
+});
+document.querySelectorAll('.cv[data-y]').forEach(function(c){
+  var inp=c.querySelector('input'),res=c.querySelector('.res');
+  function check(){
+    var v=parseInt(inp.value,10),y=parseInt(c.dataset.y,10);
+    if(isNaN(v)){res.textContent='Впишіть рік.';res.className='res';return}
+    if(v===y){res.textContent='Так! '+y+' рік.';res.className='res yes'}
+    else{res.textContent='Ще раз: від літописної дати віднімаємо 5508.';res.className='res no'}
+  }
+  c.querySelector('.go').onclick=check;
+  inp.onkeydown=function(e){if(e.key==='Enter')check()};
+});
+var Y=new Date().getFullYear()+5508;
+document.getElementById('yr').textContent='У літо '+Y;
+var ent=document.getElementById('ent'),chr=document.getElementById('chr');
+function add(){
+  var t=ent.value.trim();
+  if(!t)return;
+  var li=document.createElement('li'),b=document.createElement('b');
+  b.textContent='У літо '+Y+': ';
+  li.appendChild(b);
+  li.appendChild(document.createTextNode(t));
+  chr.appendChild(li);
+  ent.value='';ent.focus();
+}
+document.getElementById('add').onclick=add;
+ent.onkeydown=function(e){if(e.key==='Enter')add()};
+go(0);
+</script>
+</body>
+</html>
