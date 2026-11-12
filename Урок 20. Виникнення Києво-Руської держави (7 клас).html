@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Урок 20. Виникнення Києво-Руської держави</title>
+<style>
+:root{--bg:#f6f4ee;--card:#fff;--tx:#23262b;--mut:#6a6f78;--ac:#2f6f4f;--acs:#e3f1e9;--ok:#2e7d32;--oks:#e4f4e5;--bad:#b3261e;--bads:#fbe9e7;--bd:#d9d5c8;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1a1d1b;--card:#242826;--tx:#e8e8e3;--mut:#a0a59f;--ac:#6fcf97;--acs:#26382e;--ok:#81c784;--oks:#243a26;--bad:#ef9a9a;--bads:#40262a;--bd:#3a403c;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1a1d1b;--card:#242826;--tx:#e8e8e3;--mut:#a0a59f;--ac:#6fcf97;--acs:#26382e;--ok:#81c784;--oks:#243a26;--bad:#ef9a9a;--bads:#40262a;--bd:#3a403c;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.w{max-width:760px;margin:0 auto;padding:16px}
+h1{font-size:1.35rem;margin:.2em 0}h2{font-size:1.15rem;margin:.2em 0 .5em;color:var(--ac)}
+.sub{color:var(--mut);margin:0 0 12px}
+.bar{height:8px;background:var(--bd);border-radius:6px;overflow:hidden;margin:10px 0}
+.bar i{display:block;height:100%;background:var(--ac);width:0;transition:width .3s}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.tabs button{flex:1;min-width:38px;padding:7px 0;border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:8px;cursor:pointer;font-weight:600}
+.tabs button.on{background:var(--ac);color:var(--bg);border-color:var(--ac)}
+.tabs button.done{border-color:var(--ok)}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:16px;margin-bottom:14px}
+.q{font-weight:600;margin:0 0 10px}
+.note{background:var(--acs);border-radius:8px;padding:10px 12px;margin:10px 0;font-size:.95rem}
+.opt{display:flex;gap:10px;align-items:flex-start;padding:9px 11px;border:1px solid var(--bd);border-radius:8px;margin:6px 0;cursor:pointer}
+.opt.ok{background:var(--oks);border-color:var(--ok)}.opt.bad{background:var(--bads);border-color:var(--bad)}
+.row{padding:10px 0;border-top:1px solid var(--bd)}.row:first-of-type{border-top:0}
+.row p{margin:0 0 8px}.btns{display:flex;gap:8px;flex-wrap:wrap}
+.btn{padding:8px 14px;border-radius:8px;border:1px solid var(--ac);background:var(--card);color:var(--ac);cursor:pointer;font:inherit;font-weight:600}
+.btn.p{background:var(--ac);color:var(--bg)}.btn.ok{background:var(--oks);border-color:var(--ok);color:var(--ok)}.btn.bad{background:var(--bads);border-color:var(--bad);color:var(--bad)}
+.btn:disabled{cursor:default;opacity:.85}
+.fb{margin-top:8px;font-size:.93rem;color:var(--mut)}
+select,textarea,input[type=text]{width:100%;padding:8px;border-radius:8px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font:inherit}
+textarea{min-height:80px}
+.nav{display:flex;justify-content:space-between;gap:8px;margin-top:8px}
+.big{font-size:2rem;font-weight:700;color:var(--ac)}
+ul{padding-left:20px;margin:.4em 0}
+</style>
+</head>
+<body>
+<div class="w">
+<h1>Урок 20. Виникнення Києво-Руської держави</h1>
+<p class="sub">7 клас · Історія · Після уроку ти зможеш пояснити, що означає слово «русь», розповісти про норманську теорію та хто такі Аскольд і Дір, і визначити ключові дати.</p>
+<div class="bar"><i id="pb"></i></div>
+<div class="tabs" id="tabs"></div>
+<div id="main"></div>
+</div>
+<script>
+const S=[
+{t:"Поміркуй",h:"Cogita! Поміркуй",intro:"Пригадай причини виникнення держав. Зроби припущення, якими були причини виникнення Києво-Руської держави.",b:[
+{k:"pick",multi:1,q:"Обери всі правдоподібні причини:",o:["Потреба в захисті та в керівництві військовими дружинами","Розвиток торгівлі, зокрема шляху «із варягів у греки»","Об’єднання племен під владою князя","Наказ візантійського імператора створити слов’янську державу","Повна відмова слов’ян від землеробства"],c:[0,1,2],fb:"Це лише припущення — на уроці ми перевіримо їх за джерелами. Зовнішнього «наказу» про створення держави не було, а землеробство залишалося основою господарства."}]},
+{t:"Русь",h:"Що таке «русь»?",intro:"Довідка: слово «русь» має кілька значень, а його етимологія дискусійна.",b:[
+{k:"cls",l:["Так, це значення","Ні, це не значення"],q:"Чи є це значенням терміна «русь»?",r:[
+["Назва народу",0,"Так, це перше значення."],
+["Назва території, яку населяли руси",0,"Так, це друге значення."],
+["Назва держави цього народу із центром у Києві",0,"Так, це третє значення."],
+["Назва візантійської провінції",1,"Ні, жодне зі значень не пов’язане з провінцією Візантії."],
+["Назва Хозарського каганату",1,"Ні, Хозарський каганат — окрема держава."]]},
+{k:"pick",q:"Яка найпоширеніша версія походження слова «русь»?",o:["Скандинавська — пов’язана з військово-торговими групами норманів (варягів)","Грецька — від назви Константинополя","Тюркська — від назви хозарського роду"],c:[0],fb:"Саме скандинавську версію вважає доведеною більшість істориків."},
+{k:"open",q:"Зроби припущення: чому існує така велика кількість версій значення терміна «русь»?",m:"Зразок: джерел мало, вони пізні та суперечливі; слово мало різні значення в різний час (народ, територія, держава); етимологію важко відновити через давність."}]},
+{t:"Норманська теорія",h:"Норманська теорія",intro:"Навчальний текст 20.1 (ч. 3–4, с. 45–46). Визнач, що правда, а що ні.",b:[
+{k:"cls",l:["Правда","Неправда"],q:"Оціни твердження:",r:[
+["Норманська теорія пов’язує виникнення державності з діяльністю норманів (варягів) у Східній Європі.",0,"Так, це її основний зміст."],
+["Сучасні історики вважають, що слов’яни нічого не зробили для створення держави, її створили лише нормани.",1,"Ні. Більшість істориків визнає, що вплинула взаємодія норманів зі слов’янами."],
+["Більшість істориків вважає доведеним скандинавське походження терміна «русь».",0,"Так."],
+["Рюрик — достеменно відома постать, про яку збереглося багато документів.",1,"Ні. Для істориків Рюрик залишається легендарною постаттю."],
+["Етимологія слова «русь» остаточно з’ясована, дискусій немає.",1,"Ні, етимологія дискусійна."]]},
+{k:"open",q:"Поясни, чому засновник князівської династії Рюрик для істориків залишається легендарною постаттю.",m:"Зразок: відомостей про нього мало, вони з пізніших джерел, їх важко підтвердити достовірними свідченнями."}]},
+{t:"Аскольд і Дір",h:"Князювання Аскольда й Діра",intro:"Навчальний текст 20.2 (с. 44–45, 46–47). Що відомо, а що — гіпотези?",b:[
+{k:"cls",l:["Усталене","Дискусійне"],q:"Розподіли твердження:",r:[
+["Аскольд і Дір здійснили похід на Константинополь у 860 році.",0,"Так, це ключова подія їхнього князювання."],
+["Аскольд і Дір були варягами.",1,"Достеменно невідомо, чи були вони справді варягами."],
+["Аскольд і Дір — останні правителі з династії Кия — Києвичів.",1,"Так вважають лише деякі дослідники."],
+["882 рік — символічна дата утворення Києво-Руської держави.",0,"Так, це умовна, символічна дата."]]}]},
+{t:"Дати",h:"Установи відповідність",intro:"Integra ipse! До кожної дати добери подію.",b:[
+{k:"match",o:["А — похід Аскольда й Діра на Константинополь","Б — заснування Хозарського каганату","В — установлення влади Олега над Києвом","Г — заснування Візантії","Д — умовна дата заснування міста Києва"],r:[["482 рік",4],["початок 630-х років",1],["860 рік",0],["882 рік",2]]}]},
+{t:"Запитання",h:"«Тонкі» і «товсті» запитання",intro:"Домашнє завдання 1.2: тренуємося розрізняти запитання. Закриті мають коротку точну відповідь, відкриті потребують міркувань.",b:[
+{k:"cls",l:["Тонке (закрите)","Товсте (відкрите)"],q:"Який це тип запитання?",r:[
+["Хто здійснив похід на Константинополь у 860 році?",0,"Так, відповідь коротка й точна."],
+["Чому існує так багато версій походження назви «русь»?",1,"Так, потрібне пояснення."],
+["Що є умовною датою заснування Києва?",0,"Так, відповідь — 482 рік."],
+["Що було б, якби нормани не з’явилися у Східній Європі?",1,"Так, це припущення («Що було б якби?»)."],
+["Які наслідки мала взаємодія норманів зі слов’янами для виникнення держави?",1,"Так, це відкрите запитання про наслідки."]]}]},
+{t:"Підсумок",h:"Підсумок уроку",sum:1}
+];
+let cur=0;const R={},D={};
+const $=s=>document.querySelector(s);
+const el=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e};
+function setR(i,j,g,m){(R[i]=R[i]||{})[j]={g,m};bar()}
+function bar(){let g=0,m=0;Object.values(R).forEach(x=>Object.values(x).forEach(y=>{g+=y.g;m+=y.m}));$("#pb").style.width=Math.round(Object.keys(D).length/(S.length-1)*100)+"%";return[g,m]}
+function tabs(){const t=$("#tabs");t.innerHTML="";S.forEach((s,i)=>{const b=el("button",(i==cur?"on ":"")+(D[i]?"done":""),i+1);b.title=s.t;b.onclick=()=>{cur=i;draw()};t.appendChild(b)})}
+function draw(){tabs();const s=S[cur],m=$("#main");m.innerHTML="";const c=el("div","card");c.appendChild(el("h2","",s.h));
+if(s.sum)summary(c);else{if(s.intro)c.appendChild(el("p","sub",s.intro));s.b.forEach((b,j)=>c.appendChild(blk(b,cur,j)))}
+m.appendChild(c);const n=el("div","nav");const p=el("button","btn","← Назад");p.onclick=()=>{if(cur>0){cur--;draw()}};p.style.visibility=cur?"visible":"hidden";
+const x=el("button","btn p",cur<S.length-2?"Далі →":cur==S.length-2?"До підсумку →":"");x.onclick=()=>{D[cur]=1;if(cur<S.length-1){cur++;draw();scrollTo(0,0)}};if(s.sum)x.style.visibility="hidden";n.append(p,x);m.appendChild(n);bar()}
+function blk(b,i,j){const w=el("div");if(b.k=="pick"){w.appendChild(el("p","q",b.q));const labs=b.o.map((t,k)=>{const l=el("label","opt");l.innerHTML=`<input type="${b.multi?"checkbox":"radio"}" name="p${i}${j}"><span>${t}</span>`;w.appendChild(l);return l});
+const f=el("div","fb"),bt=el("button","btn p","Перевірити");bt.onclick=()=>{let h=0,wr=0;labs.forEach((l,k)=>{const on=l.querySelector("input").checked,ok=b.c.includes(k);if(on&&ok)h++;if(on&&!ok)wr++;l.classList.add(ok?"ok":(on?"bad":""));l.querySelector("input").disabled=true});const g=Math.max(0,h-wr);setR(i,j,g,b.c.length);bt.disabled=true;f.textContent=`Результат: ${g} з ${b.c.length}. ${b.fb||""}`};w.append(bt,f)}
+if(b.k=="cls"){w.appendChild(el("p","q",b.q));b.r.forEach((r,k)=>{const row=el("div","row");row.appendChild(el("p","",r[0]));const bs=el("div","btns"),f=el("div","fb");b.l.forEach((lb,v)=>{const x=el("button","btn",lb);x.onclick=()=>{const ok=v==r[1];[...bs.children].forEach(y=>y.disabled=true);x.classList.add(ok?"ok":"bad");if(!ok)bs.children[r[1]].classList.add("ok");f.textContent=(ok?"✓ ":"✗ ")+r[2];setR(i,j+"_"+k,ok?1:0,1)};bs.appendChild(x)});row.append(bs,f);w.appendChild(row)})}
+if(b.k=="match"){w.appendChild(el("div","note",b.o.join("<br>")));const sel=b.r.map(r=>{const row=el("div","row");row.appendChild(el("p","q",r[0]));const s=el("select","","<option value=''>— обери —</option>"+b.o.map((t,k)=>`<option value="${k}">${t}</option>`).join(""));row.appendChild(s);w.appendChild(row);return s});
+const f=el("div","fb"),bt=el("button","btn p","Перевірити");bt.onclick=()=>{let g=0;sel.forEach((s,k)=>{const ok=s.value!==""&&+s.value==b.r[k][1];if(ok)g++;s.style.borderColor=ok?"var(--ok)":"var(--bad)";s.disabled=true});setR(i,j,g,b.r.length);bt.disabled=true;f.textContent=`Результат: ${g} з ${b.r.length}. Зелена рамка — правильно. Якщо є помилки, поверни до карти знань на попередньому етапі.`};w.append(bt,f)}
+if(b.k=="open"){w.appendChild(el("p","q",b.q));const t=el("textarea");t.placeholder="Запиши свою відповідь…";const f=el("div","note");f.style.display="none";f.textContent=b.m;const bt=el("button","btn","Показати зразок для самоперевірки");bt.onclick=()=>{f.style.display="block"};w.append(t,el("br"),bt,f)}
+w.style.marginTop="14px";return w}
+function summary(c){const[g,m]=bar();const p=m?Math.round(g/m*100):0;
+c.innerHTML+=`<p class="sub">Твій результат у завданнях із перевіркою:</p><div class="big">${g} / ${m} (${p}%)</div>
+<div class="note"><b>Nota bene!</b><ul><li>Під назвою «Русь» наприкінці ІХ століття розуміли Києво-Руську державу та її народ.</li><li>Рюрик залишається для істориків легендарною постаттю.</li><li>Більшість істориків вважає доведеним скандинавське походження терміна «русь».</li><li>Достеменно невідомо, чи були Аскольд і Дір варягами.</li><li>882 рік — символічна дата утворення Києво-Руської держави.</li></ul></div>
+<p class="q">Підбий підсумки: що було найважливішим сьогодні?</p><textarea id="refl" placeholder="Одне-два речення…"></textarea>
+<p class="q" style="margin-top:12px">Ім’я та прізвище</p><input type="text" id="nm" placeholder="Наприклад: Олена Коваль">
+<div class="note"><b>Домашнє завдання:</b> прочитати §20 (с. 44–49); стрічка часу з важливими подіями (1.1); записати по одному «тонкому» й «товстому» запитанню (1.2); завдання на с. 33 про походження назв середньовічних держав.</div>
+<button class="btn p" id="cp">Скопіювати результат для вчителя</button> <span class="fb" id="cm"></span>`;
+c.querySelector("#cp").onclick=()=>{const t=`Урок 20. ${c.querySelector("#nm").value||"(без імені)"}: ${g}/${m} (${p}%)\nПідсумок: ${c.querySelector("#refl").value||"—"}`;try{navigator.clipboard.writeText(t).then(()=>c.querySelector("#cm").textContent="Скопійовано! Надішли вчителеві в чат.",()=>c.querySelector("#cm").textContent="Не вдалося скопіювати — зроби знімок екрана.")}catch(e){c.querySelector("#cm").textContent="Не вдалося скопіювати — зроби знімок екрана."}}}
+draw();
+</script>
+</body>
+</html>
