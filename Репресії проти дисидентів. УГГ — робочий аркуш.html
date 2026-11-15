@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Репресії проти дисидентів. УГГ — робочий аркуш</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&family=PT+Serif:wght@400;700&display=swap">
+<style>
+:root{--bg:#eef1f5;--card:#fff;--ink:#1b2a4a;--muted:#5a6785;--red:#b3201f;--line:#cfd6e2;--ok:#1f7a4d;--okbg:#e3f3ea;--bad:#b3201f;--badbg:#fbe6e5;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12182a;--card:#1b2338;--ink:#e6eaf4;--muted:#9aa6c2;--line:#34405e;--ok:#5fd39a;--okbg:#173a2b;--bad:#ff8a87;--badbg:#3d1f23;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#12182a;--card:#1b2338;--ink:#e6eaf4;--muted:#9aa6c2;--line:#34405e;--ok:#5fd39a;--okbg:#173a2b;--bad:#ff8a87;--badbg:#3d1f23;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 "PT Sans",Arial,sans-serif}
+main{max-width:720px;margin:0 auto;padding:16px 16px 56px}
+header{background:#b3201f;color:#fff;border-radius:8px;padding:22px 20px;margin-bottom:18px}
+h1{font:700 26px/1.2 "PT Serif",Georgia,serif;margin:0 0 6px}
+header p{margin:0;opacity:.92;font-size:16px}
+.who{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+.who label{flex:1 1 220px;font-size:15px;color:var(--muted)}
+input[type=text],select,textarea{width:100%;font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:6px;padding:9px 10px}
+textarea{min-height:110px;resize:vertical}
+section{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:18px;margin-bottom:16px}
+h2{font:700 20px/1.3 "PT Serif",Georgia,serif;margin:0 0 6px;display:flex;gap:10px;align-items:baseline}
+h2 i{font:700 15px "PT Sans",sans-serif;font-style:normal;background:var(--red);color:#fff;border-radius:50%;min-width:26px;height:26px;display:inline-grid;place-items:center;flex:none}
+.hint{color:var(--muted);margin:0 0 12px;font-size:15px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:8px 10px;border-radius:6px;border:1px solid transparent}
+.row .lbl{flex:0 0 190px;font-weight:700}
+.row select{flex:1 1 260px;width:auto}
+.ok{background:var(--okbg);border-color:var(--ok)}
+.bad{background:var(--badbg);border-color:var(--bad)}
+ol{list-style:none;margin:0;padding:0}
+#t1 li{display:flex;gap:10px;align-items:center;padding:9px 10px;margin-bottom:6px;border:1px solid var(--line);border-radius:6px}
+#t1 .tx{flex:1}
+#t1 .yr{color:var(--muted);font-family:"PT Serif",serif}
+#t1 li.ok{border-color:var(--ok)}#t1 li.bad{border-color:var(--bad)}
+.mv{display:flex;gap:4px}
+.mv button{padding:2px 10px;font-size:16px}
+button{font:700 15px "PT Sans",sans-serif;color:var(--card);background:var(--ink);border:0;border-radius:6px;padding:9px 16px;cursor:pointer}
+button.alt{background:transparent;color:var(--ink);border:1px solid var(--line)}
+button:disabled{opacity:.35;cursor:default}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--red);outline-offset:2px}
+.st{padding:10px;border-radius:6px;margin-bottom:8px;border:1px solid transparent}
+.st p{margin:0 0 6px}
+.st label{margin-right:16px;cursor:pointer}
+.why{font-size:15px;color:var(--muted);margin-top:6px}
+.opt{display:block;padding:8px 10px;margin-bottom:6px;border-radius:6px;border:1px solid transparent;cursor:pointer}
+.res{margin-top:10px;font-weight:700;min-height:1.5em}
+.total{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.total strong{font:700 28px "PT Serif",Georgia,serif}
+#out{display:none;margin-top:12px;font-size:14px}
+.case{border-left:4px solid var(--red);padding:2px 0 2px 12px;margin:0 0 12px}
+@media (max-width:520px){.row .lbl{flex-basis:100%}}
+</style>
+</head>
+<body>
+<main>
+<header>
+<h1>Посилення репресій проти дисидентів. Українська Гельсінська група</h1>
+<p>Робочий аркуш, 11 клас</p>
+</header>
+
+<div class="who">
+<label>Прізвище та ім’я<input type="text" id="name" autocomplete="name"></label>
+</div>
+
+<section>
+<h2><i>1</i>Хронологія</h2>
+<p class="hint">Розташуй події від найранішої до наймолодшої. Користуйся стрілками.</p>
+<ol id="t1"></ol>
+<button id="c1">Перевірити</button>
+<div class="res" id="r1"></div>
+</section>
+
+<section>
+<h2><i>2</i>Постаті та поняття</h2>
+<p class="hint">Добери до кожної постаті чи поняття правильний опис.</p>
+<div id="t2"></div>
+<button id="c2">Перевірити</button>
+<div class="res" id="r2"></div>
+</section>
+
+<section>
+<h2><i>3</i>Вірно чи хибно?</h2>
+<p class="hint">Познач кожне твердження як вірне або хибне.</p>
+<div id="t3"></div>
+<button id="c3">Перевірити</button>
+<div class="res" id="r3"></div>
+</section>
+
+<section>
+<h2><i>4</i>Засновники УГГ</h2>
+<p class="hint">9 листопада 1976 року Українську Гельсінську групу створили десять дисидентів. Познач усіх, хто був серед її засновників.</p>
+<div id="t4"></div>
+<button id="c4">Перевірити</button>
+<div class="res" id="r4"></div>
+</section>
+
+<section>
+<h2><i>5</i>Доля Івана Дзюби</h2>
+<p class="hint">Відповідай у 2–3 реченнях. Це завдання перевіряє вчитель.</p>
+<div class="case">
+<b>1965</b> — праця «Інтернаціоналізм чи русифікація?». <b>Січень 1972</b> — арешт і виключення зі Спілки письменників. <b>1973</b> — суд, визнання провини, звільнення. <b>1980</b> — поновлення у Спілці письменників.
+</div>
+<p>Що історія Івана Дзюби показує про методи, якими влада боролася з інакодумцями?</p>
+<textarea id="open" aria-label="Відповідь на завдання 5"></textarea>
+</section>
+
+<section>
+<div class="total">
+<div>Автоматично перевірено<br><strong><span id="total">0</span> з <span id="max">0</span></strong></div>
+<div><button id="copy">Скопіювати результат для вчителя</button> <button class="alt" id="again">Почати заново</button></div>
+</div>
+<textarea id="out" readonly aria-label="Текст результату"></textarea>
+</section>
+</main>
+
+<script>
+const $=(s)=>document.querySelector(s);
+const el=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
+const MAX={1:5,2:5,3:4,4:7},score={},note={};
+$('#max').textContent=Object.values(MAX).reduce((a,b)=>a+b,0);
+function fin(k,n,s){score[k]=n;note[k]=n+' з '+MAX[k];$(s).textContent='Правильно: '+n+' з '+MAX[k];$('#total').textContent=Object.values(score).reduce((a,b)=>a+b,0)}
+
+/* 1: хронологія */
+const ev=[
+{y:'серпень 1965',t:'Перша хвиля арештів української інтелігенції в Києві, Львові, Луцьку та інших містах'},
+{y:'4 вересня 1965',t:'Прем’єра фільму «Тіні забутих предків» у кінотеатрі «Україна» та виступ Івана Дзюби'},
+{y:'1970',t:'Вихід першого номера «Українського вісника»'},
+{y:'1972',t:'Друга хвиля арештів дисидентів («великий погром»)'},
+{y:'9 листопада 1976',t:'Заснування Української Гельсінської групи'}];
+let order=[2,4,3,0,1];
+function draw1(chk){const ul=$('#t1');ul.innerHTML='';order.forEach((id,pos)=>{const li=el('li',chk?(id===pos?'ok':'bad'):'');li.append(el('span','tx',ev[id].t));if(chk)li.append(el('b','yr',ev[id].y));const m=el('span','mv');
+const u=el('button','alt','↑');u.setAttribute('aria-label','Вище');u.disabled=pos===0;u.onclick=()=>mv(pos,-1);
+const d=el('button','alt','↓');d.setAttribute('aria-label','Нижче');d.disabled=pos===order.length-1;d.onclick=()=>mv(pos,1);
+m.append(u,d);li.append(m);ul.append(li)})}
+function mv(p,d){[order[p],order[p+d]]=[order[p+d],order[p]];draw1(false);$('#r1').textContent=''}
+draw1(false);
+$('#c1').onclick=()=>{draw1(true);fin(1,order.filter((id,i)=>id===i).length,'#r1')};
+
+/* 2: відповідність */
+const people=[
+{n:'Іван Дзюба',d:'Літературний критик, автор праці «Інтернаціоналізм чи русифікація?» (1965)'},
+{n:'В’ячеслав Чорновіл',d:'Головний редактор журналу «Український вісник» у Львові'},
+{n:'Петро Григоренко',d:'Радянський генерал-майор, правозахисник, один із засновників УГГ'},
+{n:'Микола Руденко',d:'Голова Української Гельсінської групи'},
+{n:'Самвидав',d:'Нелегальне видання й поширення власними силами текстів, заборонених цензурою'}];
+const t2=$('#t2');
+people.forEach(p=>{const r=el('div','row');r.append(el('span','lbl',p.n));const s=el('select');s.setAttribute('aria-label',p.n);s.add(new Option('— обери опис —',''));[3,0,4,2,1].forEach(k=>s.add(new Option(people[k].d,k)));r.append(s);t2.append(r)});
+$('#c2').onclick=()=>{let n=0;[...t2.children].forEach((r,i)=>{const ok=r.querySelector('select').value===String(i);r.className='row '+(ok?'ok':'bad');if(ok)n++});fin(2,n,'#r2')};
+
+/* 3: вірно / хибно */
+const st=[
+{t:'«Український вісник» виходив легально, з дозволу цензури.',a:0,w:'Це був позацензурний часопис, який нелегально видавався в Україні.'},
+{t:'Українську Гельсінську групу засновано 9 листопада 1976 року.',a:1,w:'Так, її створили десять дисидентів, а очолив Микола Руденко.'},
+{t:'УГГ оприлюднювала звернення, декларації та маніфести проти порушень прав людини в УРСР.',a:1,w:'Так: діяльність групи полягала в публічному викритті порушень прав людини.'},
+{t:'Влада не переслідувала учасників УГГ.',a:0,w:'КДБ жорстоко переслідував учасників групи: їх арештовували, засуджували, засилали.'}];
+const t3=$('#t3');
+st.forEach((s,i)=>{const d=el('div','st');d.append(el('p',null,s.t));
+[['1','Вірно'],['0','Хибно']].forEach(([v,l])=>{const lb=el('label');const r=el('input');r.type='radio';r.name='s'+i;r.value=v;lb.append(r,' '+l);d.append(lb)});
+d.append(el('div','why'));t3.append(d)});
+$('#c3').onclick=()=>{let n=0;[...t3.children].forEach((d,i)=>{const c=d.querySelector('input:checked');const ok=c&&c.value===String(st[i].a);d.className='st '+(ok?'ok':'bad');d.querySelector('.why').textContent=st[i].w;if(ok)n++});fin(3,n,'#r3')};
+
+/* 4: засновники УГГ */
+const fo=[
+['Микола Руденко',1],['Іван Дзюба',0],['Левко Лук’яненко',1],['Оксана Мешко',1],
+['В’ячеслав Чорновіл',1],['Ніна Строката',1],['Петро Григоренко',1]];
+const t4=$('#t4');
+fo.forEach(g=>{const l=el('label','opt');const c=el('input');c.type='checkbox';l.append(c,' '+g[0]);t4.append(l)});
+$('#c4').onclick=()=>{let n=0;[...t4.children].forEach((l,i)=>{const ok=l.querySelector('input').checked===!!fo[i][1];l.className='opt '+(ok?'ok':'bad');if(ok)n++});fin(4,n,'#r4')};
+
+/* підсумок */
+function report(){const tot=Object.values(score).reduce((a,b)=>a+b,0);
+return 'Учень/учениця: '+($('#name').value||'—')+'\nАвтоматично перевірено: '+tot+' з '+$('#max').textContent+'\n'+
+[1,2,3,4].map(k=>'Завдання '+k+': '+(note[k]||'не перевірено')).join('\n')+'\nЗавдання 5 (відкрите):\n'+($('#open').value||'—')}
+$('#copy').onclick=async()=>{const t=report(),o=$('#out');
+try{await navigator.clipboard.writeText(t);$('#copy').textContent='Скопійовано'}
+catch(e){o.style.display='block';o.value=t;o.select()}};
+$('#again').onclick=()=>location.reload();
+</script>
+</body>
+</html>
