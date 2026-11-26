@@ -1,0 +1,2628 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="artifact-type" content="narrative">
+  <meta name="design-style" content="canopy">
+  <title>Освоєння людиною природи — Історія 7 клас (§ 23)</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Literata:ital,opsz,wght@0,7..72,400..700;1,7..72,400..600&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+  <script src="https://unpkg.com/lucide@1.43.0/dist/umd/lucide.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
+
+  <style>
+    :root {
+      color-scheme: light;
+
+      /* Page and surfaces (Canopy earth strata) */
+      --background: #faf6ef;
+      --surface-container-low: #f0eae0;
+      --surface-container: #e8e0d2;
+      --surface-container-high: #ddd3c2;
+
+      /* Ink */
+      --on-surface: #2a302b;
+      --on-surface-variant: #4a524b;
+
+      /* Lines */
+      --outline: #737872;
+      --outline-variant: #cbc5b8;
+
+      /* Accents */
+      --primary: #366948;
+      --on-primary: #ffffff;
+      --primary-container: #d8efe0;
+      --on-primary-container: #1f4d30;
+      --secondary: #5c635c;
+      --tertiary: #8f5822;
+      --tertiary-container: #f2d4a7;
+      --on-tertiary-container: #6e3f0c;
+      --error: #b83230;
+      --on-error: #ffffff;
+      --error-container: #f8dedd;
+      --on-error-container: #731817;
+
+      /* Data series */
+      --data-1: #366948;
+      --data-2: #8f5822;
+      --data-3: #a85438;
+      --data-4: #4b6b78;
+      --data-context: #b5b0a3;
+      --map-ocean: #dce7ea;
+      --map-land: #efe9dc;
+      --map-border: #b7ae9c;
+
+      /* Fonts (Cyrillic-complete Google Fonts) */
+      --font-headline: 'Literata', serif;
+      --font-body: 'Nunito Sans', sans-serif;
+      --font-label: 'JetBrains Mono', monospace;
+
+      /* Shape */
+      --rounded: 0.625rem;
+      --rounded-lg: 1rem;
+      --rounded-sm: 0.375rem;
+      --rounded-full: 9999px;
+
+      /* Style effects */
+      --shadow-soft: 0 4px 20px rgb(42 48 43 / 0.06);
+      --shadow-soft-hover: 0 8px 28px rgb(42 48 43 / 0.09);
+      --border-soft: 1px solid rgb(203 197 184 / 0.65);
+      --focus-glow: 0 0 0 4px rgb(54 105 72 / 0.18);
+
+      /* Shared tokens */
+      --positive: #2b6b43;
+      --warning: #9c6216;
+      --focus: var(--primary);
+
+      /* Type scale (Narrative) */
+      --display-size: clamp(2.125rem, 1.4rem + 3.2vw, 3.625rem);
+      --headline-size: clamp(1.625rem, 1.2rem + 1.6vw, 2.25rem);
+      --subhead-size: clamp(1.1875rem, 1.05rem + 0.5vw, 1.4375rem);
+      --body-size: clamp(1.03125rem, 1rem + 0.2vw, 1.125rem);
+      --label-size: clamp(0.75rem, 0.72rem + 0.12vw, 0.8125rem);
+
+      /* Spacing scale (4pt base) */
+      --space-xs: 0.25rem;
+      --space-sm: 0.5rem;
+      --space-md: 1rem;
+      --space-lg: 1.5rem;
+      --space-xl: 2.5rem;
+      --space-2xl: 4rem;
+      --space-3xl: 6rem;
+
+      /* Motion */
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+      --dur-micro: 120ms;
+      --dur-short: 220ms;
+      --dur-long: 420ms;
+    }
+
+    /* Base reset */
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body {
+      overflow-x: clip;
+      margin: 0;
+      padding: 0;
+      background-color: var(--background);
+      color: var(--on-surface);
+      font-family: var(--font-body);
+      font-size: var(--body-size);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+    header { position: static !important; }
+
+    button, input, select, textarea {
+      font-family: inherit;
+      font-size: inherit;
+      color: inherit;
+    }
+
+    :focus-visible {
+      outline: 3px solid var(--focus);
+      outline-offset: 2px;
+      box-shadow: var(--focus-glow);
+    }
+
+    .page-grid {
+      display: grid;
+      gap: var(--space-2xl);
+      padding: var(--space-lg);
+      max-width: 1160px;
+      margin: 0 auto;
+      overflow: hidden;
+    }
+    .page-grid * { min-width: 0; }
+
+    /* Typography */
+    h1, h2, h3, h4 {
+      font-family: var(--font-headline);
+      color: var(--on-surface);
+      margin: 0;
+      font-weight: 600;
+    }
+    h1 {
+      font-size: var(--display-size);
+      line-height: 1.1;
+      letter-spacing: -0.015em;
+    }
+    h2 {
+      font-size: var(--headline-size);
+      line-height: 1.16;
+      letter-spacing: -0.01em;
+    }
+    h3 {
+      font-size: var(--subhead-size);
+      line-height: 1.25;
+    }
+    p {
+      margin: 0;
+      max-width: 65ch;
+    }
+    p + p {
+      margin-top: var(--space-md);
+    }
+
+    .kicker {
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: var(--label-size);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--tertiary);
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
+    }
+
+    .mono-label {
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      font-weight: 500;
+      color: var(--secondary);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .figure-value {
+      font-family: var(--font-headline);
+      font-weight: 600;
+      font-variant-numeric: lining-nums tabular-nums;
+      line-height: 1.1;
+    }
+
+    /* Header & Opening */
+    .hero-block {
+      display: grid;
+      gap: var(--space-lg);
+      padding-top: var(--space-md);
+    }
+    .hero-meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-md);
+    }
+    .hero-lede {
+      font-size: clamp(1.125rem, 1.05rem + 0.35vw, 1.25rem);
+      color: var(--on-surface-variant);
+      max-width: 62ch;
+      line-height: 1.55;
+    }
+
+    /* Progress strip */
+    .lesson-strip {
+      background: var(--surface-container-low);
+      border-radius: var(--rounded-lg);
+      padding: var(--space-md) var(--space-lg);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-md);
+    }
+    .lesson-stats {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--space-lg);
+    }
+    .stat-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-sm);
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      color: var(--on-surface);
+    }
+    .stat-badge {
+      background: var(--tertiary-container);
+      color: var(--on-tertiary-container);
+      padding: var(--space-xs) var(--space-sm);
+      border-radius: var(--rounded-sm);
+      font-weight: 600;
+    }
+
+    /* Quick chapter nav */
+    .chapter-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+    }
+    .chapter-link {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      padding: var(--space-xs) var(--space-md);
+      border-radius: var(--rounded);
+      background: var(--surface-container-low);
+      color: var(--on-surface);
+      text-decoration: none;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      transition: background-color var(--dur-short) var(--ease-out), transform var(--dur-short) var(--ease-out);
+    }
+    .chapter-link:hover {
+      background: var(--surface-container);
+      transform: translateY(-1px);
+    }
+
+    /* Cards */
+    .card {
+      background: var(--surface-container-low);
+      border-radius: var(--rounded-lg);
+      padding: var(--space-lg);
+      border: 0;
+    }
+    .card.is-leaf-highlight {
+      background: var(--primary-container);
+      color: var(--on-primary-container);
+    }
+    .card.is-leaf-highlight h2,
+    .card.is-leaf-highlight h3,
+    .card.is-leaf-highlight .kicker,
+    .card.is-leaf-highlight .mono-label {
+      color: var(--on-primary-container);
+    }
+    .card-interactive {
+      box-shadow: var(--shadow-soft);
+      transition: box-shadow var(--dur-short) var(--ease-out), transform var(--dur-short) var(--ease-out);
+    }
+    .card-interactive:hover {
+      box-shadow: var(--shadow-soft-hover);
+    }
+
+    /* Sections */
+    .lesson-section {
+      display: grid;
+      gap: var(--space-lg);
+      padding-top: var(--space-md);
+      border-top: var(--border-soft);
+    }
+    .section-header {
+      display: grid;
+      gap: var(--space-xs);
+    }
+    .section-intro {
+      color: var(--on-surface-variant);
+      max-width: 65ch;
+    }
+
+    /* Asymmetric layouts */
+    .split-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      gap: var(--space-lg);
+      align-items: start;
+    }
+    .split-grid-wide {
+      display: grid;
+      grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+      gap: var(--space-lg);
+      align-items: start;
+    }
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+      gap: var(--space-lg);
+    }
+    .metrics-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr));
+      gap: var(--space-md);
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-sm);
+      min-height: 44px;
+      padding: var(--space-sm) var(--space-md);
+      border-radius: var(--rounded);
+      border: 0;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 0.9375rem;
+      text-align: center;
+      transition: background-color var(--dur-micro) var(--ease-out), transform var(--dur-micro) var(--ease-out), box-shadow var(--dur-micro) var(--ease-out);
+    }
+    .btn:active { transform: translateY(1px); }
+    .btn-primary {
+      background: var(--primary);
+      color: var(--on-primary);
+    }
+    .btn-primary:hover {
+      background: var(--on-primary-container);
+    }
+    .btn-secondary {
+      background: var(--surface-container);
+      color: var(--on-surface);
+    }
+    .btn-secondary:hover {
+      background: var(--surface-container-high);
+    }
+    .btn-secondary[aria-pressed="true"],
+    .btn-tab[aria-pressed="true"] {
+      background: var(--primary);
+      color: var(--on-primary);
+    }
+    .btn-tab {
+      background: var(--surface-container);
+      color: var(--on-surface);
+      min-height: 44px;
+      padding: var(--space-xs) var(--space-md);
+    }
+    .btn-tab:hover {
+      background: var(--surface-container-high);
+    }
+    .btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+    }
+
+    /* Pull quotes & historical quotes */
+    .quote-block {
+      background: var(--surface-container);
+      border-radius: var(--rounded-lg);
+      padding: var(--space-lg);
+      display: grid;
+      gap: var(--space-sm);
+    }
+    .quote-text {
+      font-family: var(--font-headline);
+      font-style: italic;
+      font-size: 1.0625rem;
+      line-height: 1.6;
+      max-width: none;
+    }
+    .quote-author {
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      color: var(--tertiary);
+    }
+
+    /* Tags */
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
+      padding: var(--space-xs) var(--space-sm);
+      border-radius: var(--rounded-sm);
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      font-weight: 600;
+      background: var(--tertiary-container);
+      color: var(--on-tertiary-container);
+    }
+    .tag-green {
+      background: var(--primary-container);
+      color: var(--on-primary-container);
+    }
+    .tag-danger {
+      background: var(--error-container);
+      color: var(--on-error-container);
+    }
+
+    /* Forest interactive explorer */
+    .forest-item-list {
+      display: grid;
+      gap: var(--space-sm);
+    }
+    .forest-item {
+      background: var(--background);
+      border: var(--border-soft);
+      border-radius: var(--rounded);
+      padding: var(--space-md);
+      display: grid;
+      gap: var(--space-xs);
+    }
+    .forest-item.is-hidden {
+      display: none;
+    }
+
+    /* Collapsible details */
+    details.almanac-details {
+      background: var(--surface-container);
+      border-radius: var(--rounded);
+      padding: var(--space-md) var(--space-lg);
+    }
+    details.almanac-details summary {
+      cursor: pointer;
+      font-weight: 700;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-sm);
+      list-style: none;
+    }
+    details.almanac-details summary::-webkit-details-marker { display: none; }
+    details.almanac-details[open] summary {
+      margin-bottom: var(--space-sm);
+      color: var(--primary);
+    }
+
+    /* Crop rotation simulator */
+    .fields-board {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(155px, 100%), 1fr));
+      gap: var(--space-md);
+    }
+    .field-plot {
+      border-radius: var(--rounded-lg);
+      padding: var(--space-md);
+      display: grid;
+      gap: var(--space-sm);
+      transition: background-color var(--dur-short) var(--ease-in-out), transform var(--dur-short) var(--ease-out);
+      min-height: 155px;
+      align-content: space-between;
+    }
+    .field-plot.crop-winter {
+      background: var(--tertiary-container);
+      color: var(--on-tertiary-container);
+    }
+    .field-plot.crop-spring {
+      background: var(--primary-container);
+      color: var(--on-primary-container);
+    }
+    .field-plot.crop-fallow {
+      background: var(--surface-container-high);
+      color: var(--on-surface);
+    }
+    .field-plot.is-disabled {
+      display: none;
+    }
+
+    /* Invention selector */
+    .invention-preview {
+      display: grid;
+      gap: var(--space-md);
+      background: var(--background);
+      border: var(--border-soft);
+      border-radius: var(--rounded-lg);
+      padding: var(--space-lg);
+    }
+    .schematic-box {
+      background: var(--surface-container-low);
+      border-radius: var(--rounded);
+      padding: var(--space-md);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 180px;
+    }
+
+    /* Charts & Maps containers */
+    .chart-wrap {
+      position: relative;
+      min-height: 320px;
+      width: 100%;
+    }
+    .map-wrap {
+      min-height: 440px;
+      height: 440px;
+      width: 100%;
+      border-radius: var(--rounded);
+      overflow: hidden;
+      background: var(--map-ocean);
+      border: var(--border-soft);
+    }
+    .leaflet-container {
+      background: var(--map-ocean);
+      font-family: var(--font-body);
+    }
+
+    /* Tables */
+    .table-wrap {
+      overflow-x: auto;
+    }
+    table.almanac-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+    table.almanac-table th {
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--secondary);
+      background: var(--surface-container);
+      padding: var(--space-sm) var(--space-md);
+      border-bottom: var(--border-soft);
+    }
+    table.almanac-table td {
+      padding: var(--space-md);
+      border-bottom: var(--border-soft);
+      vertical-align: top;
+    }
+
+    /* Inputs & Forms */
+    .control-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-md);
+      align-items: end;
+    }
+    .field-group {
+      display: grid;
+      gap: var(--space-xs);
+      flex: 1 1 180px;
+    }
+    .field-group label {
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      font-weight: 600;
+      color: var(--on-surface-variant);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .input-control, .select-control {
+      min-height: 44px;
+      padding: var(--space-sm) var(--space-md);
+      border-radius: var(--rounded);
+      border: 1px solid var(--outline);
+      background: var(--background);
+      color: var(--on-surface);
+      width: 100%;
+    }
+    .select-control {
+      padding-right: var(--space-xl);
+    }
+    input[type="range"] {
+      width: 100%;
+      min-height: 44px;
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+
+    /* Canopy 12-Month Almanac Strip */
+    .season-strip {
+      background: var(--surface-container-low);
+      border-radius: var(--rounded-lg);
+      padding: var(--space-md) var(--space-lg);
+      display: grid;
+      gap: var(--space-md);
+    }
+    .season-strip-top {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-md);
+    }
+    .season-cells {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-xs);
+    }
+    .season-cell {
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      min-width: 44px;
+      min-height: 44px;
+      padding: 0 var(--space-xs);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--rounded-sm);
+      border: 0;
+      cursor: pointer;
+      background: var(--surface-container-high);
+      color: var(--on-surface);
+      font-weight: 600;
+      transition: background-color var(--dur-micro) var(--ease-out), transform var(--dur-micro) var(--ease-out);
+    }
+    .season-cell:hover {
+      transform: translateY(-1px);
+    }
+    .season-cell.is-prep {
+      background: var(--tertiary-container);
+      color: var(--on-tertiary-container);
+    }
+    .season-cell.is-peak {
+      background: var(--primary);
+      color: var(--on-primary);
+    }
+    .season-cell[aria-pressed="true"] {
+      box-shadow: 0 0 0 2px var(--on-surface);
+    }
+
+    /* Glossary Term Cards */
+    .term-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(265px, 100%), 1fr));
+      gap: var(--space-md);
+    }
+    .term-card {
+      background: var(--surface-container-low);
+      border-radius: var(--rounded-lg);
+      padding: var(--space-lg);
+      display: grid;
+      gap: var(--space-sm);
+      align-content: space-between;
+      box-shadow: var(--shadow-soft);
+      transition: background-color var(--dur-short) var(--ease-out), box-shadow var(--dur-short) var(--ease-out);
+    }
+    .term-card.is-mastered {
+      background: var(--surface-container);
+    }
+    .term-definition {
+      font-size: 0.96875rem;
+      color: var(--on-surface-variant);
+    }
+    .term-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+      padding-top: var(--space-xs);
+    }
+
+    /* Quiz */
+    .quiz-card {
+      background: var(--surface-container-low);
+      border-radius: var(--rounded-lg);
+      padding: var(--space-lg);
+      display: grid;
+      gap: var(--space-md);
+    }
+    .quiz-options {
+      display: grid;
+      gap: var(--space-sm);
+    }
+    .quiz-option {
+      width: 100%;
+      min-height: 48px;
+      padding: var(--space-sm) var(--space-md);
+      border-radius: var(--rounded);
+      border: var(--border-soft);
+      background: var(--background);
+      color: var(--on-surface);
+      text-align: left;
+      cursor: pointer;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-sm);
+      transition: background-color var(--dur-micro) var(--ease-out);
+    }
+    .quiz-option:hover:not(:disabled) {
+      background: var(--surface-container);
+    }
+    .quiz-option:disabled {
+      cursor: default;
+    }
+    .quiz-option.is-correct {
+      background: var(--primary-container);
+      color: var(--on-primary-container);
+      border-color: var(--primary);
+    }
+    .quiz-option.is-wrong {
+      background: var(--error-container);
+      color: var(--on-error-container);
+      border-color: var(--error);
+    }
+    .quiz-feedback {
+      padding: var(--space-md);
+      border-radius: var(--rounded);
+      font-size: 0.95rem;
+      background: var(--surface-container);
+    }
+    .quiz-feedback.is-positive {
+      background: var(--primary-container);
+      color: var(--on-primary-container);
+    }
+    .quiz-feedback.is-negative {
+      background: var(--error-container);
+      color: var(--on-error-container);
+    }
+
+    /* Container queries for card internals */
+    .card-wrapper { container-type: inline-size; }
+    @container (min-width: 440px) {
+      .card-two-col {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: var(--space-md);
+      }
+    }
+    @container (max-width: 439px) {
+      .card-two-col {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: var(--space-md);
+      }
+    }
+
+    /* Reveal animation */
+    .reveal-on-scroll {
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity var(--dur-long) var(--ease-out), transform var(--dur-long) var(--ease-out);
+    }
+    .reveal-on-scroll.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Footer */
+    .lesson-footer {
+      border-top: var(--border-soft);
+      padding-top: var(--space-lg);
+      padding-bottom: var(--space-2xl);
+      color: var(--on-surface-variant);
+      font-size: 0.9rem;
+      display: grid;
+      gap: var(--space-sm);
+    }
+
+    /* Responsive mobile */
+    @media (max-width: 640px) {
+      .page-grid {
+        padding: var(--space-md);
+        gap: var(--space-xl);
+      }
+      .split-grid,
+      .split-grid-wide {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .map-wrap {
+        min-height: 360px;
+        height: 360px;
+      }
+      .chart-wrap {
+        min-height: 280px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page-grid">
+    <!-- HEADER / HERO -->
+    <header class="hero-block">
+      <div class="hero-meta-row">
+        <span class="kicker">Розділ V · Середньовічний світ Західної Європи · § 23</span>
+        <span class="mono-label">Історія · 7 клас · Інтерактивний урок</span>
+      </div>
+
+      <h1>Освоєння людиною природи</h1>
+
+      <p class="hero-lede">
+        Як жителі середньовічної Західної Європи виживали серед густих лісів і навал,
+        здійснили «аграрну революцію» X–XIII століть, пережили похолодання й «Чорну смерть»
+        та відкривали світ через торгівлю й мандрівки.
+      </p>
+
+      <!-- Progress bar -->
+      <div class="lesson-strip" aria-live="polite">
+        <div class="lesson-stats">
+          <div class="stat-pill">
+            <span>Засвоєно термінів:</span>
+            <span class="stat-badge" id="stat-terms">0 / 10</span>
+          </div>
+          <div class="stat-pill">
+            <span>Перевірочний тест:</span>
+            <span class="stat-badge" id="stat-quiz">0 / 8</span>
+          </div>
+          <div class="stat-pill">
+            <span>Таблиця процесів:</span>
+            <span class="stat-badge" id="stat-table">0 / 3</span>
+          </div>
+        </div>
+        <button type="button" class="btn btn-secondary" id="btn-reset-all" onclick="handleResetProgress(this)">
+          Скинути прогрес
+        </button>
+      </div>
+
+      <nav class="chapter-nav" aria-label="Навігація уроку">
+        <a class="chapter-link" href="#sec-nature">1. Людина, ліс і загрози</a>
+        <a class="chapter-link" href="#sec-agrarian">2. Аграрна революція</a>
+        <a class="chapter-link" href="#sec-climate">3. Клімат і криза XIV ст.</a>
+        <a class="chapter-link" href="#sec-trade">4. Подорожі й торгівля</a>
+        <a class="chapter-link" href="#sec-space-time">5. Простір, час і наука</a>
+        <a class="chapter-link" href="#sec-practice">6. Терміни й перевірка</a>
+      </nav>
+
+      <!-- SINGLE pale-leaf highlight card (Canopy treatment) -->
+      <div class="card is-leaf-highlight">
+        <span class="kicker">Головна ідея розділу</span>
+        <h2 style="margin-top: var(--space-xs); margin-bottom: var(--space-sm);">
+          Середньовіччя — «народження, дитинство і юність» сучасної Європи
+        </h2>
+        <div class="split-grid" style="margin-top: var(--space-sm);">
+          <div>
+            <p>
+              Середні віки (лат. <em>medium aevum</em>) — тисячолітня епоха, яка найповніше проявилася
+              в Західній Європі. Провідний французький медієвіст <strong>Жак ле Гофф</strong> доводив,
+              що саме тоді сформувалася європейська ментальність — способи сприйняття і пояснення світу.
+            </p>
+            <p>
+              Після розпаду Римської імперії та розколу християнської церкви <strong>1054 року</strong>
+              на католицьку та православну, простір Західної Європи складався з укріплених замків і міст,
+              розкиданих серед лісів та необроблених угідь.
+            </p>
+          </div>
+          <div class="quote-block" style="background: var(--background); color: var(--on-surface);">
+            <span class="mono-label">Цитата для роздумів · Джеремі Блек</span>
+            <p class="quote-text">
+              «Середньовічний світ був ворожий і нестабільний. Ніхто не в змозі був ані запобігти
+              нещастям, ані бодай передбачити їх. Неврожай або моровиця могли швидко звести нанівець
+              результати багаторічної праці. Межу між заможністю і бідністю перетинали легко, швидко й часто.
+              Перед лицем стількох лих багато людей зверталося по розраду до Бога».
+            </p>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- SECTION 1: NATURE, FOREST, THREATS -->
+    <section id="sec-nature" class="lesson-section reveal-on-scroll">
+      <div class="section-header">
+        <span class="kicker">Пункт 23.1</span>
+        <h2>Зв’язок людини та природи: «оточена фортеця» і роль лісу</h2>
+        <p class="section-intro">
+          Наприкінці І тисячоліття Західна Європа жила під постійним тиском природних стихій та набігів завойовників.
+        </p>
+      </div>
+
+      <div class="split-grid">
+        <div class="card" style="display: grid; gap: var(--space-md);">
+          <h3>Чому світ здавався жорстоким і непередбачуваним</h3>
+          <p>
+            Історик <strong>Марк Блок</strong> описував настрій тієї доби словами:
+            <em>«Європа, затоплена ордами завойовників і звідусіль обложена»</em>.
+            Після руйнувань Великого переселення народів наприкінці І тисячоліття почалася «друга навала»
+            одразу з трьох напрямків:
+          </p>
+          <div class="metrics-row">
+            <div class="forest-item">
+              <span class="tag tag-danger">Південь</span>
+              <strong>Араби-мусульмани</strong>
+              <span class="section-intro" style="font-size: 0.9rem;">Напади з Середземномор’я та Іспанії</span>
+            </div>
+            <div class="forest-item">
+              <span class="tag tag-danger">Схід</span>
+              <strong>Угри (кочовики)</strong>
+              <span class="section-intro" style="font-size: 0.9rem;">Спустошливі рейди вглиб континенту</span>
+            </div>
+            <div class="forest-item">
+              <span class="tag tag-danger">Північ</span>
+              <strong>Нормани (вікінги)</strong>
+              <span class="section-intro" style="font-size: 0.9rem;">Морські й річкові набіги</span>
+            </div>
+          </div>
+          <p>
+            Мешканці сіл залишали родючі долини, ховаючись у горах чи біля укріплених мурів міст і монастирів.
+            За відсутності добрив ґрунти швидко виснажувалися, а розливи річок або заморозки миттєво спричиняли
+            <strong>неврожаї та голод</strong>. Орну землю щоразу доводилося буквально «відвойовувати» в цілини та лісу.
+          </p>
+          <details class="almanac-details">
+            <summary>
+              <span>Погляд історика: якою була сільська місцевість за Марком Блоком?</span>
+              <span class="mono-label">Розгорнути</span>
+            </summary>
+            <p style="font-size: 0.95rem;">
+              У книзі «Феодальне суспільство» Марк Блок зазначав, що люди жили скупчено у селах та невеликих
+              містах, між якими лежали безлюдні простори. Через неглибоку оранку й брак добрив колоски
+              росли рідко й дрібно. Щороку половину чи третину ріллі залишали під паром, і природа постійно
+              намагалася взяти гору: засіяне поле було лише тимчасовою перемогою над цілиною та безкінечними лісами.
+            </p>
+          </details>
+        </div>
+
+        <!-- Interactive Forest Role Explorer -->
+        <div class="card card-interactive" style="display: grid; gap: var(--space-md);">
+          <div>
+            <span class="mono-label">Інтерактивний дослідник</span>
+            <h3 style="margin-top: var(--space-xs);">Ліс у житті середньовічної людини</h3>
+            <p style="font-size: 0.95rem; color: var(--on-surface-variant); margin-top: var(--space-xs);">
+              Феодали прагнули контролювати ліси так само суворо, як і ріллю. Відфільтруйте значення лісу:
+            </p>
+          </div>
+
+          <div class="btn-group" role="group" aria-label="Фільтр ролей лісу">
+            <button type="button" class="btn btn-tab" aria-pressed="true" onclick="filterForest('all', this)">Усе</button>
+            <button type="button" class="btn btn-tab" aria-pressed="false" onclick="filterForest('resource', this)">Господарство</button>
+            <button type="button" class="btn btn-tab" aria-pressed="false" onclick="filterForest('refuge', this)">Прихисток</button>
+            <button type="button" class="btn btn-tab" aria-pressed="false" onclick="filterForest('danger', this)">Небезпеки й міфи</button>
+          </div>
+
+          <div class="forest-item-list" id="forest-list">
+            <div class="forest-item" data-forest="resource">
+              <span class="tag tag-green">Харчування і промисли</span>
+              <strong>Збиральництво, бортництво та полювання</strong>
+              <span style="font-size: 0.93rem;">Випас худоби, збір дикого меду (бортництво), поповнення браку м’яса дичиною.</span>
+            </div>
+            <div class="forest-item" data-forest="resource">
+              <span class="tag tag-green">Ремесла та побут</span>
+              <strong>Деревина, кора й смола</strong>
+              <span style="font-size: 0.93rem;">Основний матеріал для будівництва, знарядь праці, возів, обігріву; кора — для дублення шкіри, смола — для свічок і факелів.</span>
+            </div>
+            <div class="forest-item" data-forest="refuge">
+              <span class="tag">Порятунок і духовність</span>
+              <strong>Сховище й аналог «східної пустелі»</strong>
+              <span style="font-size: 0.93rem;">Укриття під час навал завойовників; у західній християнській традиції — місце усамітнення й випробування на міцність.</span>
+            </div>
+            <div class="forest-item" data-forest="danger">
+              <span class="tag tag-danger">Загроза подорожнім</span>
+              <strong>Лігвище розбійників та легенди</strong>
+              <span style="font-size: 0.93rem;">Середньовічні балади оповідали про Робіна Гуда в Шервудському лісі поблизу Ноттінгема. У глибині хащ люди вбачали житло духів і чудовиськ.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: AGRARIAN REVOLUTION & COLONIZATION -->
+    <section id="sec-agrarian" class="lesson-section reveal-on-scroll">
+      <div class="section-header">
+        <span class="kicker">Пункт 23.2</span>
+        <h2>«Аграрна революція» X–XIII ст. та подвійна колонізація</h2>
+        <p class="section-intro">
+          Із середини XI століття встановлення відносного миру дало поштовх технологічним змінам на селі,
+          демографічному буму та зростанню міст.
+        </p>
+      </div>
+
+      <div class="split-grid-wide">
+        <!-- Interactive Inventions (Workbook 3.3) -->
+        <div class="card card-interactive" style="display: grid; gap: var(--space-md);">
+          <div>
+            <span class="mono-label">Завдання з аналізу винаходів</span>
+            <h3 style="margin-top: var(--space-xs);">Три рушії врожайності</h3>
+          </div>
+
+          <div class="btn-group" role="group" aria-label="Вибір винаходу">
+            <button type="button" class="btn btn-tab" aria-pressed="true" onclick="selectInvention('plow', this)">Важкий плуг</button>
+            <button type="button" class="btn btn-tab" aria-pressed="false" onclick="selectInvention('harness', this)">Хомут і підкови</button>
+            <button type="button" class="btn btn-tab" aria-pressed="false" onclick="selectInvention('rotation', this)">Трипілля</button>
+          </div>
+
+          <div class="invention-preview" id="invention-preview">
+            <div class="schematic-box" id="invention-svg-box"></div>
+            <div>
+              <h4 id="invention-title">Важкий колісний плуг із металевими частинами</h4>
+              <p id="invention-desc" style="margin-top: var(--space-xs); font-size: 0.95rem;"></p>
+            </div>
+            <div class="quote-block" style="padding: var(--space-md);">
+              <span class="mono-label">Вплив на життя людини</span>
+              <p id="invention-impact" style="font-size: 0.95rem; margin-top: var(--space-xs);"></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interactive Crop Rotation Simulator -->
+        <div class="card card-interactive" style="display: grid; gap: var(--space-md);">
+          <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: start; gap: var(--space-sm);">
+            <div>
+              <span class="mono-label">Симулятор сівозміни</span>
+              <h3 style="margin-top: var(--space-xs);">Порівняй двопілля та трипілля</h3>
+            </div>
+            <div class="btn-group" role="group" aria-label="Вибір системи землеробства">
+              <button type="button" class="btn btn-tab" id="btn-sys-two" aria-pressed="false" onclick="setCropSystem(2)">Двопілля</button>
+              <button type="button" class="btn btn-tab" id="btn-sys-three" aria-pressed="true" onclick="setCropSystem(3)">Трипілля</button>
+            </div>
+          </div>
+
+          <div class="btn-group" role="group" aria-label="Вибір року сівозміни">
+            <button type="button" class="btn btn-secondary" id="btn-year-0" aria-pressed="true" onclick="setCropYear(0)">Рік 1</button>
+            <button type="button" class="btn btn-secondary" id="btn-year-1" aria-pressed="false" onclick="setCropYear(1)">Рік 2</button>
+            <button type="button" class="btn btn-secondary" id="btn-year-2" aria-pressed="false" onclick="setCropYear(2)">Рік 3</button>
+          </div>
+
+          <div class="fields-board" id="fields-board">
+            <div class="field-plot crop-winter" id="plot-1">
+              <span class="mono-label">Ділянка І</span>
+              <strong id="plot-1-crop">Озимі (жито, пшениця)</strong>
+              <span id="plot-1-note" style="font-size: 0.875rem;">Сіють восени, збирають улітку</span>
+            </div>
+            <div class="field-plot crop-spring" id="plot-2">
+              <span class="mono-label">Ділянка ІІ</span>
+              <strong id="plot-2-crop">Ярі (овес, ячмінь, горох)</strong>
+              <span id="plot-2-note" style="font-size: 0.875rem;">Сіють навесні — страхує від загибелі озимини</span>
+            </div>
+            <div class="field-plot crop-fallow" id="plot-3">
+              <span class="mono-label">Ділянка ІІІ</span>
+              <strong id="plot-3-crop">Пар (земля «відпочиває»)</strong>
+              <span id="plot-3-note" style="font-size: 0.875rem;">Відновлює родючість, випас худоби</span>
+            </div>
+          </div>
+
+          <div class="metrics-row">
+            <div class="forest-item">
+              <span class="mono-label">Засіяна земля</span>
+              <span class="figure-value" id="metric-sown" style="font-size: 1.75rem; color: var(--primary);">67% (2/3)</span>
+            </div>
+            <div class="forest-item">
+              <span class="mono-label">Під паром (відпочиває)</span>
+              <span class="figure-value" id="metric-fallow" style="font-size: 1.75rem; color: var(--tertiary);">33% (1/3)</span>
+            </div>
+            <div class="forest-item">
+              <span class="mono-label">Продовольча безпека</span>
+              <span id="metric-safety" style="font-weight: 700; color: var(--on-primary-container);">Два врожаї на рік</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Colonization + Cities Chart -->
+      <div class="split-grid">
+        <div class="card card-wrapper" style="display: grid; gap: var(--space-md);">
+          <h3>Демографічний бум та дві хвилі колонізації</h3>
+          <p>
+            З другої половини X до початку XIV століття населення Західної Європи зросло
+            <strong>втричі — до 60 мільйонів осіб</strong>. Хроніст XI ст. Рауль Глабер свідчив,
+            що його сучасники понад усе боялися втратити здобуту стабільність і достаток.
+          </p>
+          <div class="card-two-col">
+            <div class="forest-item">
+              <span class="tag tag-green">Внутрішня колонізація</span>
+              <strong>Освоєння власних земель</strong>
+              <span style="font-size: 0.93rem;">
+                Розорювання цілини, вирубування лісів і чагарників, осушення боліт. Сеньйори засновували
+                «вільні містечка», надаючи поселенцям податкові пільги та правові гарантії.
+              </span>
+            </div>
+            <div class="forest-item">
+              <span class="tag">Зовнішня колонізація</span>
+              <strong>Розширення меж світу</strong>
+              <span style="font-size: 0.93rem;">
+                Накопичення ресурсів спонукало до далеких походів: хрестових походів проти мусульманських країн,
+                Реконкісти (відвоювання в арабів) в Іспанії, норманських і германських завоювань.
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="display: grid; gap: var(--space-sm);">
+          <span class="mono-label">Зростання міст Західної Європи (XIII–XIV ст.)</span>
+          <h3>Населення найбільших центрів (тис. осіб)</h3>
+          <div class="chart-wrap">
+            <canvas id="citiesChart" aria-label="Діаграма чисельності населення середньовічних міст Європи"></canvas>
+          </div>
+          <span class="mono-label">Примітка: розквіт міст став можливим завдяки праці селян на землі</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: CLIMATE CHANGE & 14TH CENTURY CRISIS -->
+    <section id="sec-climate" class="lesson-section reveal-on-scroll">
+      <div class="section-header">
+        <span class="kicker">Клімат і криза · X–XIV століття</span>
+        <h2>Від середньовічного оптимуму до Великого голоду та «Чорної смерті»</h2>
+        <p class="section-intro">
+          Потепління X–XIV ст. підняло врожаї, але глобальне похолодання XIV ст. разом із війнами та епідемією чуми
+          спричинило глибокий спад, наслідки якого відчувалися до XIX століття.
+        </p>
+      </div>
+
+      <div class="split-grid">
+        <div class="card card-interactive" style="display: grid; gap: var(--space-md);">
+          <span class="mono-label">Динаміка клімату та людності</span>
+          <h3>Поворотні моменти X–XIV століть</h3>
+          <div class="chart-wrap">
+            <canvas id="climateChart" aria-label="Графік динаміки населення та кліматичних змін Західної Європи"></canvas>
+          </div>
+          <div class="btn-group" role="group" aria-label="Оберіть історичний етап">
+            <button type="button" class="btn btn-tab" aria-pressed="true" onclick="selectCrisisStage(0, this)">X–XIII ст. Оптимум</button>
+            <button type="button" class="btn btn-tab" aria-pressed="false" onclick="selectCrisisStage(1, this)">Поч. XIV ст. Пік</button>
+            <button type="button" class="btn btn-tab" aria-pressed="false" onclick="selectCrisisStage(2, this)">1315 р. Великий голод</button>
+            <button type="button" class="btn btn-tab" aria-pressed="false" onclick="selectCrisisStage(3, this)">1346–1353 рр. Чума</button>
+          </div>
+          <div class="forest-item" id="crisis-stage-detail" style="background: var(--surface-container);">
+            <strong id="crisis-stage-title">Потепління X–XIV століть: сприятливий клімат</strong>
+            <p id="crisis-stage-text" style="font-size: 0.95rem; margin-top: var(--space-xs);"></p>
+          </div>
+        </div>
+
+        <div class="card" style="display: grid; gap: var(--space-md);">
+          <h3>Чому XIV століття принесло катастрофу</h3>
+          <div class="forest-item">
+            <span class="tag tag-danger">Природний чинник</span>
+            <strong>Глобальне похолодання і Великий голод 1315 р.</strong>
+            <span style="font-size: 0.93rem;">
+              Зниження температури зменшило врожайність. Багаторічний голод 1315 року в Північній Європі забрав
+              мільйони життів і став символічним кінцем доби процвітання.
+            </span>
+          </div>
+          <div class="forest-item">
+            <span class="tag tag-danger">Війни та спустошення</span>
+            <strong>Конфлікти по всьому континенту</strong>
+            <span style="font-size: 0.93rem;">
+              Столітня війна між Англією та Францією, громадянські конфлікти в Іспанії та Італії,
+              підкорення частини Східної Європи монгольською Золотою Ордою.
+            </span>
+          </div>
+          <div class="forest-item">
+            <span class="tag tag-danger">Епідемія 1346–1353 рр.</span>
+            <strong>«Чорна смерть»</strong>
+            <span style="font-size: 0.93rem;">
+              Чума проникла з Центральної Азії через кримські й італійські порти та золотоординське військо.
+              Недоїдання, бродяжництво й зневага до медицини (хворобу вважали випробуванням, а лікування тіла — марним)
+              призвели до загибелі <strong>від третини до половини мешканців</strong> Західної Європи.
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive Workbook Table 3.2 -->
+      <div class="card" style="display: grid; gap: var(--space-md);">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-sm);">
+          <div>
+            <span class="mono-label">Інтерактивне завдання за робочим зошитом (3.2)</span>
+            <h3 style="margin-top: var(--space-xs);">Перевір себе: історичні процеси та їхні результати</h3>
+          </div>
+          <button type="button" class="btn btn-secondary" onclick="revealAllTableRows()">Показати всі відповіді</button>
+        </div>
+
+        <div class="table-wrap">
+          <table class="almanac-table">
+            <thead>
+              <tr>
+                <th style="width: 34%;">Історичне явище (процес)</th>
+                <th>Очікуваний результат (оберіть правильний варіант)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Економічне піднесення із середини XI століття</strong></td>
+                <td id="tbl-cell-0">
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-secondary" onclick="checkTableRow(0, true, this)">
+                      Зростання врожайності (плуг, хомут, трипілля), розвиток міст і торгівлі
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="checkTableRow(0, false, this)">
+                      Повне заростання полів лісами та перехід до двопілля
+                    </button>
+                  </div>
+                  <div class="mono-label" id="tbl-msg-0" style="margin-top: var(--space-xs);"></div>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Демографічний бум із другої пол. X до поч. XIV століття</strong></td>
+                <td id="tbl-cell-1">
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-secondary" onclick="checkTableRow(1, false, this)">
+                      Втрата половини населення та запустіння європейських міст
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="checkTableRow(1, true, this)">
+                      Трикратне збільшення людності (60 млн), внутрішня і зовнішня колонізація
+                    </button>
+                  </div>
+                  <div class="mono-label" id="tbl-msg-1" style="margin-top: var(--space-xs);"></div>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Глобальне похолодання, що почалося в XIV столітті</strong></td>
+                <td id="tbl-cell-2">
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-secondary" onclick="checkTableRow(2, true, this)">
+                      Падіння врожаїв, Великий голод 1315 р., зниження імунітету й масові епідемії
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="checkTableRow(2, false, this)">
+                      Масове заснування «вільних містечок» та розквіт ярмарків у Шампані
+                    </button>
+                  </div>
+                  <div class="mono-label" id="tbl-msg-2" style="margin-top: var(--space-xs);"></div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: TRAVEL, TRADE ROUTES & CALCULATOR -->
+    <section id="sec-trade" class="lesson-section reveal-on-scroll">
+      <div class="section-header">
+        <span class="kicker">Пункт 23.3</span>
+        <h2>Подорожі, торгівля та мережа європейських шляхів</h2>
+        <p class="section-intro">
+          Хоча більшість людей не виходила за межі свого села й сусіднього лісу, торгівля, паломництво та
+          військова служба змушували купців, студентів, прочан і лицарів долати сотні кілометрів.
+        </p>
+      </div>
+
+      <div class="split-grid-wide">
+        <!-- Map Controls & Text -->
+        <div class="card" style="display: grid; gap: var(--space-md);">
+          <h3>Головні напрямки середньовічної торгівлі</h3>
+          <p>
+            Зруйновані римські дороги перетворилися на вузькі стежки. Коні та екіпажі долали лише
+            <strong>30–40 км на день</strong>, а гінці-листоноші — удвічі швидше. Водні шляхи були швидшими,
+            але залежали від вітру та несли загрозу піратства.
+          </p>
+
+          <div>
+            <span class="mono-label">Фільтр маршрутів на карті</span>
+            <div class="btn-group" style="margin-top: var(--space-sm);" role="group" aria-label="Фільтр торгових шляхів">
+              <button type="button" class="btn btn-tab" aria-pressed="true" onclick="filterMapRoute('all', this)">Усі шляхи</button>
+              <button type="button" class="btn btn-tab" aria-pressed="false" onclick="filterMapRoute('hanse', this)">Ганза</button>
+              <button type="button" class="btn btn-tab" aria-pressed="false" onclick="filterMapRoute('champagne', this)">Шампань</button>
+              <button type="button" class="btn btn-tab" aria-pressed="false" onclick="filterMapRoute('kyiv', this)">Через Київ</button>
+              <button type="button" class="btn btn-tab" aria-pressed="false" onclick="filterMapRoute('med', this)">Середземномор’я</button>
+            </div>
+          </div>
+
+          <div class="forest-item" id="map-route-info" style="background: var(--surface-container);">
+            <strong id="map-route-title">Єдина торгова мережа Європи</strong>
+            <p id="map-route-desc" style="font-size: 0.94rem; margin-top: var(--space-xs);">
+              Натисніть на будь-яке місто на карті або оберіть торговий напрямок вище, щоб дізнатися про його роль.
+            </p>
+          </div>
+
+          <details class="almanac-details">
+            <summary>
+              <span>Порівняння відстаней: Гамбург чи Кельн? (завдання з зошита)</span>
+              <span class="mono-label">Перевірити</span>
+            </summary>
+            <p style="font-size: 0.94rem;">
+              Серед міст Ганзейського союзу (Кельн, Краків, Рига, Гамбург, Данциг/Гданськ) найближче до
+              <strong>Любека</strong> розташований <strong>Гамбург</strong> (~65 км), а найближче до
+              фламандського <strong>Брюгге</strong> — <strong>Кельн</strong> (~280 км).
+            </p>
+          </details>
+        </div>
+
+        <!-- Leaflet Vector Map -->
+        <div class="card card-interactive" style="display: grid; gap: var(--space-sm);">
+          <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-sm);">
+            <span class="mono-label">Інтерактивна векторна карта · Натисніть на місто</span>
+            <span class="mono-label" id="map-status">Завантаження контурів Європи…</span>
+          </div>
+          <div id="trade-map" class="map-wrap" aria-label="Карта торговельних шляхів середньовічної Європи"></div>
+          <span class="mono-label">Межі: Natural Earth (суспільне надбання) · Усі маршрути узагальнені за § 23</span>
+        </div>
+      </div>
+
+      <!-- Travel Time Calculator (Homework #4) -->
+      <div class="card card-interactive" style="display: grid; gap: var(--space-md);">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: var(--space-md);">
+          <div>
+            <span class="mono-label">Калькулятор подорожей · Домашнє завдання № 4</span>
+            <h3 style="margin-top: var(--space-xs);">Скільки днів тривала б мандрівка середньовічним шляхом?</h3>
+          </div>
+          <button type="button" class="btn btn-secondary" onclick="setHomeworkPreset()">
+            Пресет з уроку: Київ → Краків (882 км, вози)
+          </button>
+        </div>
+
+        <div class="control-row">
+          <div class="field-group">
+            <label for="calc-route">Оберіть суходільний маршрут</label>
+            <select id="calc-route" class="select-control" onchange="onRouteChange(this.value)">
+              <option value="882">Київ → Краків (882 км · через Карпати)</option>
+              <option value="535">Краків → Прага (535 км · центральноєвропейський шлях)</option>
+              <option value="390">Шампань (Труа) → Брюгге (390 км · до фландрських цехів)</option>
+              <option value="1100">Прага → Труа / Шампань (1100 км · ярмарковий шлях)</option>
+            </select>
+          </div>
+
+          <div class="field-group">
+            <label for="calc-speed-num">Швидкість руху (км / день)</label>
+            <input type="number" id="calc-speed-num" class="input-control" min="15" max="90" value="40" oninput="syncSpeedFromNumber(this.value)">
+          </div>
+
+          <div class="field-group">
+            <label for="calc-speed-range">Повзунок швидкості (віз ~35–40, гонець ~75)</label>
+            <input type="range" id="calc-speed-range" min="15" max="90" value="40" oninput="syncSpeedFromSlider(this.value)">
+          </div>
+        </div>
+
+        <div class="metrics-row">
+          <div class="forest-item">
+            <span class="mono-label">Відстань маршруту</span>
+            <span class="figure-value" id="calc-dist-out" style="font-size: 1.65rem;">882 км</span>
+          </div>
+          <div class="forest-item">
+            <span class="mono-label">Орієнтовний час у дорозі</span>
+            <span class="figure-value" id="calc-days-out" style="font-size: 1.65rem; color: var(--primary);">22,1 дня</span>
+          </div>
+          <div class="forest-item">
+            <span class="mono-label">Тип мандрівника</span>
+            <strong id="calc-traveler-out" style="color: var(--tertiary);">Купець із возами (30–40 км/день)</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 5: SPACE, TIME & SCIENCE -->
+    <section id="sec-space-time" class="lesson-section reveal-on-scroll">
+      <div class="section-header">
+        <span class="kicker">Світогляд середньовіччя</span>
+        <h2>Сприйняття простору, часу й народження експериментальної науки</h2>
+        <p class="section-intro">
+          Середньовічні люди бачили Землю крізь призму християнського світогляду, вимірювали добу
+          церковними дзвонами, а сміливі мислителі вже шукали природні закони.
+        </p>
+      </div>
+
+      <!-- Interactive Map Type Switcher -->
+      <div class="card card-interactive" style="display: grid; gap: var(--space-md);">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-md);">
+          <div>
+            <span class="mono-label">Як фіксували простір</span>
+            <h3 style="margin-top: var(--space-xs);">Три типи середньовічних карт і путівників</h3>
+          </div>
+          <div class="btn-group" role="group" aria-label="Типи середньовічних карт">
+            <button type="button" class="btn btn-tab" aria-pressed="true" onclick="selectMapType('mappa', this)">Mappa mundi</button>
+            <button type="button" class="btn btn-tab" aria-pressed="false" onclick="selectMapType('itiner', this)">Ітерарії</button>
+            <button type="button" class="btn btn-tab" aria-pressed="false" onclick="selectMapType('portolan', this)">Портолани</button>
+          </div>
+        </div>
+
+        <div class="split-grid">
+          <div class="schematic-box" id="cartography-svg-box" style="min-height: 250px;"></div>
+          <div style="display: grid; gap: var(--space-sm); align-content: start;">
+            <span class="tag" id="carto-badge">Монастирська карта світу</span>
+            <h4 id="carto-title">Mappa mundi («карта світу»)</h4>
+            <p id="carto-desc" style="font-size: 0.96rem;"></p>
+            <div class="forest-item" style="background: var(--surface-container);">
+              <span class="mono-label">Особливість у джерелах</span>
+              <p id="carto-source" style="font-size: 0.92rem; margin-top: var(--space-xs);"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Canopy 12-Month Almanac Strip + Calendar Comparison -->
+      <div class="season-strip">
+        <div class="season-strip-top">
+          <div>
+            <span class="mono-label">Річний ритм · Натхненно «Бревіарієм Ґрімані» (художник Герард Горенбут)</span>
+            <h3 style="margin-top: var(--space-xs);">Календарний цикл року та вимірювання часу</h3>
+          </div>
+          <span class="tag">Натисніть на місяць</span>
+        </div>
+
+        <div class="season-cells" role="group" aria-label="Місяці середньовічного календаря">
+          <button type="button" class="season-cell" aria-pressed="false" onclick="selectMonth(0, this)">СІЧ</button>
+          <button type="button" class="season-cell is-prep" aria-pressed="true" onclick="selectMonth(1, this)">ЛЮТ*</button>
+          <button type="button" class="season-cell is-prep" aria-pressed="false" onclick="selectMonth(2, this)">БЕР*</button>
+          <button type="button" class="season-cell is-prep" aria-pressed="false" onclick="selectMonth(3, this)">КВІ</button>
+          <button type="button" class="season-cell is-peak" aria-pressed="false" onclick="selectMonth(4, this)">ТРА</button>
+          <button type="button" class="season-cell is-peak" aria-pressed="false" onclick="selectMonth(5, this)">ЧЕР</button>
+          <button type="button" class="season-cell is-peak" aria-pressed="false" onclick="selectMonth(6, this)">ЛИП*</button>
+          <button type="button" class="season-cell is-peak" aria-pressed="false" onclick="selectMonth(7, this)">СЕР</button>
+          <button type="button" class="season-cell is-prep" aria-pressed="false" onclick="selectMonth(8, this)">ВЕР</button>
+          <button type="button" class="season-cell is-prep" aria-pressed="false" onclick="selectMonth(9, this)">ЖОВ</button>
+          <button type="button" class="season-cell is-prep" aria-pressed="false" onclick="selectMonth(10, this)">ЛИС*</button>
+          <button type="button" class="season-cell" aria-pressed="false" onclick="selectMonth(11, this)">ГРУ</button>
+        </div>
+
+        <div class="split-grid">
+          <div class="forest-item" id="month-detail">
+            <span class="mono-label" id="month-label">Лютий · Мініатюра з «Бревіарію Ґрімані»</span>
+            <strong id="month-title">Зимовий перепочинок і підготовка до весни</strong>
+            <p id="month-text" style="font-size: 0.94rem; margin-top: var(--space-xs);"></p>
+          </div>
+          <div class="forest-item">
+            <span class="mono-label">Відчуття часу та реформа календаря</span>
+            <p style="font-size: 0.94rem; margin-top: var(--space-xs);">
+              День вважали часом живих, а ніч — ареною злих сил; розпорядок доби задавали
+              <strong>церковні дзвони</strong>. Для точного визначення Великодня церква спиралася на астрономію:
+              у XVI ст. Папа Григорій XIII замінив <strong>юліанський календар</strong> (365,25 днів) на
+              точніший <strong>григоріанський</strong> (365,2425 днів — «новий стиль»).
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Historical Sources A & B (Innocent III vs Roger Bacon) -->
+      <div class="card-grid">
+        <div class="card" style="display: grid; gap: var(--space-sm);">
+          <span class="tag tag-danger">Джерело А · Скепсис до земного знання</span>
+          <h3>Папа Іннокентій III (1198–1216)</h3>
+          <p class="quote-text" style="font-size: 1rem;">
+            «…При великій мудрості багато роздратованості, і ті, хто помножує пізнання, помножує скорботу…
+            Хіба тільки те знають досконало, що нічого не знають досконало».
+          </p>
+          <p style="font-size: 0.93rem; color: var(--on-surface-variant);">
+            Трактат «Про зневагу до світу» відображав позицію церкви: справжній світ — поза межами земного життя,
+            тому марно витрачати сили на вивчення природи.
+          </p>
+        </div>
+
+        <div class="card" style="display: grid; gap: var(--space-sm);">
+          <span class="tag tag-green">Джерело Б · Народження експерименту</span>
+          <h3>Роджер Бекон (XIII ст., «Opus Majus»)</h3>
+          <p class="quote-text" style="font-size: 1rem;">
+            «Бог дав природі незмінні закони… якщо ми не знаємо способів виготовлення золота, то причина в тому,
+            що ми не спостерігаємо засобів, якими природа вдосконалює метали».
+          </p>
+          <p style="font-size: 0.93rem; color: var(--on-surface-variant);">
+            Францисканський монах з Паризького й Оксфордського університетів, ув’язнений на понад 10 років за свої погляди,
+            заклав основи <strong>експериментального природознавства</strong>.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 6: GLOSSARY CARDS & SELF-CHECK QUIZ -->
+    <section id="sec-practice" class="lesson-section reveal-on-scroll">
+      <div class="section-header">
+        <span class="kicker">Закріплення знань</span>
+        <h2>Картки термінів і перевірочний тест</h2>
+        <p class="section-intro">
+          Позначте засвоєні поняття та перевірте свої знання за § 23 — ваш прогрес зберігається автоматично.
+        </p>
+      </div>
+
+      <!-- Term cards -->
+      <div style="display: grid; gap: var(--space-md);">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-sm);">
+          <h3>Словник уроку (10 ключових понять)</h3>
+          <div class="btn-group" role="group" aria-label="Фільтр карток термінів">
+            <button type="button" class="btn btn-tab" aria-pressed="true" onclick="filterTerms('all', this)">Усі (10)</button>
+            <button type="button" class="btn btn-tab" aria-pressed="false" onclick="filterTerms('todo', this)">Невивчені</button>
+            <button type="button" class="btn btn-tab" aria-pressed="false" onclick="filterTerms('done', this)">Засвоєно</button>
+          </div>
+        </div>
+        <div class="term-grid" id="terms-grid"></div>
+      </div>
+
+      <!-- Knowledge Check Quiz -->
+      <div style="display: grid; gap: var(--space-md); margin-top: var(--space-lg);">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-sm);">
+          <div>
+            <h3>Перевірочні запитання (§ 23)</h3>
+            <p class="section-intro" style="font-size: 0.95rem;">
+              Оберіть правильний варіант у кожному завданні, щоб побачити пояснення.
+            </p>
+          </div>
+          <div class="stat-pill">
+            <span>Результат:</span>
+            <span class="stat-badge" id="quiz-score-badge">0 / 8 правильних</span>
+          </div>
+        </div>
+
+        <div id="quiz-container" style="display: grid; gap: var(--space-md);"></div>
+      </div>
+    </section>
+
+    <footer class="lesson-footer">
+      <strong>Джерела уроку</strong>
+      <span>
+        Підготовлено за навчальними матеріалами та робочим зошитом для 7 класу: Розділ V «Середньовічний світ Західної Європи»,
+        § 23 «Освоєння людиною природи» (Урок 24).
+      </span>
+      <span>
+        Згадані праці та автори: Жак ле Гофф («Чи Європа народилася в середні віки?»), Марк Блок («Феодальне суспільство»),
+        Джеремі Блек («Історія світу від найдавніших часів до сьогодення»), Папа Іннокентій III («Про зневагу до світу»),
+        Роджер Бекон («Opus Majus»), Жан Мансел («Букет історій»), Герард Горенбут («Бревіарій Ґрімані»). Картографічні межі: Natural Earth.
+      </span>
+    </footer>
+  </main>
+
+  <api-shim></api-shim>
+
+  <script>
+    /* ========= DATA (backtick strings for Ukrainian apostrophes) ========= */
+    const INVENTIONS = {
+      plow: {
+        title: `Важкий колісний плуг із металевими частинами`,
+        desc: `На відміну від легкого рала, важкий колісний плуг мав залізний леміш і відвал, які глибоко підрізали й перевертали щільний, вологий європейський ґрунт та ефективно нищили бур’яни.`,
+        impact: `Земля краще провітрювалася та вбирала вологу, що дало змогу обробляти важкі родючі долини Північної та Західної Європи і значно підвищити врожайність.`,
+        svg: `<svg viewBox="0 0 280 140" width="260" height="130" aria-hidden="true">
+          <line x1="15" y1="112" x2="265" y2="112" stroke="var(--outline)" stroke-width="2" stroke-dasharray="5 4"/>
+          <path d="M40 112 Q95 96 145 112 Q195 126 245 112" fill="none" stroke="var(--tertiary)" stroke-width="3"/>
+          <circle cx="80" cy="94" r="18" fill="none" stroke="var(--on-surface)" stroke-width="3"/>
+          <circle cx="80" cy="94" r="4" fill="var(--tertiary)"/>
+          <line x1="55" y1="74" x2="205" y2="82" stroke="var(--tertiary)" stroke-width="5" stroke-linecap="round"/>
+          <line x1="150" y1="80" x2="150" y2="114" stroke="var(--on-surface)" stroke-width="4"/>
+          <polygon points="150,114 125,114 150,96" fill="var(--data-4)"/>
+          <path d="M195 82 L225 46 M210 82 L236 52" stroke="var(--tertiary)" stroke-width="4" stroke-linecap="round"/>
+          <text x="140" y="24" text-anchor="middle" font-size="11" font-family="var(--font-label)" fill="var(--secondary)">ГЛИБОКА ОРАНКА + КОЛІСНА ОСЬ</text>
+        </svg>`
+      },
+      harness: {
+        title: `Хомут і залізні підкови для коней`,
+        desc: `М’якша упряж для коней (хомут, на відміну від жорсткого ярма для волів) переносила навантаження на плечі тварини, а металеві підкови замінили слабкі перев’язки й захистили копита на кам’янистому й вологому ґрунті.`,
+        impact: `Коні працювали у півтора-два рази швидше й витриваліше за волів, що прискорило оранку, перевезення врожаю та сухопутну торгівлю.`,
+        svg: `<svg viewBox="0 0 280 140" width="260" height="130" aria-hidden="true">
+          <ellipse cx="90" cy="74" rx="28" ry="40" fill="none" stroke="var(--tertiary)" stroke-width="8"/>
+          <ellipse cx="90" cy="74" rx="20" ry="31" fill="none" stroke="var(--on-surface)" stroke-width="2"/>
+          <line x1="65" y1="80" x2="28" y2="96" stroke="var(--on-surface)" stroke-width="3"/>
+          <line x1="115" y1="80" x2="145" y2="96" stroke="var(--on-surface)" stroke-width="3"/>
+          <path d="M185 95 C185 52, 235 52, 235 95" fill="none" stroke="var(--data-4)" stroke-width="9" stroke-linecap="round"/>
+          <circle cx="192" cy="86" r="2.5" fill="var(--background)"/>
+          <circle cx="197" cy="68" r="2.5" fill="var(--background)"/>
+          <circle cx="210" cy="61" r="2.5" fill="var(--background)"/>
+          <circle cx="223" cy="68" r="2.5" fill="var(--background)"/>
+          <circle cx="228" cy="86" r="2.5" fill="var(--background)"/>
+          <text x="90" y="130" text-anchor="middle" font-size="11" font-family="var(--font-label)" fill="var(--secondary)">ХОМУТ</text>
+          <text x="210" y="130" text-anchor="middle" font-size="11" font-family="var(--font-label)" fill="var(--secondary)">ПІДКОВА</text>
+        </svg>`
+      },
+      rotation: {
+        title: `Перехід від двопілля до трипільної сівозміни`,
+        desc: `Орну землю громади поділили не на дві, а на три частини: одне поле засівали озимими (жито, пшениця), друге — ярими (овес, ячмінь, горох), а третє залишали під паром для відновлення ґрунту.`,
+        impact: `Площа землі під паром зменшилася з половини (50%) до третини (33%), селяни отримували два врожаї на рік і менше залежали від однієї погодної примхи.`,
+        svg: `<svg viewBox="0 0 280 140" width="260" height="130" aria-hidden="true">
+          <rect x="24" y="34" width="70" height="72" rx="8" fill="var(--tertiary-container)" stroke="var(--tertiary)" stroke-width="2"/>
+          <rect x="105" y="34" width="70" height="72" rx="8" fill="var(--primary-container)" stroke="var(--primary)" stroke-width="2"/>
+          <rect x="186" y="34" width="70" height="72" rx="8" fill="var(--surface-container-high)" stroke="var(--outline)" stroke-width="2"/>
+          <text x="59" y="68" text-anchor="middle" font-size="12" font-weight="700" fill="var(--on-tertiary-container)">ОЗИМІ</text>
+          <text x="59" y="84" text-anchor="middle" font-size="10" fill="var(--on-tertiary-container)">1/3 поля</text>
+          <text x="140" y="68" text-anchor="middle" font-size="12" font-weight="700" fill="var(--on-primary-container)">ЯРІ</text>
+          <text x="140" y="84" text-anchor="middle" font-size="10" fill="var(--on-primary-container)">1/3 поля</text>
+          <text x="221" y="68" text-anchor="middle" font-size="12" font-weight="700" fill="var(--on-surface)">ПАР</text>
+          <text x="221" y="84" text-anchor="middle" font-size="10" fill="var(--on-surface)">1/3 поля</text>
+          <path d="M88 22 Q140 6 192 22" fill="none" stroke="var(--primary)" stroke-width="2"/>
+          <polygon points="194,23 185,24 189,16" fill="var(--primary)"/>
+          <text x="140" y="128" text-anchor="middle" font-size="11" font-family="var(--font-label)" fill="var(--secondary)">ЩОРІЧНА РОТАЦІЯ КУЛЬТУР</text>
+        </svg>`
+      }
+    };
+
+    const CRISIS_STAGES = [
+      {
+        title: `Потепління X–XIII століть («аграрна революція»)`,
+        text: `Підвищення середньої температури навіть на кілька градусів зменшило ризик весняних заморозків. У поєднанні з важким плугом, хомутом і трипіллям це дало стабільні врожаї та стрімке розселення.`
+      },
+      {
+        title: `Початок XIV століття: демографічний максимум (60 млн осіб)`,
+        text: `Населення Західної Європи зросло втричі порівняно з X століттям. Проте родючі землі вже були здебільшого розорані, і подальше прогодування людей залежало від сприятливої погоди.`
+      },
+      {
+        title: `1315 рік: початок глобального похолодання та Великий голод`,
+        text: `Тривалі дощі й холод знищили врожаї у Північній Європі. Кількарічний голод забрав мільйони життів, спричинив недоїдання та бродяжництво, завершивши епоху середньовічного процвітання.`
+      },
+      {
+        title: `1346–1353 роки: «Чорна смерть» і затяжна криза`,
+        text: `Епідемія чуми прийшла з Центральної Азії через кримські та італійські порти й золотоординське військо. На тлі Столітньої війни та зневаги до медицини загинула від третини до половини людності Західної Європи.`
+      }
+    ];
+
+    const TRADE_CITIES = [
+      { name: `Любек`, lat: 53.865, lon: 10.686, group: `hanse`, desc: `Головний центр Ганзейського союзу на Балтиці; контролював торгівлю північних портів.` },
+      { name: `Гамбург`, lat: 53.551, lon: 9.993, group: `hanse`, desc: `Середнє місто (~15–30 тис. мешканців), важливий ганзейський порт найближче до Любека.` },
+      { name: `Кельн`, lat: 50.937, lon: 6.960, group: `hanse`, desc: `Велике рейнське місто (30–50 тис.), важливий ганзейський осередок найближче до Брюгге.` },
+      { name: `Брюгге`, lat: 51.209, lon: 3.224, group: `hanse`, desc: `Фламандський центр сукнарства (до 70 тис. мешканців), приймав англійську вовну й ганзейські товари.` },
+      { name: `Данциг (Гданськ)`, lat: 54.352, lon: 18.646, group: `hanse`, desc: `Східний порт Ганзейського союзу на узбережжі Балтійського моря.` },
+      { name: `Рига`, lat: 56.949, lon: 24.105, group: `hanse`, desc: `Балтійський торговельний форпост Ганзи, сполучений зі східноєвропейськими шляхами.` },
+      { name: `Лондон`, lat: 51.507, lon: -0.127, group: `hanse`, desc: `Велике місто (30–50 тис.), головний постачальник високоякісної англійської вовни.` },
+      { name: `Париж`, lat: 48.856, lon: 2.352, group: `champagne`, desc: `Стотисячне місто-гігант Франції на перетині торгових шляхів Півночі та Півдня.` },
+      { name: `Шампань (Труа)`, lat: 48.297, lon: 4.074, group: `champagne`, desc: `Провінція щорічних ярмарків, що поєднували середземноморську та північноєвропейську торгівлю.` },
+      { name: `Краків`, lat: 50.064, lon: 19.945, group: `kyiv`, desc: `Важливе місто на суходільному караванному шляху між Німеччиною, Прагою і Києвом; належав до Ганзи.` },
+      { name: `Прага`, lat: 50.075, lon: 14.437, group: `kyiv`, desc: `Ключовий вузол суходільного торгового шляху від німецьких міст через Карпати до Дніпра.` },
+      { name: `Київ`, lat: 50.450, lon: 30.523, group: `kyiv`, desc: `Міжнародне торгове перехрестя на Дніпрі: тут сходилися шлях із Заходу та водний шлях «із варягів у греки».` },
+      { name: `Новгород`, lat: 58.525, lon: 31.274, group: `kyiv`, desc: `Північний вузол шляху «із варягів у греки» та партнер Ганзи.` },
+      { name: `Константинополь`, lat: 41.008, lon: 28.978, group: `kyiv`, desc: `Столиця Візантії — південна кінцева точка шляху «із варягів у греки» у Чорному морі.` },
+      { name: `Венеція`, lat: 45.440, lon: 12.315, group: `med`, desc: `Стотисячна морська республіка; відновила торгові зв’язки Європи з Азією та Африкою.` },
+      { name: `Генуя`, lat: 44.405, lon: 8.946, group: `med`, desc: `Стотисячний порт Італії; генуезці тримали колонії навіть у Криму (через які пізніше проникла чума).` },
+      { name: `Піза`, lat: 43.722, lon: 10.401, group: `med`, desc: `Італійське портове місто-республіка, активний учасник середземноморської торгівлі.` },
+      { name: `Амальфі`, lat: 40.634, lon: 14.602, group: `med`, desc: `Одна з перших італійських морських республік Середземномор’я.` },
+      { name: `Марсель`, lat: 43.296, lon: 5.369, group: `med`, desc: `Головний французький порт Середземного моря, ворота до ярмарків Шампані.` }
+    ];
+
+    const ROUTE_INFO = {
+      all: {
+        title: `Єдина торгова мережа Європи`,
+        desc: `Північноєвропейський (Ганза) та середземноморський центри сходилися на ярмарках у Шампані, а зі сходу суходолом і Дніпром товари йшли через Київ.`
+      },
+      hanse: {
+        title: `Ганзейський союз вільних міст`,
+        desc: `Об’єднання північнонімецьких та балтійських міст (Любек, Гамбург, Кельн, Данциг, Рига, Краків) для безпечної морської та сухопутної торгівлі, зокрема англійською вовною й сукном Брюгге.`
+      },
+      champagne: {
+        title: `Ярмарки у французькій провінції Шампань`,
+        desc: `Щорічні ярмарки, що об’єднували купців із Італії (Середземномор’я) та Фландрії й Англії (Північ Європи).`
+      },
+      kyiv: {
+        title: `Київ на перехресті європейських шляхів`,
+        desc: `У Києві на Дніпрі суходільний караванний шлях (німецькі міста — Прага — північні схили Карпат — Київ) перетинався зі знаменитим шляхом «із варягів у греки» (Балтійське — Чорне моря).`
+      },
+      med: {
+        title: `Середземноморська торгівля`,
+        desc: `Італійські морські республіки (Венеція, Генуя, Піза, Амальфі) та французький Марсель відновили торгові контакти між Європою, Азією та Африкою.`
+      }
+    };
+
+    const CARTOGRAPHY = {
+      mappa: {
+        badge: `Християнська картина світу`,
+        title: `Mappa mundi («карта світу»)`,
+        desc: `Складалася в монастирях. Вона не вимірювала точних відстаней, а ілюструвала біблійний світогляд: Земля складалася з трьох відомих частин — Азії (нагорі), Європи (ліворуч) та Африки (праворуч).`,
+        source: `Приклад із підручника: мініатюра з хроніки Жана Мансела «Букет історій» (XV ст.) зображає Ноїв ковчег на горі Арарат та нащадків трьох синів Ноя (Сима, Яфета й Хама). Центром світу зазвичай позначали Єрусалим.`,
+        svg: `<svg viewBox="0 0 240 220" width="220" height="200" aria-hidden="true">
+          <circle cx="120" cy="110" r="88" fill="var(--tertiary-container)" stroke="var(--on-surface)" stroke-width="3"/>
+          <circle cx="120" cy="110" r="78" fill="var(--background)" stroke="var(--tertiary)" stroke-width="1.5"/>
+          <line x1="42" y1="110" x2="198" y2="110" stroke="var(--data-4)" stroke-width="6"/>
+          <line x1="120" y1="110" x2="120" y2="188" stroke="var(--data-4)" stroke-width="6"/>
+          <circle cx="120" cy="110" r="10" fill="var(--error)" stroke="var(--background)" stroke-width="2"/>
+          <text x="120" y="72" text-anchor="middle" font-size="14" font-weight="700" fill="var(--on-surface)">АЗІЯ</text>
+          <text x="120" y="90" text-anchor="middle" font-size="10" fill="var(--tertiary)">Сим · Арарат</text>
+          <text x="82" y="146" text-anchor="middle" font-size="12" font-weight="700" fill="var(--on-surface)">ЄВРОПА</text>
+          <text x="82" y="162" text-anchor="middle" font-size="10" fill="var(--secondary)">Яфет</text>
+          <text x="158" y="146" text-anchor="middle" font-size="12" font-weight="700" fill="var(--on-surface)">АФРИКА</text>
+          <text x="158" y="162" text-anchor="middle" font-size="10" fill="var(--secondary)">Хам</text>
+          <text x="120" y="212" text-anchor="middle" font-size="10" font-family="var(--font-label)" fill="var(--secondary)">ЦЕНТР — ЄРУСАЛИМ (T–O СХЕМА)</text>
+        </svg>`
+      },
+      itiner: {
+        badge: `Суходільний путівник`,
+        title: `Ітерарії (словесні описи шляхів)`,
+        desc: `Для реальних подорожей суходолом монастирські карти не годилися. Купці, прочани й гінці користувалися ітераріями — детальними списками маршруту з відстанями, виміряними у днях шляху.`,
+        source: `У таких описах фіксували кожну стоянку, переправу через річку, міст, гірський перевал та небезпечні ділянки дороги.`,
+        svg: `<svg viewBox="0 0 260 200" width="240" height="185" aria-hidden="true">
+          <path d="M26 146 C75 146, 85 70, 130 70 C175 70, 185 130, 234 54" fill="none" stroke="var(--tertiary)" stroke-width="4" stroke-dasharray="6 4"/>
+          <circle cx="26" cy="146" r="8" fill="var(--primary)"/>
+          <circle cx="92" cy="96" r="7" fill="var(--tertiary)"/>
+          <circle cx="164" cy="94" r="7" fill="var(--data-4)"/>
+          <circle cx="234" cy="54" r="9" fill="var(--primary)"/>
+          <text x="32" y="170" font-size="10" font-weight="700" fill="var(--on-surface)">Місто А</text>
+          <text x="72" y="80" font-size="10" font-weight="700" fill="var(--tertiary)">Стоянка (2 дні)</text>
+          <text x="135" y="122" font-size="10" font-weight="700" fill="var(--data-4)">Міст через ріку</text>
+          <text x="190" y="38" font-size="10" font-weight="700" fill="var(--primary)">Кінцева мета</text>
+          <text x="130" y="190" text-anchor="middle" font-size="10" font-family="var(--font-label)" fill="var(--secondary)">ЛІНІЙНИЙ ОПИС У ДНЯХ ДОРОГИ</text>
+        </svg>`
+      },
+      portolan: {
+        badge: `Морська навігація`,
+        title: `Портолани (морські карти)`,
+        desc: `На відміну від умовних mappa mundi, портолани були надзвичайно точними для свого часу. На них детально промальовували кожен вигин узбережжя, гавані, мілини та підводні скелі.`,
+        source: `У підручнику й робочому зошиті наведено портолан Майорканської картографічної школи 1385 року. Характерна риса — сітка румбових ліній, що розходяться від рози вітрів.`,
+        svg: `<svg viewBox="0 0 260 200" width="240" height="185" aria-hidden="true">
+          <rect x="14" y="14" width="232" height="156" rx="8" fill="var(--map-ocean)" stroke="var(--outline)" stroke-width="1.5"/>
+          <path d="M14 55 Q65 72 86 50 Q120 26 155 48 Q195 66 246 42 L246 14 L14 14 Z" fill="var(--map-land)" stroke="var(--tertiary)" stroke-width="2"/>
+          <g stroke="var(--data-4)" stroke-width="1" opacity="0.65">
+            <line x1="130" y1="108" x2="20" y2="62"/>
+            <line x1="130" y1="108" x2="72" y2="24"/>
+            <line x1="130" y1="108" x2="188" y2="24"/>
+            <line x1="130" y1="108" x2="240" y2="70"/>
+            <line x1="130" y1="108" x2="240" y2="146"/>
+            <line x1="130" y1="108" x2="20" y2="146"/>
+            <line x1="130" y1="108" x2="130" y2="20"/>
+            <line x1="130" y1="108" x2="130" y2="165"/>
+          </g>
+          <circle cx="130" cy="108" r="10" fill="var(--background)" stroke="var(--primary)" stroke-width="2"/>
+          <polygon points="130,93 134,108 130,123 126,108" fill="var(--error)"/>
+          <circle cx="86" cy="50" r="3.5" fill="var(--primary)"/>
+          <circle cx="155" cy="48" r="3.5" fill="var(--primary)"/>
+          <text x="130" y="190" text-anchor="middle" font-size="10" font-family="var(--font-label)" fill="var(--secondary)">РОЗА ВІТРІВ + ТОЧНА БЕРЕГОВА ЛІНІЯ</text>
+        </svg>`
+      }
+    };
+
+    const MONTHS = [
+      { label: `Січень · Середина зими`, title: `Перечікування морозів біля вогнища`, text: `Заготівля дров із лісу, ремонт реманенту, мінімальні пересування дорогами через сніг і холод.` },
+      { label: `Лютий · Мініатюра з «Бревіарію Ґрімані»`, title: `Кінець зими та домашні турботи`, text: `На ілюстрації Герарда Горенбута зображено холодний зимовий побут: селяни гріються в оселі й готуються до весняних робіт.` },
+      { label: `Березень · Мініатюра з «Бревіарію Ґрімані»`, title: `Весняна оранка та сівба ярих`, text: `На полі з’являється важкий плуг із тягловими тваринами; селяни засівають яре поле (овес, ячмінь, горох) та обрізають виноградники.` },
+      { label: `Квітень · Весняний ріст`, title: `Догляд за посівами й пасовищами`, text: `Худобу виганяють на випас; на третьому (паровому) полі земля вкривається травою й відпочиває.` },
+      { label: `Травень · Початок теплої пори`, title: `Пожвавлення торгівлі та подорожей`, text: `Шляхи підсихають, відновлюються каравани до ярмарків Шампані, активізується морська навігація.` },
+      { label: `Червень · Косовиця`, title: `Заготівля сіна для худоби`, text: `Важлива підготовка кормів, щоб коні та воли пережили наступну зиму і могли тягнути плуг.` },
+      { label: `Липень · Мініатюра з «Бревіарію Ґрімані»`, title: `Жнива озимого хліба`, text: `Головна пора землеробського року: збір жита і пшениці, від якого залежить чи вистачить родині їжі без голоду.` },
+      { label: `Серпень · Дозбирання ярих`, title: `Жнива ярого поля та обмолот`, text: `Зібране зерно сушать і молотять; ринки міст наповнюються новим урожаєм.` },
+      { label: `Вересень · Осіння сівба`, title: `Оранка під озимі на колишньому паровому полі`, text: `Поле, що відпочивало рік, засівають озимим житом і пшеницею; відбуваються осінні ярмарки.` },
+      { label: `Жовтень · Завершення польових робіт`, title: `Збір винограду, плодів і лісових запасів`, text: `У лісах заготовляють деревину, кору для ремесел, смолу й дичину перед зимою.` },
+      { label: `Листопад · Мініатюра з «Бревіарію Ґрімані»`, title: `Випас свиней у лісі на жолудях`, text: `Традиційна осіння сцена в рукописах: використання лісових угідь для відгодівлі худоби перед холодами.` },
+      { label: `Грудень · Завершення річного кола`, title: `Зимові свята та облік запасів`, text: `Життя сповільнюється, а ритм днів визначають церковні дзвони й очікування зимових свят.` }
+    ];
+
+    const TERMS = [
+      { id: `t1`, term: `Середні віки (medium aevum)`, def: `Тисячолітня епоха в історії людства між Античністю та Новим часом, що найповніше проявилася в Західній Європі.` },
+      { id: `t2`, term: `Ментальність`, def: `Способи сприйняття і пояснення світу, притаманні людям певної епохи чи спільноти.` },
+      { id: `t3`, term: `«Аграрна революція» (X–XIII ст.)`, def: `Господарське піднесення в Європі, спричинене впровадженням важкого плуга, хомута, підков і трипільної сівозміни.` },
+      { id: `t4`, term: `Трипільна сівозміна`, def: `Поділ орної землі на три поля (озимі, ярі, пар), що зменшив частку необроблюваної землі з 1/2 до 1/3.` },
+      { id: `t5`, term: `Внутрішня колонізація`, def: `Освоєння раніше необжитих земель усередині Європи: вирубування лісів, осушення боліт, заснування «вільних містечок».` },
+      { id: `t6`, term: `Зовнішня колонізація`, def: `Розширення меж християнського світу за межі первісних осередків: хрестові походи, Реконкіста, завоювання норманів і германців.` },
+      { id: `t7`, term: `«Чорна смерть» (1346–1353)`, def: `Масштабна епідемія чуми, що проникла з Азії через порти Криму та Італії і забрала від 1/3 до 1/2 населення Західної Європи.` },
+      { id: `t8`, term: `Ганзейський союз`, def: `Торговельне об’єднання вільних міст Північної Європи та Балтії (Любек, Гамбург, Кельн, Рига, Краків та ін.).` },
+      { id: `t9`, term: `Mappa mundi`, def: `Середньовічна монастирська карта-схема, що відображала християнський світогляд (Азія, Європа, Африка, центр — Єрусалим).` },
+      { id: `t10`, term: `Портолан та ітерарій`, def: `Портолан — точна морська навігаційна карта берегів; ітерарій — словесний опис сухопутного маршруту з відстанями в часі.` }
+    ];
+
+    const QUIZ = [
+      {
+        q: `З яких трьох напрямків наприкінці І тисячоліття на Західну Європу наступала «друга навала» завойовників?`,
+        options: [
+          `Араби з півдня, угри зі сходу, нормани з півночі`,
+          `Гуни зі сходу, греки з півдня, франки із заходу`,
+          `Монголи з півночі, араби із заходу, візантійці зі сходу`
+        ],
+        correct: 0,
+        explain: `За текстом 23.1 Західна Європа відчувала себе «оточеною фортецею» через набіги арабів-мусульман з півдня, угрів зі сходу та норманів з півночі.`
+      },
+      {
+        q: `Чому перехід до трипільної сівозміни став проривом у сільському господарстві?`,
+        options: [
+          `Дозволив зовсім відмовитися від тяглових тварин`,
+          `Зменшив частку землі під паром із половини (1/2) до третини (1/3) і дав два посіви на рік`,
+          `Забезпечив вирощування рису й бавовни в Північній Європі`
+        ],
+        correct: 1,
+        explain: `У трипіллі одне поле відводили під озимі, друге — під ярі, а під паром залишалася лише третина ріллі.`
+      },
+      {
+        q: `Яких приблизно масштабів досягло населення Західної Європи на початку XIV ст. внаслідок демографічного буму?`,
+        options: [
+          `Зменшилося до 15 мільйонів`,
+          `Зросло втричі й сягнуло 60 мільйонів осіб`,
+          `Перевищило 150 мільйонів осіб`
+        ],
+        correct: 1,
+        explain: `Із другої половини X до початку XIV століття населення Західної Європи зросло втричі — до 60 млн осіб.`
+      },
+      {
+        q: `Яка подія 1315 року вважається символічним завершенням епохи середньовічного процвітання?`,
+        options: [
+          `Винайдення важкого плуга`,
+          `Великий голод у Північній Європі, спричинений глобальним похолоданням`,
+          `Заснування ярмарків у провінції Шампань`
+        ],
+        correct: 1,
+        explain: `Глобальне похолодання XIV ст. знизило врожаї, а багаторічний Великий голод 1315 р. забрав мільйони життів.`
+      },
+      {
+        q: `Яку частку мешканців Західної Європи знищила епідемія чуми «Чорна смерть» (1346–1353 рр.)?`,
+        options: [
+          `Близько 5–10% населення`,
+          `Від третини до половини (33–50%) мешканців`,
+          `Тільки населення міст-портів Італії`
+        ],
+        correct: 1,
+        explain: `Занесена з Центральної Азії через кримські та італійські порти, чума забрала від третини до половини мешканців Західної Європи.`
+      },
+      {
+        q: `Яку роль у середньовічній торгівлі відігравали ярмарки у французькій провінції Шампань?`,
+        options: [
+          `Поєднували два головні центри європейської торгівлі — середземноморський і північний`,
+          `Були єдиним портом для торгівлі з Азією`,
+          `Продавали виключно рукописи та портолани`
+        ],
+        correct: 0,
+        explain: `На щорічних ярмарках у Шампані зустрічалися купці Північної Європи (англійська вовна, Ганза) та Італії (Середземномор’я).`
+      },
+      {
+        q: `Чим портолан відрізнявся від монастирської карти mappa mundi?`,
+        options: [
+          `Портолан показував лише біблійну історію і Єрусалим у центрі`,
+          `Портолан був точною морською картою з береговою лінією та навігаційними небезпеками`,
+          `Портолан складали тільки як словесний список без малюнків`
+        ],
+        correct: 1,
+        explain: `Mappa mundi ілюструвала християнський світогляд, ітерарій був словесним описом дороги, а портолан — точною навігаційною картою моря.`
+      },
+      {
+        q: `Кого із середньовічних мислителів XIII століття вважають одним із засновників експериментального природознавства?`,
+        options: [
+          `Папу Іннокентія III`,
+          `Хроніста Рауля Глабера`,
+          `Роджера Бекона, автора «Великого твору» (Opus Majus)`
+        ],
+        correct: 2,
+        explain: `Монах-францисканець Роджер Бекон вивчав природу експериментальним шляхом і закликав спостерігати за її законами.`
+      }
+    ];
+
+    /* ========= STATE ========= */
+    let appState = {
+      masteredTerms: [],
+      quizAnswers: {},
+      tableDone: [false, false, false],
+      cropSystem: 3,
+      cropYear: 0,
+      selectedInvention: `plow`,
+      selectedMapType: `mappa`,
+      selectedMonth: 1
+    };
+
+    /* ========= UTILITY: READ CSS TOKEN ========= */
+    function getToken(name) {
+      return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    }
+
+    async function saveState() {
+      if (window.notebookAppApi && typeof window.notebookAppApi.setAppState === `function`) {
+        try {
+          await window.notebookAppApi.setAppState(appState);
+        } catch (e) {
+          /* silent fallback if outside host */
+        }
+      }
+      updateProgressCounters();
+    }
+
+    function updateProgressCounters() {
+      const termEl = document.getElementById(`stat-terms`);
+      if (termEl) termEl.textContent = `${appState.masteredTerms.length} / ${TERMS.length}`;
+
+      let correctCount = 0;
+      QUIZ.forEach((q, idx) => {
+        if (appState.quizAnswers[idx] === q.correct) correctCount++;
+      });
+
+      const quizEl = document.getElementById(`stat-quiz`);
+      if (quizEl) quizEl.textContent = `${correctCount} / ${QUIZ.length}`;
+
+      const quizBadge = document.getElementById(`quiz-score-badge`);
+      if (quizBadge) quizBadge.textContent = `${correctCount} / ${QUIZ.length} правильних`;
+
+      const tableCount = appState.tableDone.filter(Boolean).length;
+      const tblEl = document.getElementById(`stat-table`);
+      if (tblEl) tblEl.textContent = `${tableCount} / 3`;
+    }
+
+    /* ========= SECTION 1: FOREST FILTER ========= */
+    function filterForest(category, btn) {
+      const group = btn && btn.parentElement;
+      if (group) {
+        group.querySelectorAll(`button`).forEach(b => b.setAttribute(`aria-pressed`, `false`));
+        btn.setAttribute(`aria-pressed`, `true`);
+      }
+      const list = document.getElementById(`forest-list`);
+      if (!list) return;
+      list.querySelectorAll(`.forest-item`).forEach(item => {
+        const type = item.getAttribute(`data-forest`);
+        if (category === `all` || type === category) {
+          item.classList.remove(`is-hidden`);
+        } else {
+          item.classList.add(`is-hidden`);
+        }
+      });
+    }
+
+    /* ========= SECTION 2: INVENTIONS & CROP SIMULATOR ========= */
+    function selectInvention(key, btn) {
+      const item = INVENTIONS[key];
+      if (!item) return;
+      appState.selectedInvention = key;
+
+      if (btn && btn.parentElement) {
+        btn.parentElement.querySelectorAll(`button`).forEach(b => b.setAttribute(`aria-pressed`, `false`));
+        btn.setAttribute(`aria-pressed`, `true`);
+      }
+
+      const svgBox = document.getElementById(`invention-svg-box`);
+      const titleEl = document.getElementById(`invention-title`);
+      const descEl = document.getElementById(`invention-desc`);
+      const impactEl = document.getElementById(`invention-impact`);
+
+      if (svgBox) svgBox.innerHTML = item.svg;
+      if (titleEl) titleEl.textContent = item.title;
+      if (descEl) descEl.textContent = item.desc;
+      if (impactEl) impactEl.textContent = item.impact;
+      saveState();
+    }
+
+    function setCropSystem(sys) {
+      appState.cropSystem = sys;
+      const b2 = document.getElementById(`btn-sys-two`);
+      const b3 = document.getElementById(`btn-sys-three`);
+      if (b2) b2.setAttribute(`aria-pressed`, sys === 2 ? `true` : `false`);
+      if (b3) b3.setAttribute(`aria-pressed`, sys === 3 ? `true` : `false`);
+      if (sys === 2 && appState.cropYear > 1) appState.cropYear = 0;
+      renderCropBoard();
+      saveState();
+    }
+
+    function setCropYear(yr) {
+      appState.cropYear = yr;
+      renderCropBoard();
+      saveState();
+    }
+
+    function renderCropBoard() {
+      const sys = appState.cropSystem;
+      const yr = appState.cropYear;
+
+      [0, 1, 2].forEach(i => {
+        const btn = document.getElementById(`btn-year-${i}`);
+        if (!btn) return;
+        btn.setAttribute(`aria-pressed`, i === yr ? `true` : `false`);
+        btn.style.display = (sys === 2 && i === 2) ? `none` : `inline-flex`;
+      });
+
+      const p1 = document.getElementById(`plot-1`);
+      const p2 = document.getElementById(`plot-2`);
+      const p3 = document.getElementById(`plot-3`);
+      if (!p1 || !p2 || !p3) return;
+
+      const statesTwo = [
+        { cls: `crop-winter`, crop: `Зернові (жито / пшениця)`, note: `Засіяне поле дає основний урожай` },
+        { cls: `crop-fallow`, crop: `Пар (земля «відпочиває»)`, note: `Половина ріллі щороку не родить` }
+      ];
+      const statesThree = [
+        { cls: `crop-winter`, crop: `Озимі (жито, пшениця)`, note: `Сіють восени, збирають улітку` },
+        { cls: `crop-spring`, crop: `Ярі (овес, ячмінь, горох)`, note: `Сіють навесні — страховка від неврожаю` },
+        { cls: `crop-fallow`, crop: `Пар (відпочинок ґрунту)`, note: `Лише третина землі відпочиває` }
+      ];
+
+      function applyPlot(el, idx, stateObj) {
+        el.className = `field-plot ${stateObj.cls}`;
+        const cropEl = document.getElementById(`plot-${idx}-crop`);
+        const noteEl = document.getElementById(`plot-${idx}-note`);
+        if (cropEl) cropEl.textContent = stateObj.crop;
+        if (noteEl) noteEl.textContent = stateObj.note;
+      }
+
+      if (sys === 2) {
+        applyPlot(p1, 1, statesTwo[yr % 2]);
+        applyPlot(p2, 2, statesTwo[(yr + 1) % 2]);
+        p3.className = `field-plot is-disabled`;
+        const ms = document.getElementById(`metric-sown`);
+        const mf = document.getElementById(`metric-fallow`);
+        const msaf = document.getElementById(`metric-safety`);
+        if (ms) ms.textContent = `50% (1/2)`;
+        if (mf) mf.textContent = `50% (1/2)`;
+        if (msaf) msaf.textContent = `Один урожай — високий ризик голоду`;
+      } else {
+        applyPlot(p1, 1, statesThree[yr % 3]);
+        applyPlot(p2, 2, statesThree[(yr + 1) % 3]);
+        applyPlot(p3, 3, statesThree[(yr + 2) % 3]);
+        const ms = document.getElementById(`metric-sown`);
+        const mf = document.getElementById(`metric-fallow`);
+        const msaf = document.getElementById(`metric-safety`);
+        if (ms) ms.textContent = `67% (2/3)`;
+        if (mf) mf.textContent = `33% (1/3)`;
+        if (msaf) msaf.textContent = `Два врожаї на рік (озимі + ярі)`;
+      }
+    }
+
+    /* ========= SECTION 3: CRISIS & TABLE 3.2 ========= */
+    function selectCrisisStage(idx, btn) {
+      const stage = CRISIS_STAGES[idx];
+      if (!stage) return;
+      if (btn && btn.parentElement) {
+        btn.parentElement.querySelectorAll(`button`).forEach(b => b.setAttribute(`aria-pressed`, `false`));
+        btn.setAttribute(`aria-pressed`, `true`);
+      }
+      const t = document.getElementById(`crisis-stage-title`);
+      const p = document.getElementById(`crisis-stage-text`);
+      if (t) t.textContent = stage.title;
+      if (p) p.textContent = stage.text;
+    }
+
+    function checkTableRow(rowIdx, isCorrect, btn) {
+      const msg = document.getElementById(`tbl-msg-${rowIdx}`);
+      const cell = document.getElementById(`tbl-cell-${rowIdx}`);
+      if (!cell || !msg) return;
+
+      cell.querySelectorAll(`button`).forEach(b => {
+        b.style.outline = `none`;
+        b.classList.remove(`btn-primary`);
+        b.classList.add(`btn-secondary`);
+      });
+
+      if (isCorrect) {
+        btn.classList.remove(`btn-secondary`);
+        btn.classList.add(`btn-primary`);
+        msg.textContent = `Правильно! Цей наслідок точно відповідає § 23.`;
+        msg.style.color = `var(--positive)`;
+        appState.tableDone[rowIdx] = true;
+        saveState();
+      } else {
+        btn.style.outline = `2px solid var(--error)`;
+        msg.textContent = `Спробуйте ще раз: пригадайте зв’язок між кліматом, урожаєм та кількістю населення.`;
+        msg.style.color = `var(--error)`;
+      }
+    }
+
+    function revealAllTableRows() {
+      [0, 1, 2].forEach(idx => {
+        const cell = document.getElementById(`tbl-cell-${idx}`);
+        const msg = document.getElementById(`tbl-msg-${idx}`);
+        if (!cell || !msg) return;
+        const buttons = cell.querySelectorAll(`button`);
+        buttons.forEach(b => {
+          b.style.outline = `none`;
+          if (b.getAttribute(`onclick`).includes(`true`)) {
+            b.classList.remove(`btn-secondary`);
+            b.classList.add(`btn-primary`);
+          } else {
+            b.classList.remove(`btn-primary`);
+            b.classList.add(`btn-secondary`);
+          }
+        });
+        msg.textContent = `Вірну відповідь виділено.`;
+        msg.style.color = `var(--positive)`;
+        appState.tableDone[idx] = true;
+      });
+      saveState();
+    }
+
+    /* ========= SECTION 4: TRAVEL CALCULATOR ========= */
+    function updateTravelCalc() {
+      const routeSel = document.getElementById(`calc-route`);
+      const speedInput = document.getElementById(`calc-speed-num`);
+      if (!routeSel || !speedInput) return;
+
+      const dist = Number(routeSel.value) || 882;
+      let speed = Number(speedInput.value) || 40;
+      if (speed < 15) speed = 15;
+      if (speed > 90) speed = 90;
+
+      const days = dist / speed;
+      const distOut = document.getElementById(`calc-dist-out`);
+      const daysOut = document.getElementById(`calc-days-out`);
+      const travOut = document.getElementById(`calc-traveler-out`);
+
+      if (distOut) distOut.textContent = `${dist} км`;
+      if (daysOut) daysOut.textContent = `${days.toFixed(1).replace(`.`, `,`)} дня`;
+
+      if (travOut) {
+        if (speed <= 45) {
+          travOut.textContent = `Купецький віз або вершник (30–40 км/день)`;
+        } else if (speed <= 65) {
+          travOut.textContent = `Швидкий вершник без важкого вантажу`;
+        } else {
+          travOut.textContent = `Гінець-листоноша (удвічі швидше — 70–80 км/день)`;
+        }
+      }
+    }
+
+    function syncSpeedFromSlider(val) {
+      const numEl = document.getElementById(`calc-speed-num`);
+      if (numEl) numEl.value = val;
+      updateTravelCalc();
+    }
+
+    function syncSpeedFromNumber(val) {
+      const sliderEl = document.getElementById(`calc-speed-range`);
+      if (sliderEl) sliderEl.value = val;
+      updateTravelCalc();
+    }
+
+    function onRouteChange() {
+      updateTravelCalc();
+    }
+
+    function setHomeworkPreset() {
+      const routeSel = document.getElementById(`calc-route`);
+      const numEl = document.getElementById(`calc-speed-num`);
+      const sliderEl = document.getElementById(`calc-speed-range`);
+      if (routeSel) routeSel.value = `882`;
+      if (numEl) numEl.value = `40`;
+      if (sliderEl) sliderEl.value = `40`;
+      updateTravelCalc();
+    }
+
+    /* ========= SECTION 4: VECTOR LEAFLET MAP ========= */
+    let tradeMap = null;
+    let routeLayers = {};
+    let markerGroup = null;
+
+    function initTradeMap() {
+      const mapEl = document.getElementById(`trade-map`);
+      if (!mapEl || typeof L === `undefined`) return;
+
+      tradeMap = L.map(`trade-map`, {
+        center: [50.0, 14.0],
+        zoom: 4,
+        minZoom: 3,
+        maxZoom: 6,
+        scrollWheelZoom: false
+      });
+
+      const landColor = getToken(`--map-land`);
+      const borderColor = getToken(`--map-border`);
+      const cGreen = getToken(`--data-1`);
+      const cOchre = getToken(`--data-2`);
+      const cTerra = getToken(`--data-3`);
+      const cSlate = getToken(`--data-4`);
+
+      fetch(`https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-50m.json`)
+        .then(r => r.json())
+        .then(topo => {
+          const geo = topojson.feature(topo, topo.objects.countries);
+          L.geoJSON(geo, {
+            style: {
+              fillColor: landColor,
+              fillOpacity: 1,
+              color: borderColor,
+              weight: 0.75
+            }
+          }).addTo(tradeMap);
+
+          /* Polylines for medieval trade routes */
+          routeLayers.hanse = L.layerGroup([
+            L.polyline([[51.507, -0.127], [51.209, 3.224], [53.551, 9.993], [53.865, 10.686], [54.352, 18.646], [56.949, 24.105], [58.525, 31.274]], { color: cSlate, weight: 3, dashArray: `6 4` }),
+            L.polyline([[51.209, 3.224], [50.937, 6.960], [53.551, 9.993]], { color: cSlate, weight: 2.5, dashArray: `4 4` })
+          ]).addTo(tradeMap);
+
+          routeLayers.champagne = L.layerGroup([
+            L.polyline([[51.209, 3.224], [48.856, 2.352], [48.297, 4.074], [43.296, 5.369]], { color: cOchre, weight: 3.5 }),
+            L.polyline([[48.297, 4.074], [44.405, 8.946]], { color: cOchre, weight: 3 })
+          ]).addTo(tradeMap);
+
+          routeLayers.kyiv = L.layerGroup([
+            L.polyline([[50.937, 6.960], [50.075, 14.437], [50.064, 19.945], [50.450, 30.523]], { color: cGreen, weight: 3.5 }),
+            L.polyline([[58.525, 31.274], [50.450, 30.523], [41.008, 28.978]], { color: cGreen, weight: 3, dashArray: `8 5` })
+          ]).addTo(tradeMap);
+
+          routeLayers.med = L.layerGroup([
+            L.polyline([[43.296, 5.369], [44.405, 8.946], [43.722, 10.401], [40.634, 14.602], [45.440, 12.315], [41.008, 28.978]], { color: cTerra, weight: 3 })
+          ]).addTo(tradeMap);
+
+          markerGroup = L.layerGroup().addTo(tradeMap);
+          renderMapMarkers(`all`);
+
+          const statusEl = document.getElementById(`map-status`);
+          if (statusEl) statusEl.textContent = `Карта готова`;
+          tradeMap.invalidateSize();
+        })
+        .catch(() => {
+          const statusEl = document.getElementById(`map-status`);
+          if (statusEl) statusEl.textContent = `Контури завантажуються за наявності мережі`;
+        });
+    }
+
+    function renderMapMarkers(filterKey) {
+      if (!tradeMap || !markerGroup) return;
+      markerGroup.clearLayers();
+      const cFill = getToken(`--background`);
+      const cMap = {
+        hanse: getToken(`--data-4`),
+        champagne: getToken(`--data-2`),
+        kyiv: getToken(`--data-1`),
+        med: getToken(`--data-3`)
+      };
+
+      TRADE_CITIES.forEach(city => {
+        if (filterKey !== `all` && city.group !== filterKey) return;
+        const strokeColor = cMap[city.group] || getToken(`--primary`);
+        const marker = L.circleMarker([city.lat, city.lon], {
+          radius: city.name === `Київ` || city.name === `Шампань (Труа)` || city.name === `Любек` ? 7.5 : 5.5,
+          color: strokeColor,
+          fillColor: cFill,
+          fillOpacity: 1,
+          weight: 2.5
+        });
+        marker.bindPopup(`<strong>${city.name}</strong><br>${city.desc}`);
+        marker.on(`click`, () => {
+          const t = document.getElementById(`map-route-title`);
+          const d = document.getElementById(`map-route-desc`);
+          if (t) t.textContent = city.name;
+          if (d) d.textContent = city.desc;
+        });
+        marker.addTo(markerGroup);
+      });
+    }
+
+    function filterMapRoute(key, btn) {
+      if (btn && btn.parentElement) {
+        btn.parentElement.querySelectorAll(`button`).forEach(b => b.setAttribute(`aria-pressed`, `false`));
+        btn.setAttribute(`aria-pressed`, `true`);
+      }
+
+      const info = ROUTE_INFO[key];
+      const t = document.getElementById(`map-route-title`);
+      const d = document.getElementById(`map-route-desc`);
+      if (info && t && d) {
+        t.textContent = info.title;
+        d.textContent = info.desc;
+      }
+
+      if (!tradeMap) return;
+      Object.keys(routeLayers).forEach(k => {
+        if (key === `all` || key === k) {
+          if (!tradeMap.hasLayer(routeLayers[k])) routeLayers[k].addTo(tradeMap);
+        } else {
+          if (tradeMap.hasLayer(routeLayers[k])) tradeMap.removeLayer(routeLayers[k]);
+        }
+      });
+      renderMapMarkers(key);
+    }
+
+    /* ========= SECTION 5: CARTOGRAPHY & MONTHS ========= */
+    function selectMapType(key, btn) {
+      const data = CARTOGRAPHY[key];
+      if (!data) return;
+      appState.selectedMapType = key;
+      if (btn && btn.parentElement) {
+        btn.parentElement.querySelectorAll(`button`).forEach(b => b.setAttribute(`aria-pressed`, `false`));
+        btn.setAttribute(`aria-pressed`, `true`);
+      }
+      const svgBox = document.getElementById(`cartography-svg-box`);
+      const badge = document.getElementById(`carto-badge`);
+      const title = document.getElementById(`carto-title`);
+      const desc = document.getElementById(`carto-desc`);
+      const src = document.getElementById(`carto-source`);
+      if (svgBox) svgBox.innerHTML = data.svg;
+      if (badge) badge.textContent = data.badge;
+      if (title) title.textContent = data.title;
+      if (desc) desc.textContent = data.desc;
+      if (src) src.textContent = data.source;
+      saveState();
+    }
+
+    function selectMonth(idx, btn) {
+      const m = MONTHS[idx];
+      if (!m) return;
+      appState.selectedMonth = idx;
+      if (btn && btn.parentElement) {
+        btn.parentElement.querySelectorAll(`button`).forEach(b => b.setAttribute(`aria-pressed`, `false`));
+        btn.setAttribute(`aria-pressed`, `true`);
+      }
+      const lbl = document.getElementById(`month-label`);
+      const ttl = document.getElementById(`month-title`);
+      const txt = document.getElementById(`month-text`);
+      if (lbl) lbl.textContent = m.label;
+      if (ttl) ttl.textContent = m.title;
+      if (txt) txt.textContent = m.text;
+      saveState();
+    }
+
+    /* ========= SECTION 6: GLOSSARY & QUIZ ========= */
+    let currentTermFilter = `all`;
+
+    function renderTerms() {
+      const grid = document.getElementById(`terms-grid`);
+      if (!grid) return;
+      grid.innerHTML = ``;
+
+      TERMS.forEach(item => {
+        const isDone = appState.masteredTerms.includes(item.id);
+        if (currentTermFilter === `todo` && isDone) return;
+        if (currentTermFilter === `done` && !isDone) return;
+
+        const card = document.createElement(`article`);
+        card.className = `term-card` + (isDone ? ` is-mastered` : ``);
+
+        const top = document.createElement(`div`);
+        top.innerHTML = `<span class="tag ${isDone ? `tag-green` : ``}">${isDone ? `Засвоєно` : `Термін`}</span>
+          <h4 style="margin-top: var(--space-sm);">${item.term}</h4>
+          <p class="term-definition" style="margin-top: var(--space-xs);">${item.def}</p>`;
+
+        const actions = document.createElement(`div`);
+        actions.className = `term-actions`;
+        const btn = document.createElement(`button`);
+        btn.type = `button`;
+        btn.className = `btn ${isDone ? `btn-secondary` : `btn-primary`}`;
+        btn.textContent = isDone ? `Позначити як невивчений` : `Засвоєно`;
+        btn.onclick = () => toggleTermMastered(item.id);
+        actions.appendChild(btn);
+
+        card.appendChild(top);
+        card.appendChild(actions);
+        grid.appendChild(card);
+      });
+
+      if (grid.children.length === 0) {
+        const empty = document.createElement(`div`);
+        empty.className = `card`;
+        empty.innerHTML = `<strong>У цій категорії наразі немає карток.</strong>
+          <p style="margin-top: var(--space-xs); color: var(--on-surface-variant);">Перемкніть фільтр на «Усі (10)», щоб побачити весь словник уроку.</p>`;
+        grid.appendChild(empty);
+      }
+    }
+
+    function toggleTermMastered(id) {
+      const idx = appState.masteredTerms.indexOf(id);
+      if (idx === -1) {
+        appState.masteredTerms.push(id);
+      } else {
+        appState.masteredTerms.splice(idx, 1);
+      }
+      renderTerms();
+      saveState();
+    }
+
+    function filterTerms(mode, btn) {
+      currentTermFilter = mode;
+      if (btn && btn.parentElement) {
+        btn.parentElement.querySelectorAll(`button`).forEach(b => b.setAttribute(`aria-pressed`, `false`));
+        btn.setAttribute(`aria-pressed`, `true`);
+      }
+      renderTerms();
+    }
+
+    function renderQuiz() {
+      const container = document.getElementById(`quiz-container`);
+      if (!container) return;
+      container.innerHTML = ``;
+
+      QUIZ.forEach((q, qIdx) => {
+        const chosen = appState.quizAnswers[qIdx];
+        const answered = chosen !== undefined;
+
+        const card = document.createElement(`div`);
+        card.className = `quiz-card`;
+
+        const head = document.createElement(`div`);
+        head.innerHTML = `<span class="mono-label">Запитання ${qIdx + 1} з ${QUIZ.length}</span>
+          <h4 style="margin-top: var(--space-xs);">${q.q}</h4>`;
+        card.appendChild(head);
+
+        const opts = document.createElement(`div`);
+        opts.className = `quiz-options`;
+        q.options.forEach((optText, oIdx) => {
+          const btn = document.createElement(`button`);
+          btn.type = `button`;
+          btn.className = `quiz-option`;
+          if (answered) {
+            if (oIdx === q.correct) btn.classList.add(`is-correct`);
+            else if (oIdx === chosen) btn.classList.add(`is-wrong`);
+          }
+          btn.textContent = optText;
+          btn.onclick = () => selectQuizAnswer(qIdx, oIdx);
+          opts.appendChild(btn);
+        });
+        card.appendChild(opts);
+
+        if (answered) {
+          const fb = document.createElement(`div`);
+          const isOk = chosen === q.correct;
+          fb.className = `quiz-feedback ${isOk ? `is-positive` : `is-negative`}`;
+          fb.textContent = (isOk ? `Правильно! ` : `Не зовсім. `) + q.explain;
+          card.appendChild(fb);
+        }
+
+        container.appendChild(card);
+      });
+    }
+
+    function selectQuizAnswer(qIdx, oIdx) {
+      appState.quizAnswers[qIdx] = oIdx;
+      renderQuiz();
+      saveState();
+    }
+
+    /* ========= RESET WITH INLINE 2-STEP CONFIRMATION ========= */
+    function handleResetProgress(btn) {
+      if (!btn) return;
+      if (btn.dataset.armed !== `true`) {
+        btn.dataset.armed = `true`;
+        btn.textContent = `Підтвердити скидання?`;
+        setTimeout(() => {
+          if (btn.dataset.armed === `true`) {
+            btn.dataset.armed = `false`;
+            btn.textContent = `Скинути прогрес`;
+          }
+        }, 4000);
+        return;
+      }
+      btn.dataset.armed = `false`;
+      btn.textContent = `Скинути прогрес`;
+      appState.masteredTerms = [];
+      appState.quizAnswers = {};
+      appState.tableDone = [false, false, false];
+      [0, 1, 2].forEach(idx => {
+        const cell = document.getElementById(`tbl-cell-${idx}`);
+        const msg = document.getElementById(`tbl-msg-${idx}`);
+        if (cell) {
+          cell.querySelectorAll(`button`).forEach(b => {
+            b.style.outline = `none`;
+            b.classList.remove(`btn-primary`);
+            b.classList.add(`btn-secondary`);
+          });
+        }
+        if (msg) msg.textContent = ``;
+      });
+      renderTerms();
+      renderQuiz();
+      saveState();
+    }
+
+    /* ========= CHARTS ========= */
+    function initCharts() {
+      if (typeof Chart === `undefined`) return;
+      const cGreen = getToken(`--data-1`);
+      const cOchre = getToken(`--data-2`);
+      const cTerra = getToken(`--data-3`);
+      const cSlate = getToken(`--data-4`);
+      const cContext = getToken(`--data-context`);
+      const cInk = getToken(`--on-surface`);
+      const cMuted = getToken(`--on-surface-variant`);
+      const cGrid = getToken(`--outline-variant`);
+
+      Chart.defaults.font.family = `'Nunito Sans', sans-serif`;
+      Chart.defaults.color = cMuted;
+
+      const citiesCanvas = document.getElementById(`citiesChart`);
+      if (citiesCanvas) {
+        new Chart(citiesCanvas, {
+          type: `bar`,
+          data: {
+            labels: [
+              `Париж, Мілан, Флоренція, Венеція, Генуя`,
+              `Гент, Брюгге (Фландрія)`,
+              `Лондон, Рим, Неаполь, Кельн, Барселона`,
+              `Гамбург, Нюрнберг (середні міста)`
+            ],
+            datasets: [{
+              label: `Орієнтовна кількість мешканців (тис.)`,
+              data: [100, 70, 40, 22],
+              backgroundColor: [cGreen, cOchre, cSlate, cContext],
+              borderRadius: 6,
+              borderSkipped: false
+            }]
+          },
+          options: {
+            indexAxis: `y`,
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                callbacks: {
+                  label: ctx => {
+                    const labels = [`~100 тис. осіб`, `до 70 тис. осіб`, `30–50 тис. осіб`, `15–30 тис. осіб`];
+                    return labels[ctx.dataIndex] || `${ctx.raw} тис.`;
+                  }
+                }
+              }
+            },
+            scales: {
+              x: {
+                beginAtZero: true,
+                max: 115,
+                grid: { color: cGrid },
+                title: { display: true, text: `Тисяч мешканців` }
+              },
+              y: {
+                grid: { display: false },
+                ticks: { color: cInk, font: { weight: `600` } }
+              }
+            }
+          }
+        });
+      }
+
+      const climateCanvas = document.getElementById(`climateChart`);
+      if (climateCanvas) {
+        new Chart(climateCanvas, {
+          type: `line`,
+          data: {
+            labels: [`950 р.`, `1050 р.`, `1150 р.`, `1250 р.`, `1300 р.`, `1315 р.`, `1350 р.`],
+            datasets: [{
+              label: `Населення Західної Європи (млн осіб)`,
+              data: [20, 28, 40, 52, 60, 54, 34],
+              borderColor: cGreen,
+              backgroundColor: cGreen,
+              borderWidth: 3,
+              pointRadius: [4, 4, 4, 4, 6, 6, 7],
+              pointBackgroundColor: [cGreen, cGreen, cGreen, cGreen, cOchre, cTerra, cTerra],
+              tension: 0.25
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                callbacks: {
+                  label: ctx => `~${ctx.raw} млн осіб`
+                }
+              }
+            },
+            scales: {
+              y: {
+                min: 10,
+                max: 70,
+                grid: { color: cGrid },
+                title: { display: true, text: `Населення (млн)` }
+              },
+              x: {
+                grid: { display: false },
+                ticks: { color: cInk }
+              }
+            }
+          }
+        });
+      }
+    }
+
+    /* ========= SCROLL REVEAL ========= */
+    function initRevealObserver() {
+      const els = document.querySelectorAll(`.reveal-on-scroll`);
+      if (!(`IntersectionObserver` in window)) {
+        els.forEach(el => el.classList.add(`is-visible`));
+        return;
+      }
+      const obs = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add(`is-visible`);
+            obs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.08 });
+      els.forEach(el => obs.observe(el));
+    }
+
+    /* ========= INIT ========= */
+    document.addEventListener(`DOMContentLoaded`, async () => {
+      if (window.notebookAppApi && typeof window.notebookAppApi.getAppState === `function`) {
+        try {
+          const saved = await window.notebookAppApi.getAppState();
+          if (saved && typeof saved === `object`) {
+            if (Array.isArray(saved.masteredTerms)) appState.masteredTerms = saved.masteredTerms;
+            if (saved.quizAnswers && typeof saved.quizAnswers === `object`) appState.quizAnswers = saved.quizAnswers;
+            if (Array.isArray(saved.tableDone) && saved.tableDone.length === 3) appState.tableDone = saved.tableDone;
+            if (saved.cropSystem === 2 || saved.cropSystem === 3) appState.cropSystem = saved.cropSystem;
+            if (typeof saved.cropYear === `number`) appState.cropYear = saved.cropYear;
+            if (saved.selectedInvention && INVENTIONS[saved.selectedInvention]) appState.selectedInvention = saved.selectedInvention;
+            if (saved.selectedMapType && CARTOGRAPHY[saved.selectedMapType]) appState.selectedMapType = saved.selectedMapType;
+            if (typeof saved.selectedMonth === `number` && MONTHS[saved.selectedMonth]) appState.selectedMonth = saved.selectedMonth;
+          }
+        } catch (e) {
+          /* continue with default state */
+        }
+      }
+
+      /* Restore interactive widgets */
+      selectInvention(appState.selectedInvention, null);
+      setCropSystem(appState.cropSystem);
+      selectCrisisStage(0, null);
+      selectMapType(appState.selectedMapType, null);
+      selectMonth(appState.selectedMonth, null);
+      updateTravelCalc();
+      renderTerms();
+      renderQuiz();
+      updateProgressCounters();
+
+      /* Restore completed workbook table rows visually */
+      appState.tableDone.forEach((done, idx) => {
+        if (!done) return;
+        const cell = document.getElementById(`tbl-cell-${idx}`);
+        const msg = document.getElementById(`tbl-msg-${idx}`);
+        if (cell && msg) {
+          cell.querySelectorAll(`button`).forEach(b => {
+            if (b.getAttribute(`onclick`).includes(`true`)) {
+              b.classList.remove(`btn-secondary`);
+              b.classList.add(`btn-primary`);
+            }
+          });
+          msg.textContent = `Вірну відповідь збережено.`;
+          msg.style.color = `var(--positive)`;
+        }
+      });
+
+      initCharts();
+      initTradeMap();
+      initRevealObserver();
+
+      if (window.lucide && typeof window.lucide.createIcons === `function`) {
+        window.lucide.createIcons();
+      }
+      if (window.notebookAppApi && typeof window.notebookAppApi.notifyAppReady === `function`) {
+        window.notebookAppApi.notifyAppReady();
+      }
+    });
+  </script>
+</body>
+</html>
